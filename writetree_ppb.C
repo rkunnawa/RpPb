@@ -41,16 +41,25 @@ void LoadLib()
 void ShutoffBranches(HiForest *hi)
 {
     
-    //! added by pawan
     //! Select only the branches you want to use for the analysis
     //! This increases the speed for running
     
     //! For Hlt
     hi->hltTree->SetBranchStatus("*",0,0);
+    hi->hltTree->SetBranchStatus("HLT_PAJet20_NoJetID_v1",1,0);
+    hi->hltTree->SetBranchStatus("HLT_PAJet20_NoJetID_v1_Prescl",1,0);
     hi->hltTree->SetBranchStatus("HLT_PAJet40_NoJetID_v1",1,0);
+    hi->hltTree->SetBranchStatus("HLT_PAJet40_NoJetID_v1_Prescl",1,0);
     hi->hltTree->SetBranchStatus("HLT_PAJet60_NoJetID_v1",1,0);
+    hi->hltTree->SetBranchStatus("HLT_PAJet60_NoJetID_v1_Prescl",1,0);
     hi->hltTree->SetBranchStatus("HLT_PAJet80_NoJetID_v1",1,0);
+    hi->hltTree->SetBranchStatus("HLT_PAJet80_NoJetID_v1_Prescl",1,0);
     hi->hltTree->SetBranchStatus("HLT_PAJet100_NoJetID_v1",1,0);
+    hi->hltTree->SetBranchStatus("HLT_PAJet100_NoJetID_v1_Prescl",1,0);
+	hi->hltTree->SetBranchStatus("HLT_PAJet120_NoJetID_v1",1,0);
+    hi->hltTree->SetBranchStatus("HLT_PAJet120_NoJetID_v1_Prescl",1,0);
+    hi->hltTree->SetBranchStatus("HLT_PAZeroBiasPixel_SingleTrack_v1",1,0);
+    hi->hltTree->SetBranchStatus("HLT_PAZeroBiasPixel_SingleTrack_v1_Prescl",1,0);
     
     //! for Skim Tree
     hi->skimTree->SetBranchStatus("*",0,0);
@@ -67,6 +76,7 @@ void ShutoffBranches(HiForest *hi)
     hi->evtTree->SetBranchStatus("vz",1,0);
 	hi->evtTree->SetBranchStatus("hiBin",1,0);
     hi->evtTree->SetBranchStatus("hiNtracks",1,0);
+	
     /*
     hi->ak2jetTree->SetBranchStatus("*",0,0);
     hi->ak2jetTree->SetBranchStatus("nref",1,0);
@@ -311,7 +321,7 @@ void ShutoffBranches(HiForest *hi)
 
 
 TStopwatch timer;
-int writetree_ppb(char *ksp="ppbJet80")
+int writetree_ppb(char *ksp="ppbJet40")
 {
     
     timer.Start();
@@ -321,7 +331,7 @@ int writetree_ppb(char *ksp="ppbJet80")
     TString inname="";
     if(strcmp(ksp,"ppbJet40")==0)inname = "root://eoscms//eos/cms/store/group/phys_heavyions/krajczar/inbound/mnt/hadoop/cms/store/user/krajczar/pPb_Jet40Jet60_Full_v1/mergedJet40Jet60_KK.root";
     else if(strcmp(ksp,"ppbJet80")==0)inname = "root://eoscms//eos/cms/store/group/phys_heavyions/yjlee/pPb2013/promptReco/PA2013_HiForest_PromptReco_JSonPPb_forestv77.root";
-	else if(strcmp(ksp,"ppbMB")==0)inname = "root://eoscms//eos/cms/store/group/phys_heavyions/yjlee/pPb2013/promptReco/PA2013_HiForest_PromptReco_KrisztianMB_JSonPPb_forestv84.root";
+	else if(strcmp(ksp,"ppbJetMB")==0)inname = "root://eoscms//eos/cms/store/group/phys_heavyions/yjlee/pPb2013/promptReco/PA2013_HiForest_PromptReco_KrisztianMB_JSonPPb_forestv84.root";
     
     // Load Lib
     //gSystem->Load("/afs/cern.ch/user/p/pawan/scratch0/CMSSW_6_2_0/src/work/pPb/HiForest/V3/hiForest_h.so");
@@ -389,10 +399,22 @@ int writetree_ppb(char *ksp="ppbJet80")
     float vx;
     float vy;
     float vz;
+	
+	int jetMB;
+    int jet20;
     int jet40;
     int jet60;
     int jet80;
     int jet100;
+	int jet120;
+    
+	int jetMB_p;
+    int jet20_p;
+    int jet40_p;
+    int jet60_p;
+    int jet80_p;
+    int jet100_p;
+    int jet120_p;
     int ntrk;
     
     // declare the jet variables
@@ -450,11 +472,25 @@ int writetree_ppb(char *ksp="ppbJet80")
     evtTree->Branch("vx",&vx,"vx/F");
     evtTree->Branch("vy",&vy,"vy/F");
     evtTree->Branch("vz",&vz,"vz/F");
+	
+	evtTree->Branch("jetMB",&jetMB,"jetMB/I");
+    evtTree->Branch("jet20",&jet20,"jet20/I");
     evtTree->Branch("jet40",&jet40,"jet40/I");
     evtTree->Branch("jet60",&jet60,"jet60/I");
     evtTree->Branch("jet80",&jet80,"jet80/I");
     evtTree->Branch("jet100",&jet100,"jet100/I");
+	evtTree->Branch("jet120",&jet120,"jet120/I");
+	
+    evtTree->Branch("jetMB_p",&jetMB_p,"jetMB_p/I");
+    evtTree->Branch("jet20_p",&jet20_p,"jet20_p/I");
+    evtTree->Branch("jet40_p",&jet40_p,"jet40_p/I");
+    evtTree->Branch("jet60_p",&jet60_p,"jet60_p/I");
+    evtTree->Branch("jet80_p",&jet80_p,"jet80_p/I");
+    evtTree->Branch("jet100_p",&jet100_p,"jet100_p/I");
+	evtTree->Branch("jet120_p",&jet120_p,"jet120_p/I");
+
     evtTree->Branch("ntrk",&ntrk,"ntrk/I");
+    
     /*
     jetR2Tree->Branch("nrefe",&nrefe2,"nrefe/I");
     jetR2Tree->Branch("pt",&pt2,"pt[nrefe]/F");
@@ -529,9 +565,12 @@ int writetree_ppb(char *ksp="ppbJet80")
         
         //! events with Single vertex
         bool evSel = false;
-		evSel = fabs(c->evt.vz)<15. && c->skim.pHBHENoiseFilter  && c->skim.pPAcollisionEventSelectionPA && (c->hlt.HLT_PAJet40_NoJetID_v1 || c->hlt.HLT_PAJet60_NoJetID_v1 || c->hlt.HLT_PAJet80_NoJetID_v1 || c->hlt.HLT_PAJet100_NoJetID_v1);
+		//evSel = fabs(c->evt.vz)<15. && c->skim.pHBHENoiseFilter  && c->skim.pPAcollisionEventSelectionPA && (c->hlt.HLT_PAZeroBiasPixel_SingleTrack_v1 || c->hlt.HLT_PAJet20_NoJetID_v1 || c->hlt.HLT_PAJet40_NoJetID_v1 || c->hlt.HLT_PAJet60_NoJetID_v1 || c->hlt.HLT_PAJet80_NoJetID_v1 || c->hlt.HLT_PAJet100_NoJetID_v1 || c->hlt.HLT_PAJet120_NoJetID_v1);
         
+		evSel = fabs(c->evt.vz)<15 && c->skim.pHBHENoiseFilter && c->skim.pPAcollisionEventSelectionPA;
+		
         if(!evSel)continue;
+        //
         
         
         run = c->evt.run;
@@ -540,10 +579,23 @@ int writetree_ppb(char *ksp="ppbJet80")
         vy = c->evt.vy;
         vz = c->evt.vz;
         bin = c->evt.hiBin;
+		
+		jetMB = c->hlt.HLT_PAZeroBiasPixel_SingleTrack_v1;
+        jet20  = c->hlt.HLT_PAJet20_NoJetID_v1;
         jet40  = c->hlt.HLT_PAJet40_NoJetID_v1;
         jet60  = c->hlt.HLT_PAJet60_NoJetID_v1;
         jet80  = c->hlt.HLT_PAJet80_NoJetID_v1;
         jet100 = c->hlt.HLT_PAJet100_NoJetID_v1;
+        jet120 = c->hlt.HLT_PAJet120_NoJetID_v1;
+		
+		jetMB_p = c->hlt.HLT_PAZeroBiasPixel_SingleTrack_v1_Prescl;
+		jet20_p  = c->hlt.HLT_PAJet20_NoJetID_v1_Prescl;
+        jet40_p  = c->hlt.HLT_PAJet40_NoJetID_v1_Prescl;
+        jet60_p  = c->hlt.HLT_PAJet60_NoJetID_v1_Prescl;
+        jet80_p  = c->hlt.HLT_PAJet80_NoJetID_v1_Prescl;
+        jet100_p = c->hlt.HLT_PAJet100_NoJetID_v1_Prescl;
+        jet120_p = c->hlt.HLT_PAJet120_NoJetID_v1_Prescl;
+
         ntrk = c->evt.hiNtracks;
 		
 		//if (run > 211256) {
