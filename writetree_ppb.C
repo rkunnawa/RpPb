@@ -26,8 +26,8 @@
 #include <iostream>
 using namespace std;
 
-const float ketacut=2.0;
-const float kptrecocut=20.;
+const float ketacut=4.0;
+const float kptrecocut=15.;
 //const int cPP = 1;
 
 void LoadLib();
@@ -40,10 +40,10 @@ void LoadLib()
 }
 void ShutoffBranches(HiForest *hi)
 {
-    
+
     //! Select only the branches you want to use for the analysis
     //! This increases the speed for running
-    
+
     //! For Hlt
     hi->hltTree->SetBranchStatus("*",0,0);
     hi->hltTree->SetBranchStatus("HLT_PAJet20_NoJetID_v1",1,0);
@@ -56,7 +56,7 @@ void ShutoffBranches(HiForest *hi)
     hi->hltTree->SetBranchStatus("HLT_PAJet80_NoJetID_v1_Prescl",1,0);
     hi->hltTree->SetBranchStatus("HLT_PAJet100_NoJetID_v1",1,0);
     hi->hltTree->SetBranchStatus("HLT_PAJet100_NoJetID_v1_Prescl",1,0);
-	hi->hltTree->SetBranchStatus("HLT_PAJet120_NoJetID_v1",1,0);
+    hi->hltTree->SetBranchStatus("HLT_PAJet120_NoJetID_v1",1,0);
     hi->hltTree->SetBranchStatus("HLT_PAJet120_NoJetID_v1_Prescl",1,0);
     hi->hltTree->SetBranchStatus("HLT_PAZeroBiasPixel_SingleTrack_v1",1,0);
     hi->hltTree->SetBranchStatus("HLT_PAZeroBiasPixel_SingleTrack_v1_Prescl",1,0);
@@ -74,9 +74,9 @@ void ShutoffBranches(HiForest *hi)
     hi->evtTree->SetBranchStatus("vx",1,0);
     hi->evtTree->SetBranchStatus("vy",1,0);
     hi->evtTree->SetBranchStatus("vz",1,0);
-	hi->evtTree->SetBranchStatus("hiBin",1,0);
+    hi->evtTree->SetBranchStatus("hiBin",1,0);
     hi->evtTree->SetBranchStatus("hiNtracks",1,0);
-	
+
     /*
     hi->ak2jetTree->SetBranchStatus("*",0,0);
     hi->ak2jetTree->SetBranchStatus("nref",1,0);
@@ -137,8 +137,8 @@ void ShutoffBranches(HiForest *hi)
      hi->ak3jetTree->SetBranchStatus("photonSum",1,0);
      hi->ak3jetTree->SetBranchStatus("neutralSum",1,0);
      */
-    
-    
+
+
     //! Track tree
     //hi->trackTree->SetBranchStatus("*",0,0);
     //hi->trackTree->SetBranchStatus("nTrk",1,0);
@@ -150,7 +150,7 @@ void ShutoffBranches(HiForest *hi)
     // hi->trackTree->SetBranchStatus("trkDzError1",1,0);
     // hi->trackTree->SetBranchStatus("trkDxy1",1,0);
     // hi->trackTree->SetBranchStatus("trkDxyError1",1,0);
-    
+
     /*
      //! PF jet tree
      hi->ak2PFJetTree->SetBranchStatus("*",0,0);
@@ -188,7 +188,7 @@ void ShutoffBranches(HiForest *hi)
      hi->ak5PFJetTree->SetBranchStatus("jtphi",1,0);
      hi->ak5PFJetTree->SetBranchStatus("trackMax",1,0);
      */
-    
+
     //
     /*
      hi->akPu2PFJetTree->SetBranchStatus("*",0,0);
@@ -234,8 +234,8 @@ void ShutoffBranches(HiForest *hi)
      hi->akPu5PFJetTree->SetBranchStatus("trackMax",1,0);
      */
     //
-    
-    
+
+
     //! Calo jet trees
     /*
      hi->ak2CaloJetTree->SetBranchStatus("*",0,0);
@@ -270,7 +270,7 @@ void ShutoffBranches(HiForest *hi)
      hi->ak5CaloJetTree->SetBranchStatus("jtphi",1,0);
      hi->ak5CaloJetTree->SetBranchStatus("trackMax",1,0);
      */
-    
+
     ////
     /*
      hi->akPu2CaloJetTree->SetBranchStatus("*",0,0);
@@ -306,9 +306,9 @@ void ShutoffBranches(HiForest *hi)
      hi->akPu5CaloJetTree->SetBranchStatus("trackMax",1,0);
      */
     ///
-    std::cout<<"Loaded all tree variables "<<std::endl;
-    
-}
+     std::cout<<"Loaded all tree variables "<<std::endl;
+
+ }
 
 
 #ifdef _MAKECINT_
@@ -320,10 +320,10 @@ void ShutoffBranches(HiForest *hi)
 #endif
 
 
-TStopwatch timer;
-int writetree_ppb(char *ksp="ppbJet40")
-{
-    
+ TStopwatch timer;
+ int writetree_ppb(char *ksp="ppbJetMB")
+ {
+
     timer.Start();
     
     //LoadLib();
@@ -331,7 +331,7 @@ int writetree_ppb(char *ksp="ppbJet40")
     TString inname="";
     if(strcmp(ksp,"ppbJet40")==0)inname = "root://eoscms//eos/cms/store/group/phys_heavyions/krajczar/inbound/mnt/hadoop/cms/store/user/krajczar/pPb_Jet40Jet60_Full_v1/mergedJet40Jet60_KK.root";
     else if(strcmp(ksp,"ppbJet80")==0)inname = "root://eoscms//eos/cms/store/group/phys_heavyions/yjlee/pPb2013/promptReco/PA2013_HiForest_PromptReco_JSonPPb_forestv77.root";
-	else if(strcmp(ksp,"ppbJetMB")==0)inname = "root://eoscms//eos/cms/store/group/phys_heavyions/yjlee/pPb2013/promptReco/PA2013_HiForest_PromptReco_KrisztianMB_JSonPPb_forestv84.root";
+    else if(strcmp(ksp,"ppbJetMB")==0)inname = "root://eoscms//eos/cms/store/group/phys_heavyions/yjlee/pPb2013/promptReco/PA2013_HiForest_PromptReco_KrisztianMB_JSonPPb_forestv84.root";
     
     // Load Lib
     //gSystem->Load("/afs/cern.ch/user/p/pawan/scratch0/CMSSW_6_2_0/src/work/pPb/HiForest/V3/hiForest_h.so");
@@ -399,16 +399,16 @@ int writetree_ppb(char *ksp="ppbJet40")
     float vx;
     float vy;
     float vz;
-	
-	int jetMB;
+
+    int jetMB;
     int jet20;
     int jet40;
     int jet60;
     int jet80;
     int jet100;
-	int jet120;
+    int jet120;
     
-	int jetMB_p;
+    int jetMB_p;
     int jet20_p;
     int jet40_p;
     int jet60_p;
@@ -416,6 +416,21 @@ int writetree_ppb(char *ksp="ppbJet40")
     int jet100_p;
     int jet120_p;
     int ntrk;
+
+    float ptlead;
+    float etalead;
+    float philead;
+    float rawlead;
+
+    float ptsublead;
+    float etasublead;
+    float phisublead;
+    float rawsublead;
+
+    float ptsubsublead;
+    float etasubsublead;
+    float phisubsublead;
+    float rawsubsublead;
     
     // declare the jet variables
     /*
@@ -436,10 +451,10 @@ int writetree_ppb(char *ksp="ppbJet40")
     
     int nrefe3;
     float pt3[1000];
-	float old_pt3[1000];
+    float old_pt3[1000];
     float raw3[1000];
     float eta3[1000];
-	float eta3_CM[1000];
+    float eta3_CM[1000];
     float phi3[1000];
     float chMax3[1000];
     float trkMax3[1000];
@@ -449,6 +464,7 @@ int writetree_ppb(char *ksp="ppbJet40")
     float trkSum3[1000];
     float phMax3[1000];
     float neMax3[1000];
+
     /*
     int nrefe4;
     float pt4[1000];
@@ -472,24 +488,41 @@ int writetree_ppb(char *ksp="ppbJet40")
     evtTree->Branch("vx",&vx,"vx/F");
     evtTree->Branch("vy",&vy,"vy/F");
     evtTree->Branch("vz",&vz,"vz/F");
-	
-	evtTree->Branch("jetMB",&jetMB,"jetMB/I");
+
+    evtTree->Branch("jetMB",&jetMB,"jetMB/I");
     evtTree->Branch("jet20",&jet20,"jet20/I");
     evtTree->Branch("jet40",&jet40,"jet40/I");
     evtTree->Branch("jet60",&jet60,"jet60/I");
     evtTree->Branch("jet80",&jet80,"jet80/I");
     evtTree->Branch("jet100",&jet100,"jet100/I");
-	evtTree->Branch("jet120",&jet120,"jet120/I");
-	
+    evtTree->Branch("jet120",&jet120,"jet120/I");
+
     evtTree->Branch("jetMB_p",&jetMB_p,"jetMB_p/I");
     evtTree->Branch("jet20_p",&jet20_p,"jet20_p/I");
     evtTree->Branch("jet40_p",&jet40_p,"jet40_p/I");
     evtTree->Branch("jet60_p",&jet60_p,"jet60_p/I");
     evtTree->Branch("jet80_p",&jet80_p,"jet80_p/I");
     evtTree->Branch("jet100_p",&jet100_p,"jet100_p/I");
-	evtTree->Branch("jet120_p",&jet120_p,"jet120_p/I");
+    evtTree->Branch("jet120_p",&jet120_p,"jet120_p/I");
 
     evtTree->Branch("ntrk",&ntrk,"ntrk/I");
+
+    evtTree->Branch("ptlead",&ptlead,"ptlead/F");
+    evtTree->Branch("rawlead",&rawlead,"rawlead/F");
+    evtTree->Branch("etalead",&etalead,"etalead/F");
+    evtTree->Branch("philead",&philead,"philead/F");
+
+    evtTree->Branch("ptsublead",&ptsublead,"ptsublead/F");
+    evtTree->Branch("rawsublead",&rawsublead,"rawsublead/F");
+    evtTree->Branch("etasublead",&etasublead,"etasublead/F");
+    evtTree->Branch("phisublead",&phisublead,"phisublead/F");
+
+    evtTree->Branch("ptsubsublead",&ptsubsublead,"ptsubsublead/F");
+    evtTree->Branch("rawsubsublead",&rawsubsublead,"rawsubsublead/F");
+    evtTree->Branch("etasubsublead",&etasubsublead,"etasubsublead/F");
+    evtTree->Branch("phisubsublead",&phisubsublead,"phisubsublead/F");
+
+    
     
     /*
     jetR2Tree->Branch("nrefe",&nrefe2,"nrefe/I");
@@ -507,12 +540,14 @@ int writetree_ppb(char *ksp="ppbJet40")
     jetR2Tree->Branch("trkSum",&trkSum2,"trkSum[nrefe]/F");
     */
     jetR3Tree->Branch("nrefe",&nrefe3,"nrefe/I");
+
     jetR3Tree->Branch("pt",&pt3,"pt[nrefe]/F");
-	jetR3Tree->Branch("old_pt",&old_pt3,"old_pt[nrefe]/F");
-	jetR3Tree->Branch("raw",&raw3,"raw[nrefe]/F");
+    jetR3Tree->Branch("old_pt",&old_pt3,"old_pt[nrefe]/F");
+    jetR3Tree->Branch("raw",&raw3,"raw[nrefe]/F");
     jetR3Tree->Branch("eta",&eta3,"eta[nrefe]/F");
-	jetR3Tree->Branch("eta_CM",&eta3_CM,"eta_CM[nrefe]/F");
+    jetR3Tree->Branch("eta_CM",&eta3_CM,"eta_CM[nrefe]/F");
     jetR3Tree->Branch("phi",&phi3,"phi[nrefe]/F");
+
     jetR3Tree->Branch("chMax",&chMax3,"chMax[nrefe]/F");
     jetR3Tree->Branch("trkMax",&trkMax3,"trkMax[nrefe]/F");
     jetR3Tree->Branch("phMax",&phMax3,"phMax[nrefe]/F");
@@ -521,6 +556,7 @@ int writetree_ppb(char *ksp="ppbJet40")
     jetR3Tree->Branch("phSum",&phSum3,"phSum[nrefe]/F");
     jetR3Tree->Branch("neSum",&neSum3,"neSum[nrefe]/F");
     jetR3Tree->Branch("trkSum",&trkSum3,"trkSum[nrefe]/F");
+
     /*
     jetR4Tree->Branch("nrefe",&nrefe4,"nrefe/I");
     jetR4Tree->Branch("pt",&pt4,"pt[nrefe]/F");
@@ -536,24 +572,24 @@ int writetree_ppb(char *ksp="ppbJet40")
     jetR4Tree->Branch("neSum",&neSum4,"neSum[nrefe]/F");
     jetR4Tree->Branch("trkSum",&trkSum4,"trkSum[nrefe]/F");
     */
-	
-	int etaflip = 1;
-	float corrected_pt = 0;
-	
+
+    int etaflip = 1;
+    float corrected_pt = 0;
+
 	//apply the data driven JEC factors here. eta dependent and pt dependent corrections.
-	TFile* fJEC_pPb = TFile::Open("/afs/cern.ch/user/d/dgulhan/public/Corrections/Casym_pPb_double_hcalbins_algo_akPu3PF_pt100_140_jet80_alphahigh_20_phicut250.root");
-	TFile* fJEC_Pbp = TFile::Open("/afs/cern.ch/user/d/dgulhan/public/Corrections/Casym_Pbp_double_hcalbins_algo_akPu3PF_pt100_140_jet80_alphahigh_20_phicut250.root");
-	
-	TH1F* c_eta_pPb = (TH1F*)fJEC_pPb->Get("C_asym");
-	c_eta_pPb->Print("base");
-	TH1F* c_eta_Pbp = (TH1F*)fJEC_Pbp->Get("C_asym");
-	c_eta_Pbp->Print("base");
-	
-	TF1* f_pPb = new TF1("f_pPb","1-[0]/pow(x,[1])",20,300);
-	f_pPb->SetParameters(0.3015,0.8913);
+    TFile* fJEC_pPb = TFile::Open("/afs/cern.ch/user/d/dgulhan/public/Corrections/Casym_pPb_double_hcalbins_algo_akPu3PF_pt100_140_jet80_alphahigh_20_phicut250.root");
+    TFile* fJEC_Pbp = TFile::Open("/afs/cern.ch/user/d/dgulhan/public/Corrections/Casym_Pbp_double_hcalbins_algo_akPu3PF_pt100_140_jet80_alphahigh_20_phicut250.root");
+
+    TH1F* c_eta_pPb = (TH1F*)fJEC_pPb->Get("C_asym");
+    c_eta_pPb->Print("base");
+    TH1F* c_eta_Pbp = (TH1F*)fJEC_Pbp->Get("C_asym");
+    c_eta_Pbp->Print("base");
+
+    TF1* f_pPb = new TF1("f_pPb","1-[0]/pow(x,[1])",20,300);
+    f_pPb->SetParameters(0.3015,0.8913);
 	//originally doga had it till 300. - i guess we apply the corrections only those jets between the pt range specified above.
 	//we may have to extend the range later.
-	
+
     
     for (Long64_t ievt=0; ievt<nentries;ievt++) {//! event loop
     //for (Long64_t ievt=0; ievt<100;ievt++) {//! event loop
@@ -567,8 +603,8 @@ int writetree_ppb(char *ksp="ppbJet40")
         bool evSel = false;
 		//evSel = fabs(c->evt.vz)<15. && c->skim.pHBHENoiseFilter  && c->skim.pPAcollisionEventSelectionPA && (c->hlt.HLT_PAZeroBiasPixel_SingleTrack_v1 || c->hlt.HLT_PAJet20_NoJetID_v1 || c->hlt.HLT_PAJet40_NoJetID_v1 || c->hlt.HLT_PAJet60_NoJetID_v1 || c->hlt.HLT_PAJet80_NoJetID_v1 || c->hlt.HLT_PAJet100_NoJetID_v1 || c->hlt.HLT_PAJet120_NoJetID_v1);
         
-		evSel = fabs(c->evt.vz)<15 && c->skim.pHBHENoiseFilter && c->skim.pPAcollisionEventSelectionPA;
-		
+        evSel = fabs(c->evt.vz)<15 && c->skim.pHBHENoiseFilter && c->skim.pPAcollisionEventSelectionPA;
+
         if(!evSel)continue;
         //
         
@@ -579,17 +615,17 @@ int writetree_ppb(char *ksp="ppbJet40")
         vy = c->evt.vy;
         vz = c->evt.vz;
         bin = c->evt.hiBin;
-		
-		jetMB = c->hlt.HLT_PAZeroBiasPixel_SingleTrack_v1;
+
+        jetMB = c->hlt.HLT_PAZeroBiasPixel_SingleTrack_v1;
         jet20  = c->hlt.HLT_PAJet20_NoJetID_v1;
         jet40  = c->hlt.HLT_PAJet40_NoJetID_v1;
         jet60  = c->hlt.HLT_PAJet60_NoJetID_v1;
         jet80  = c->hlt.HLT_PAJet80_NoJetID_v1;
         jet100 = c->hlt.HLT_PAJet100_NoJetID_v1;
         jet120 = c->hlt.HLT_PAJet120_NoJetID_v1;
-		
-		jetMB_p = c->hlt.HLT_PAZeroBiasPixel_SingleTrack_v1_Prescl;
-		jet20_p  = c->hlt.HLT_PAJet20_NoJetID_v1_Prescl;
+
+        jetMB_p = c->hlt.HLT_PAZeroBiasPixel_SingleTrack_v1_Prescl;
+        jet20_p  = c->hlt.HLT_PAJet20_NoJetID_v1_Prescl;
         jet40_p  = c->hlt.HLT_PAJet40_NoJetID_v1_Prescl;
         jet60_p  = c->hlt.HLT_PAJet60_NoJetID_v1_Prescl;
         jet80_p  = c->hlt.HLT_PAJet80_NoJetID_v1_Prescl;
@@ -597,7 +633,7 @@ int writetree_ppb(char *ksp="ppbJet40")
         jet120_p = c->hlt.HLT_PAJet120_NoJetID_v1_Prescl;
 
         ntrk = c->evt.hiNtracks;
-		
+
 		//if (run > 211256) {
 		//	etaflip = -1;
 		//}else etaflip = 1;
@@ -607,53 +643,11 @@ int writetree_ppb(char *ksp="ppbJet40")
         
         
         
-		//if(ievt%10000 == 0)cout<<" nref = "<<nrefe<<endl;
-        /*
-         int *ljet = new int[3];
-         FindLeadSubLeadJets(mJets,ljet);
-         
-         int jtLead = -1, jtSubLead = -1, jtThird = -1;
-         
-         if(ljet[0] >=0 ) jtLead    = ljet[0];
-         if(ljet[1] >=0 ) jtSubLead = ljet[1];
-         if(ljet[2] >=0 ) jtThird   = ljet[2];
-         
-         if(jtLead<0)continue;
-         
-         if(jtLead > -1){
-         pt1     = mJets->jtpt[jtLead];
-         eta1    = mJets->jteta[jtLead];
-         phi1    = mJets->jtphi[jtLead];
-         raw1    = mJets->rawpt[jtLead];
-         chMax1  = mJets->chargedMax[jtLead];
-         chSum1  = mJets->chargedSum[jtLead];
-         phSum1  = mJets->photonSum[jtLead];
-         neSum1  = mJets->neutralSum[jtLead];
-         }
-         
-         if(jtSubLead > -1){
-         pt2     = mJets->jtpt[jtSubLead];
-         eta2    = mJets->jteta[jtSubLead];
-         phi2    = mJets->jtphi[jtSubLead];
-         raw2    = mJets->rawpt[jtSubLead];
-         chMax2  = mJets->chargedMax[jtSubLead];
-         chSum2  = mJets->chargedSum[jtSubLead];
-         phSum2  = mJets->photonSum [jtSubLead];
-         neSum2  = mJets->neutralSum[jtSubLead];
-         }
-         
-         if(jtThird > -1){
-         pt3     = mJets->jtpt[jtThird];
-         eta3    = mJets->jteta[jtThird];
-         phi3    = mJets->jtphi[jtThird];
-         raw3    = mJets->rawpt[jtThird];
-         chMax3  = mJets->chargedMax[jtThird];
-         chSum3  = mJets->chargedSum[jtThird];
-         phSum3  = mJets->photonSum [jtThird];
-         neSum3  = mJets->neutralSum[jtThird];
-         }
-         */
+        //if(ievt%10000 == 0)cout<<" nref = "<<nrefe<<endl;
+
         
+
+
         /*
         mJets2 = &(c->akPu2PF);
         nrefe2 = mJets2->nref;
@@ -676,46 +670,92 @@ int writetree_ppb(char *ksp="ppbJet40")
         
         mJets3 = &(c->akPu3PF);
         nrefe3 = mJets3->nref;
-        
-        for (int i = 0; i<nrefe3; i++) {
-			
-			old_pt3[i] = mJets3->jtpt[i];
-			eta3[i]    = mJets3->jteta[i];
-			
-			if(mJets3->jtpt[i]>=20 && mJets3->jtpt[i]<=300){
-				if (run>211256) {
-					corrected_pt = old_pt3[i]*c_eta_Pbp->GetBinContent(c_eta_Pbp->FindBin(eta3[i]));
-					corrected_pt = corrected_pt*f_pPb->Eval(old_pt3[i]);
-					pt3[i] = corrected_pt;
-				}else {
-					corrected_pt = old_pt3[i]*c_eta_pPb->GetBinContent(c_eta_pPb->FindBin(eta3[i]));
-					corrected_pt = corrected_pt*f_pPb->Eval(old_pt3[i]);
-					pt3[i] = corrected_pt;
-				}
-				
-			}else {
-				pt3[i] = mJets3->jtpt[i];
-			}
-			
-			if(run>211256){
-				eta3_CM[i] = mJets3->jteta[i] - 0.465;
-				
-			}else {
-				eta3_CM[i] = mJets3->jteta[i] + 0.465;
-				
-			}
-			
-			phi3[i]    = mJets3->jtphi[i];
-            raw3[i]    = mJets3->rawpt[i];
-            chMax3[i]  = mJets3->chargedMax[i];
-            trkMax3[i]  = mJets3->trackMax[i];
-            chSum3[i]  = mJets3->chargedSum[i];
-            phSum3[i]  = mJets3->photonSum[i];
-            neSum3[i]  = mJets3->neutralSum[i];
-            trkSum3[i] = mJets3->trackSum[i];
-            phSum3[i]  = mJets3->photonMax[i];
-            neMax3[i]  = mJets3->neutralMax[i];
+
+        int *ljet = new int[3];
+        FindLeadSubLeadJets(mJets3,ljet);
+
+        int jtLead = -1, jtSubLead = -1, jtThird = -1;
+
+        if(ljet[0] >=0 ) jtLead    = ljet[0];
+        if(ljet[1] >=0 ) jtSubLead = ljet[1];
+        if(ljet[2] >=0 ) jtThird   = ljet[2];
+
+        if(jtLead<0)continue;
+
+        if(jtLead > -1){
+            ptlead     = mJets3->jtpt[jtLead];
+            etalead    = mJets3->jteta[jtLead];
+            philead    = mJets3->jtphi[jtLead];
+            rawlead    = mJets3->rawpt[jtLead];
+            //chMaxlead  = mJets->chargedMax[jtLead];
+            //chSumlead  = mJets->chargedSum[jtLead];
+            //phSumlead  = mJets->photonSum[jtLead];
+            //neSumlead  = mJets->neutralSum[jtLead];
         }
+
+         
+         if(jtSubLead > -1){
+            ptsublead     = mJets3->jtpt[jtSubLead];
+            etasublead    = mJets3->jteta[jtSubLead];
+            phisublead    = mJets3->jtphi[jtSubLead];
+            rawsublead    = mJets3->rawpt[jtSubLead];
+            //chMax  = mJets3->chargedMax[jtSubLead];
+            //chSum  = mJets3->chargedSum[jtSubLead];
+            //phSum  = mJets3->photonSum [jtSubLead];
+            //neSum  = mJets3->neutralSum[jtSubLead];
+         }
+         
+         if(jtThird > -1){
+            ptsubsublead     = mJets3->jtpt[jtThird];
+            etasubsublead    = mJets3->jteta[jtThird];
+            phisubsublead    = mJets3->jtphi[jtThird];
+            rawsubsublead    = mJets3->rawpt[jtThird];
+            //chMax  = mJets3->chargedMax[jtThird];
+            //chSum  = mJets3->chargedSum[jtThird];
+            //phSum  = mJets3->photonSum [jtThird];
+            //neSum  = mJets3->neutralSum[jtThird];
+         }
+         
+
+         for (int i = 0; i<nrefe3; i++) {
+
+             old_pt3[i] = mJets3->jtpt[i];
+             eta3[i]    = mJets3->jteta[i];
+
+             if(mJets3->jtpt[i]>=20 && mJets3->jtpt[i]<=300){
+                if (run>211256) {
+                   corrected_pt = old_pt3[i]*c_eta_Pbp->GetBinContent(c_eta_Pbp->FindBin(eta3[i]));
+                   corrected_pt = corrected_pt*f_pPb->Eval(old_pt3[i]);
+                   pt3[i] = corrected_pt;
+               }else {
+                   corrected_pt = old_pt3[i]*c_eta_pPb->GetBinContent(c_eta_pPb->FindBin(eta3[i]));
+                   corrected_pt = corrected_pt*f_pPb->Eval(old_pt3[i]);
+                   pt3[i] = corrected_pt;
+               }
+
+           }else {
+            pt3[i] = mJets3->jtpt[i];
+        }
+
+        if(run>211256){
+            eta3_CM[i] = mJets3->jteta[i] - 0.465;
+
+        }else {
+            eta3_CM[i] = mJets3->jteta[i] + 0.465;
+
+        }
+
+        phi3[i]    = mJets3->jtphi[i];
+        raw3[i]    = mJets3->rawpt[i];
+        chMax3[i]  = mJets3->chargedMax[i];
+        trkMax3[i]  = mJets3->trackMax[i];
+        chSum3[i]  = mJets3->chargedSum[i];
+        phSum3[i]  = mJets3->photonSum[i];
+        neSum3[i]  = mJets3->neutralSum[i];
+        trkSum3[i] = mJets3->trackSum[i];
+        phSum3[i]  = mJets3->photonMax[i];
+        neMax3[i]  = mJets3->neutralMax[i];
+    }
         /*
         mJets4 = &(c->akPu4PF);
         nrefe4 = mJets4->nref;
@@ -759,48 +799,51 @@ int writetree_ppb(char *ksp="ppbJet40")
     
     return 0;
 }
-/*
- void FindLeadSubLeadJets(Jets *jetc, int *ljet)
- {
- ljet[0]=-1; ljet[1]=-2; ljet[2]=-3;
- 
- float tempt=-9;
+
+void FindLeadSubLeadJets(Jets *jetc, int *ljet){
+   ljet[0]=-1; ljet[1]=-2; ljet[2]=-3;
+
+   float tempt=-9;
  //! Get the leading jet
- for(int ij=0; ij<jetc->nref; ij++){
- if(fabs(jetc->jteta[ij])>ketacut || jetc->jtpt[ij]<kptrecocut || jetc->rawpt[ij]<15)continue;
- float jetpt = jetc->jtpt[ij];
- if(jetpt > tempt){
- tempt = jetpt;
- ljet[0] = ij;
+   for(int ij=0; ij<jetc->nref; ij++){
+       if(fabs(jetc->jteta[ij])>ketacut || jetc->jtpt[ij]<kptrecocut || jetc->rawpt[ij]<15)continue;
+       float jetpt = jetc->jtpt[ij];
+       if(jetpt > tempt){
+           tempt = jetpt;
+           ljet[0] = ij;
+       }
+   }
+   
+   if(ljet[0]>=0){
+    // Subleading jet
+     tempt=-9;
+     for(int ij=0; ij<jetc->nref; ij++){
+         if(ij==ljet[0])continue;
+         if(fabs(jetc->jteta[ij])>ketacut || jetc->jtpt[ij]>jetc->jtpt[ljet[0]] || jetc->rawpt[ij]<15)continue;
+         float jetpt = jetc->jtpt[ij];
+         if (jetpt > tempt){
+             tempt = jetpt;
+             ljet[1] = ij;
+         }
+     }
  }
- }
- if(ljet[0]>=0){
- // Subleading
- tempt=-9;
- for(int ij=0; ij<jetc->nref; ij++){
- if(ij==ljet[0])continue;
- if(fabs(jetc->jteta[ij])>ketacut || jetc->jtpt[ij]>jetc->jtpt[ljet[0]] || jetc->rawpt[ij]<15)continue;
- float jetpt = jetc->jtpt[ij];
- if (jetpt > tempt){
- tempt = jetpt;
- ljet[1] = ij;
- }
- }
- 
+
  if(ljet[1]>=0){
- // third jet
- tempt=-9;
- for(int ij=0; ij<jetc->nref; ij++){
- if(ij==ljet[0] || ij==ljet[1])continue;
- if(fabs(jetc->jteta[ij])>ketacut || jetc->jtpt[ij]>jetc->jtpt[ljet[0]] || jetc->rawpt[ij]<15)continue;
- float jetpt = jetc->jtpt[ij];
- if (jetpt > tempt){
- tempt = jetpt;
- ljet[2] = ij;
- }
- }
- }//! third jet
- }
- }
- */
+    // sub sub leading jet
+     tempt=-9;
+     for(int ij=0; ij<jetc->nref; ij++){
+         if(ij==ljet[0] || ij==ljet[1])continue;
+         if(fabs(jetc->jteta[ij])>ketacut || jetc->jtpt[ij]>jetc->jtpt[ljet[0]] || jetc->rawpt[ij]<15)continue;
+         float jetpt = jetc->jtpt[ij];
+         if (jetpt > tempt){
+             tempt = jetpt;
+             ljet[2] = ij;
+         }
+     }
+    }//! sub sub leading jet
+    
+
+}
+
+
 
