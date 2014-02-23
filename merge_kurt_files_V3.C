@@ -45,12 +45,12 @@ typedef std::vector<trigger::TriggerObject> trigO;
 TStopwatch timer;
 
 void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
-  timer.Start();
-  cout<<"Macro start"<<endl;
-
-  const int N = 5;
   
+  timer.Start();
+  //cout<<"Macro start"<<endl;
 
+  /*
+  const int N = 5;
   //Create chain
   TChain* ch[N];
 
@@ -81,8 +81,11 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     //"HLTMuTree",
     "HiTree"
   };
-  
+  */
   //double         triggerPt;
+
+  //output file:
+  TFile f(Form("ntuple_HighPt_prod_JSON_nofilter_pPb_v8JEC_%d.root",endfile),"RECREATE");
 
   //create the trees and set the branch address
   //jet tree
@@ -127,7 +130,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   float vx;
   float vy;
   float vz;
-  float hiNtracks;
+  int hiNtracks;
   float hiHFminus;
   float hiHFplus;
   float hiHFplusEta4;
@@ -145,7 +148,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   evtTree->Branch("vx",&vx,"vx/F");
   evtTree->Branch("vy",&vy,"vy/F");
   evtTree->Branch("vz",&vz,"vz/F");
-  evtTree->Branch("hiNtracks",&hiNtracks,"hiNtracks/F");
+  evtTree->Branch("hiNtracks",&hiNtracks,"hiNtracks/I");
   evtTree->Branch("hiHFminus",&hiHFplus,"hiHFplus/F");
   evtTree->Branch("hiHFplus",&hiHFminus,"hiHFminus/F");
   evtTree->Branch("hiHFplusEta4",&hiHFplusEta4,"hiHFplusEta4/F");
@@ -273,11 +276,11 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   hltTree->Branch("trigObj_20_phi",&trigObj_20_phi,"trigObj_20_phi[trigObj_20_size]/F");
   hltTree->Branch("trigObj_20_mass",&trigObj_20_mass,"trigObj_20_mass[trigObj_20_size]/F");
   hltTree->Branch("trigObj_40_size",&trigObj_40_size,"trigObj_40_size/I");
-  hltTree->Branch("trigObj_40_id",&trigObj_40_id,"trigObj_40_id[trgObj_40_size]/F");
-  hltTree->Branch("trigObj_40_pt",&trigObj_40_pt,"trigObj_40_pt[trgObj_40_size]/F");
-  hltTree->Branch("trigObj_40_eta",&trigObj_40_eta,"trigObj_40_eta[trgObj_40_size]/F");
-  hltTree->Branch("trigObj_40_phi",&trigObj_40_phi,"trigObj_40_phi[trgObj_40_size]/F");
-  hltTree->Branch("trigObj_40_mass",&trigObj_40_mass,"trigObj_40_mass[trgObj_40_size]/F");
+  hltTree->Branch("trigObj_40_id",&trigObj_40_id,"trigObj_40_id[trigObj_40_size]/F");
+  hltTree->Branch("trigObj_40_pt",&trigObj_40_pt,"trigObj_40_pt[trigObj_40_size]/F");
+  hltTree->Branch("trigObj_40_eta",&trigObj_40_eta,"trigObj_40_eta[trigObj_40_size]/F");
+  hltTree->Branch("trigObj_40_phi",&trigObj_40_phi,"trigObj_40_phi[trigObj_40_size]/F");
+  hltTree->Branch("trigObj_40_mass",&trigObj_40_mass,"trigObj_40_mass[trigObj_40_size]/F");
   hltTree->Branch("trigObj_60_size",&trigObj_60_size,"trigObj_60_size/I");
   hltTree->Branch("trigObj_60_id",&trigObj_60_id,"trigObj_60_id[trigObj_60_size]/F");
   hltTree->Branch("trigObj_60_pt",&trigObj_60_pt,"trigObj_60_pt[trigObj_60_size]/F");
@@ -308,24 +311,24 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     HLT_PAJet_NoJetID_v1_trigObject[i] = new trigO;
   } 
     
-  cout<<"finished setting up the branches for the new trees"<<endl;
-
+  //cout<<"finished setting up the branches for the new trees"<<endl;
+  
   std::string infile;
   
   //change the following file list to the one required. 
   //infile = "kurt_small_filelist.txt"; 
   infile = "PAHighPtPurdueForest_4th.txt";
-
+  
   std::ifstream instr(infile.c_str(), std::ifstream::in);
-
+  
   std::string filename;
   int nFiles=endfile - startfile;
-
+  
   cout<<"Running on "<<nFiles<<" forest files"<<endl;
-
-  for(int i = 0;i<N;i++){
-    ch[i] = new TChain(string(dir[i]+"/"+trees[i]).data());
-  }
+  
+  //for(int i = 0;i<N;i++){
+  //  ch[i] = new TChain(string(dir[i]+"/"+trees[i]).data());
+  //}
   
   //just to read the files till the start number. 
   cout<<"reading from "<<startfile<<" to "<<endfile<<endl;  
@@ -339,16 +342,207 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     
     cout<<"File: "<<filename<<std::endl;
     
-    for (int i = 0; i < N; i++) {
-      //cout<<" i = "<<i<<endl;
-      
-      ch[i]->Add(filename.c_str());
-      cout << "Tree loaded  " << string(dir[i]+"/"+trees[i]).data() << endl;
-      cout << "Entries : " << ch[i]->GetEntries() << endl;
-      
-    }
+    //cout<<" i = "<<i<<endl;
     
-  }
+    //ch[i]->Add(filename.c_str());
+    //cout << "Tree loaded  " << string(dir[i]+"/"+trees[i]).data() << endl;
+    //cout << "Entries : " << ch[i]->GetEntries() << endl;
+    
+    TFile *fin = TFile::Open(filename.c_str());
+    
+    TTree* jetTree = (TTree*)fin->Get("akPu3PFJetAnalyzer/t");
+    TTree* skimTree_in = (TTree*)fin->Get("skimanalysis/HltTree");
+    TTree* trackTree_in = (TTree*)fin->Get("ppTrack/trackTree");
+    TTree* evtTree_in = (TTree*)fin->Get("hiEvtAnalyzer/HiTree");
+    TTree* hltTree_in = (TTree*)fin->Get("hltanalysis/HltTree");
+    
+    jetTree->AddFriend(skimTree_in);
+    jetTree->AddFriend(trackTree_in);
+    jetTree->AddFriend(evtTree_in);
+    jetTree->AddFriend(hltTree_in);
+
+    cout<<"start setting branch address"<<endl;
+
+    //set the branch addresses:  - one of the most boring parts of the code: 
+    jetTree->SetBranchAddress("evt",&evt);
+    jetTree->SetBranchAddress("run",&run);
+    jetTree->SetBranchAddress("lumi",&lumi);
+    jetTree->SetBranchAddress("hiBin",&hiBin);
+    jetTree->SetBranchAddress("vz",&vz);
+    jetTree->SetBranchAddress("vx",&vx);
+    jetTree->SetBranchAddress("vy",&vy);
+    jetTree->SetBranchAddress("hiNtracks",&hiNtracks);
+    jetTree->SetBranchAddress("hiHFminus",&hiHFminus);
+    jetTree->SetBranchAddress("hiHFplus",&hiHFplus);
+    jetTree->SetBranchAddress("hiHFplusEta4",&hiHFplusEta4);
+    jetTree->SetBranchAddress("hiHFminusEta4",&hiHFminusEta4);
+    jetTree->SetBranchAddress("pPAcollisionEventSelectionPA",&pPAcollisionEventSelectionPA);
+    jetTree->SetBranchAddress("pHBHENoiseFilter",&pHBHENoiseFilter);
+    jetTree->SetBranchAddress("pprimaryvertexFilter",&pprimaryvertexFilter);
+    jetTree->SetBranchAddress("pVertexFilterCutGplus",&pVertexFilterCutGplus);
+
+    jetTree->SetBranchAddress("nref",&nrefe3);
+    jetTree->SetBranchAddress("jtpt",&pt3);
+    jetTree->SetBranchAddress("jteta",&eta3);
+    jetTree->SetBranchAddress("jtphi",&phi3);
+    jetTree->SetBranchAddress("rawpt",&raw3);
+    jetTree->SetBranchAddress("chargedMax",&chMax3);
+    jetTree->SetBranchAddress("chargedSum",&chSum3);
+    jetTree->SetBranchAddress("trackMax",&trkMax3);
+    jetTree->SetBranchAddress("trackSum",&trkSum3);
+    jetTree->SetBranchAddress("photonMax",&phMax3);
+    jetTree->SetBranchAddress("photonSum",&phSum3);
+    jetTree->SetBranchAddress("neutralMax",&neMax3);
+    jetTree->SetBranchAddress("neutralSum",&neSum3);
+
+    jetTree->SetBranchAddress("nTrk",&nTrack);
+    jetTree->SetBranchAddress("trkPt",&trkPt);
+    jetTree->SetBranchAddress("trkEta",&trkEta);
+    jetTree->SetBranchAddress("trkPhi",&trkPhi);
+    jetTree->SetBranchAddress("highPurity",&highPurity);
+    jetTree->SetBranchAddress("trkDz1",&trkDz1);
+    jetTree->SetBranchAddress("trkDzError1",&trkDzError1);
+    jetTree->SetBranchAddress("trkDxy1",&trkDxy1);
+    jetTree->SetBranchAddress("trkDxyError1",&trkDxyError1);
+
+    jetTree->SetBranchAddress("HLT_PAZeroBiasPixel_SingleTrack_v1",&jetMB);
+    jetTree->SetBranchAddress("HLT_PAZeroBiasPixel_SingleTrack_v1_Prescl",&jetMB_p);
+    jetTree->SetBranchAddress("HLT_PAJet20_NoJetID_v1",&jet20);
+    jetTree->SetBranchAddress("HLT_PAJet20_NoJetID_v1_Prescl",&jet20_p);
+    jetTree->SetBranchAddress("HLT_PAJet40_NoJetID_v1",&jet40);
+    jetTree->SetBranchAddress("HLT_PAJet40_NoJetID_v1_Prescl",&jet40_p);
+    jetTree->SetBranchAddress("HLT_PAJet60_NoJetID_v1",&jet60);
+    jetTree->SetBranchAddress("HLT_PAJet60_NoJetID_v1_Prescl",&jet60_p);
+    jetTree->SetBranchAddress("HLT_PAJet80_NoJetID_v1",&jet80);
+    jetTree->SetBranchAddress("HLT_PAJet80_NoJetID_v1_Prescl",&jet80_p);
+    jetTree->SetBranchAddress("HLT_PAJet100_NoJetID_v1",&jet100);
+    jetTree->SetBranchAddress("HLT_PAJet100_NoJetID_v1_Prescl",&jet100_p);
+    jetTree->SetBranchAddress("HLT_PAJet120_NoJetID_v1",&jet120);
+    jetTree->SetBranchAddress("HLT_PAJet120_NoJetID_v1_Prescl",&jet120_p);
+    jetTree->SetBranchAddress("HLT_PAJet20_NoJetID_v1_trigObject",&HLT_PAJet_NoJetID_v1_trigObject[0]);
+    jetTree->SetBranchAddress("HLT_PAJet40_NoJetID_v1_trigObject",&HLT_PAJet_NoJetID_v1_trigObject[1]);
+    jetTree->SetBranchAddress("HLT_PAJet60_NoJetID_v1_trigObject",&HLT_PAJet_NoJetID_v1_trigObject[2]);
+    jetTree->SetBranchAddress("HLT_PAJet80_NoJetID_v1_trigObject",&HLT_PAJet_NoJetID_v1_trigObject[3]);
+    jetTree->SetBranchAddress("HLT_PAJet100_NoJetID_v1_trigObject",&HLT_PAJet_NoJetID_v1_trigObject[4]);
+    jetTree->SetBranchAddress("HLT_PAJet120_NoJetID_v1_trigObject",&HLT_PAJet_NoJetID_v1_trigObject[5]);
+
+    //now that we have all the branch addresses set! 
+    //lets start the event loop process. 
+    cout<<"finished setting branch address"<<endl;
+
+    Long64_t nentries = jetTree->GetEntries();
+
+    for (int i = 0; i < nentries; i++){ //start of event loop. 
+      //cout<<"event = "<<i<<endl;
+    
+      jetTree->GetEntry(i);
+
+      //cout<<"A"<<endl;
+
+      trigObj_20_size = HLT_PAJet_NoJetID_v1_trigObject[0]->size();
+
+      //cout<<" = "<<trigObj_20_size<<endl;
+      for (int j = 0; j < trigObj_20_size; j++){
+	trigObj_20_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).id();
+	trigObj_20_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).pt();
+	trigObj_20_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).eta();
+	trigObj_20_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).phi();
+	trigObj_20_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).mass();
+      }
+
+      //cout<<"B"<<endl;
+
+      trigObj_40_size = HLT_PAJet_NoJetID_v1_trigObject[1]->size();
+      //cout<<" = "<<trigObj_40_size<<endl;
+      for (int j = 0; j < trigObj_40_size; j++){
+	trigObj_40_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).id();
+	trigObj_40_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).pt();
+	trigObj_40_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).eta();
+	trigObj_40_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).phi();
+	trigObj_40_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).mass();
+      }
+
+      //cout<<"C"<<endl;
+
+      trigObj_60_size = HLT_PAJet_NoJetID_v1_trigObject[2]->size();
+      //cout<<"trigObj_60_size = "<<trigObj_60_size<<endl;
+      for (int j = 0; j < trigObj_60_size; j++){
+	trigObj_60_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).id();
+	trigObj_60_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).pt();
+	trigObj_60_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).eta();
+	trigObj_60_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).phi();
+	trigObj_60_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).mass();
+      }
+
+      //cout<<"D"<<endl;
+
+      trigObj_80_size = HLT_PAJet_NoJetID_v1_trigObject[3]->size();
+      //cout<<" = "<<trigObj_80_size<<endl;
+      for (int j = 0; j < trigObj_80_size; j++){
+	trigObj_80_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).id();
+	trigObj_80_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).pt();
+	trigObj_80_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).eta();
+	trigObj_80_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).phi();
+	trigObj_80_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).mass();
+      }
+
+      //cout<<"E"<<endl;
+
+      trigObj_100_size = HLT_PAJet_NoJetID_v1_trigObject[4]->size();
+      for (int j = 0; j < trigObj_100_size; j++){
+	trigObj_100_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).id();
+	trigObj_100_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).pt();
+	trigObj_100_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).eta();
+	trigObj_100_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).phi();
+	trigObj_100_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).mass();
+      }
+
+      //cout<<"F"<<endl;
+
+      trigObj_120_size = HLT_PAJet_NoJetID_v1_trigObject[5]->size();
+      for (int j = 0; j < trigObj_120_size; j++){
+	trigObj_120_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).id();
+	trigObj_120_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).pt();
+	trigObj_120_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).eta();
+	trigObj_120_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).phi();
+	trigObj_120_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).mass();
+      }
+      
+   
+    
+      if(!pHBHENoiseFilter || !pprimaryvertexFilter || !pPAcollisionEventSelectionPA) continue;
+      if(!pVertexFilterCutGplus) continue;
+    
+      //cout<<"event = "<<evt<<endl;
+      //cout<<"run = "<<run<<endl;
+
+      for(int j = 0;j<nrefe3;j++){//start of jet loop
+      
+	if(run>211256){
+	  eta3_CM[j] = eta3[j] - 0.465;
+	
+	}else {
+	  eta3_CM[i] = eta3[j] + 0.465;
+	}
+
+	//apply the JEC here? 
+      
+	//raw pt cut - keep that for the analysis level.  
+	//if(raw3<20) continue;
+      
+      }
+
+      jetR3Tree->Fill();
+      evtTree->Fill();
+      hltTree->Fill();
+      trkTree->Fill();
+    
+    }//new event loop 
+    
+    fin->Close();
+    
+  }//end of file loop
+  /*
 
   //now we have loaded all the trees into the important tchains. 
 
@@ -429,15 +623,15 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   Long64_t nentries = ch[2]->GetEntries();
 
   for (int i = 0; i < nentries; i++){ //start of event loop. 
-    cout<<"event = "<<i<<endl;
+    //cout<<"event = "<<i<<endl;
     
     ch[2]->GetEntry(i);
 
-    cout<<"A"<<endl;
+    //cout<<"A"<<endl;
 
     trigObj_20_size = HLT_PAJet_NoJetID_v1_trigObject[0]->size();
 
-    cout<<" = "<<trigObj_20_size<<endl;
+    //cout<<" = "<<trigObj_20_size<<endl;
     for (int j = 0; j < trigObj_20_size; j++){
       trigObj_20_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).id();
       trigObj_20_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).pt();
@@ -446,10 +640,10 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       trigObj_20_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).mass();
     }
 
-    cout<<"B"<<endl;
+    //cout<<"B"<<endl;
 
     trigObj_40_size = HLT_PAJet_NoJetID_v1_trigObject[1]->size();
-    cout<<" = "<<trigObj_40_size<<endl;
+    //cout<<" = "<<trigObj_40_size<<endl;
     for (int j = 0; j < trigObj_40_size; j++){
       trigObj_40_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).id();
       trigObj_40_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).pt();
@@ -458,10 +652,10 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       trigObj_40_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).mass();
     }
 
-    cout<<"C"<<endl;
+    //cout<<"C"<<endl;
 
     trigObj_60_size = HLT_PAJet_NoJetID_v1_trigObject[2]->size();
-    cout<<"trigObj_60_size = "<<trigObj_60_size<<endl;
+    //cout<<"trigObj_60_size = "<<trigObj_60_size<<endl;
     for (int j = 0; j < trigObj_60_size; j++){
       trigObj_60_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).id();
       trigObj_60_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).pt();
@@ -470,10 +664,10 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       trigObj_60_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).mass();
     }
 
-    cout<<"D"<<endl;
+    //cout<<"D"<<endl;
 
     trigObj_80_size = HLT_PAJet_NoJetID_v1_trigObject[3]->size();
-    cout<<" = "<<trigObj_80_size<<endl;
+    //cout<<" = "<<trigObj_80_size<<endl;
     for (int j = 0; j < trigObj_80_size; j++){
       trigObj_80_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).id();
       trigObj_80_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).pt();
@@ -482,7 +676,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       trigObj_80_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).mass();
     }
 
-    cout<<"E"<<endl;
+    //cout<<"E"<<endl;
 
     trigObj_100_size = HLT_PAJet_NoJetID_v1_trigObject[4]->size();
     for (int j = 0; j < trigObj_100_size; j++){
@@ -493,7 +687,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       trigObj_100_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).mass();
     }
 
-    cout<<"F"<<endl;
+    //cout<<"F"<<endl;
 
     trigObj_120_size = HLT_PAJet_NoJetID_v1_trigObject[5]->size();
     for (int j = 0; j < trigObj_120_size; j++){
@@ -504,12 +698,13 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       trigObj_120_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).mass();
     }
 
-    cout<<"E"<<endl;
+    //cout<<"E"<<endl;
 
-    bool evSel = false;
-    evSel = fabs(vz)<15 && pHBHENoiseFilter && pPAcollisionEventSelectionPA && pprimaryvertexFilter && pVertexFilterCutGplus;
-    if(!evSel) continue;
+    if(!pHBHENoiseFilter || !pprimaryvertexFilter || !pPAcollisionEventSelectionPA) continue;
+    if(!pVertexFilterCutGplus) continue;
 
+    //cout<<"event = "<<evt<<endl;
+    //cout<<"run = "<<run<<endl;
 
     for(int j = 0;j<nrefe3;j++){//start of jet loop
 
@@ -535,10 +730,14 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 
   }//end of event loop
 
-  cout<<"finished the event loop"<<endl;
+  */
+
+  //cout<<"finished the event loop"<<endl;
 
   //output file definition 
-  TFile f(Form("ntuple_HighPt_prod_JSON_nofilter_pPb_v8JEC_%d",endfile),"RECREATE");
+  
+  f.cd();
+
   jetR3Tree->Write();
   evtTree->Write();
   hltTree->Write();
