@@ -45,6 +45,8 @@ TStopwatch timer;
 
 void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   
+  TH1::SetDefaultSumw2();
+
   timer.Start();
   //cout<<"Macro start"<<endl;
 
@@ -84,7 +86,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   //double         triggerPt;
 
   //output file:
-  TFile f(Form("ntuple_HighPt_prod_JSON_nofilter_pPb_v8JEC_%d.root",endfile),"RECREATE");
+  TFile f(Form("trig_merge_crosscheck_purdueforests_%d.root",endfile),"RECREATE");
 
   //create the trees and set the branch address
   //jet tree
@@ -517,7 +519,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     Long64_t nentries = jetTree->GetEntries();
 
     for (int i = 0; i < nentries; i++){ //start of event loop. 
-      //cout<<"event = "<<i<<endl;
+      if(i%1000==0)cout<<"event = "<<i<<endl;
     
       jetTree->GetEntry(i);
 
@@ -599,22 +601,89 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       
       //cout<<"event = "<<evt<<endl;
       //cout<<"run = "<<run<<endl;
+      
+      float etashift = 0.;
+      if(run>210497 && run<211300) etashift = 0.465;
+      if(run>211300 && run<211800) etashift = -0.465;
 
       //here add all the different trigger combination methods 
       double treePrescl[6] = {jetMB_p,jet20_p,jet40_p,jet60_p,jet80_p,jet100_p};
+      bool trgDec[5] = {(bool)jet20, (bool)jet40, (bool)jet60, (bool)jet80, (bool)jet100};
+      
+      if(i&1000==0)cout<<"leading jet step"<endl;
+      //lets get the leading jet information here
+      int leadJet = -1;
+      float temppt = -9;
+      for(int j = 0;j<nrefe3;j++){
+	if(raw3[j]<20) continue;
+	if(fabs(eta3[j]+etashift)>1) continue;
+	float jetpt = pt3[j];
+	if(jetpt>temppt){
+	  temppt = jetpt;
+	  leadJet = j;
+	}
+      
+      }
 
-
+      if(i%1000==0)cout<<"start of jet loop"<<endl;
       for(int j = 0;j<nrefe3;j++){//start of jet loop
 
       	//raw pt cut - keep that for the analysis level.  
 	if(raw3[j]<20) continue;
 
-	//do the 
-	if(){
-	  hppb0->Fill("");
+	//first do the 12-003 merging 
+	if(fabs(eta3[j]+etashift)<1){
+	  if(jet100) hppb5->Fill(pt3[i],1);
+	  if(jet80 && !jet100) hppb4->Fill(pt3[i],1);
+	  if(jetMB && !jet80 && !jet100) hppb0->Fill(pt3[i],L1_MB_p*jetMB_p);
 	}
+	//add the histograms here. 
+	hpPb_Jet100->Add(hppb5);
+	hpPb_Jet80->Add(hppb4);
+	hpPb_JetMB->Add(hppb0);
+	hppbComb->Add(hppb0);
+	hppbComb->Add(hppb4);
+	hppbComb->Add(hppb5);
+	hpPb_Comb->Add(hppbComb);
+
+
+
+	//now do 12-017 
+	if(fabs(eta3[j]+etashift)<1){
+	  if(jet20 && pt3[j]>40 && pt3[j]<60) hppb_trk40_60->Fill(pt3[j],jet20_p);
+	  if(jet40 && pt3[j]>60 && pt3[j]<75) hppb_trk60_75->Fill(pt3[j],jet40_p);
+	  if(jet60 && pt3[j]>75 && pt3[j]<95) hppb_trk75_95->Fill(pt3[j],jet60_p);
+	  if(jet80 && pt3[j]>95 && pt3[j]<120) hppb_trk95_120->Fill(pt3[j],jet80_p);
+	  if(jet100 && pt3[j]>120) hppb_trk120->Fill(pt3[j],1);
+	}
+
+	//add the histograms from this 
+	hpPb_Trk40_60->Add(hppb_trk40_60);
+	hpPb_Trk60_75->Add(hppb_trk60_75);
+	hpPb_Trk75_95->Add(hppb_trk75_95);
+	hpPb_Trk95_120->Add(hppb_trk95_120);
+	hpPb_Trk120->Add(hppb_trk120);
+	hppb_trkComb->Add(hppb_trk40_60);
+	hppb_trkComb->Add(hppb_trk60_75);
+	hppb_trkComb->Add(hppb_trk75_95);
+	hppb_trkComb->Add(hppb_trk95_120);
+	hppb_trkComb->Add(hppb_trk120);
+	hpPb_TrkComb->Add(hppb_trkComb);
+
+	
+	//now do it for the kurt's method
+	
+
+      }//end jet loop 
+
       
-      }
+      if(i%1000==0)cout<<"finished jet loop"<<endl;
+      
+      
+    
+
+
+
 
       //jetR3Tree->Fill();
       //evtTree->Fill();
@@ -827,10 +896,12 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   //hltTree->Write();
   //trkTree->Write();
   
-  hpPb_Comb->Write();
-  hpPb_Jet100->Write();
-  hpPb_Jet80->Write();
-  hpPb_JetMB->Write();
+  f.Write();
+  
+  //hpPb_Comb->Write();
+  //hpPb_Jet100->Write();
+  //hpPb_Jet80->Write();
+  //hpPb_JetMB->Write();
 
   f.Close();
 
