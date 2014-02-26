@@ -1,4 +1,3 @@
-
 //  Raghav Kunnawalkam Elayavalli
 //  created: 21th Feb 2014
 
@@ -104,6 +103,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   float trkSum3[1000];
   float phMax3[1000];
   float neMax3[1000];
+  /*
   TTree *jetR3Tree = new TTree("jetR3","akPu3PF");
   jetR3Tree->Branch("nrefe",&nrefe3,"nrefe/I");
   jetR3Tree->Branch("pt",&pt3,"pt[nrefe]/F");
@@ -120,7 +120,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   jetR3Tree->Branch("phSum",&phSum3,"phSum[nrefe]/F");
   jetR3Tree->Branch("neSum",&neSum3,"neSum[nrefe]/F");
   jetR3Tree->Branch("trkSum",&trkSum3,"trkSum[nrefe]/F");
-
+  */
 
   //event tree
   int evt;
@@ -139,7 +139,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   int pHBHENoiseFilter;
   int pprimaryvertexFilter;
   int pVertexFilterCutGplus;
-
+  /*
   TTree *evtTree = new TTree("evt","evt");
   evtTree->Branch("evt",&evt,"evt/I");
   evtTree->Branch("run",&run,"run/I");
@@ -153,6 +153,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   evtTree->Branch("hiHFplus",&hiHFminus,"hiHFminus/F");
   evtTree->Branch("hiHFplusEta4",&hiHFplusEta4,"hiHFplusEta4/F");
   evtTree->Branch("hiHFminusEta4",&hiHFminusEta4,"hiHFminusEta4/F");
+  */
   /* //for the leading,subleading and sub sub leading jets information:  
   float ptlead;
   float etalead;
@@ -182,15 +183,16 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 
   //track Tree
   int nTrack;
-  float trkPt[1000];
-  float trkEta[1000];
-  float trkPhi[1000];
-  float highPurity[1000];
-  float trkDz1[1000];
-  float trkDzError1[1000];
-  float trkDxy1[1000];
-  float trkDxyError1[1000];
-  float trkPtError1[1000];
+  float trkPt[10000];
+  float trkEta[10000];
+  float trkPhi[10000];
+  float highPurity[10000];
+  float trkDz1[10000];
+  float trkDzError1[10000];
+  float trkDxy1[10000];
+  float trkDxyError1[10000];
+  float trkPtError1[10000];
+  /*
   TTree *trkTree = new TTree("trk","Track");
   trkTree->Branch("nTrack",&nTrack,"nTrack/I");
   trkTree->Branch("trkPt",&trkPt,"trkPt[nTrack]/F");
@@ -202,8 +204,10 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   trkTree->Branch("trkDxy1",&trkDxy1,"trkDxy1[nTrack]/F");
   trkTree->Branch("trkDxyError1",&trkDxyError1,"trkDxyError1[nTrack]/F");
   trkTree->Branch("trkPtError1",&trkPtError1,"trkPtError1[nTrack]/F");
-
+  */
   //trigger tree
+  int L1_MB;
+  int L1_MB_p;
   int jetMB;
   int jet20;
   int jet40;
@@ -218,6 +222,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   int jet80_p;
   int jet100_p;
   int jet120_p;
+  
   int trigObj_20_size;
   int trigObj_40_size;
   int trigObj_60_size;
@@ -253,7 +258,8 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   float trigObj_120_pt[1000];
   float trigObj_120_eta[1000];
   float trigObj_120_phi[1000];
-  float trigObj_120_mass[1000];  
+  float trigObj_120_mass[1000]; 
+  /*
   TTree *hltTree = new TTree("hlt","HLT");
   hltTree->Branch("jetMB",&jetMB,"jetMB/I");
   hltTree->Branch("jet20",&jet20,"jet20/I");
@@ -305,7 +311,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   hltTree->Branch("trigObj_120_eta",&trigObj_120_eta,"trigObj_120_eta[trigObj_120_size]/F");
   hltTree->Branch("trigObj_120_phi",&trigObj_120_phi,"trigObj_120_phi[trigObj_120_size]/F");
   hltTree->Branch("trigObj_120_mass",&trigObj_120_mass,"trigObj_120_mass[trigObj_120_size]/F");  
-
+  */
   trigO *HLT_PAJet_NoJetID_v1_trigObject[6];
   for(int i=0; i<6; i++){
     HLT_PAJet_NoJetID_v1_trigObject[i] = new trigO;
@@ -335,6 +341,27 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   for(int ifile=0;ifile<startfile;ifile++){
     instr >> filename;
   }
+
+  TH1F* hpPb_Jet100 = new TH1F("hpPb_Jet100","",1000,0,1000);
+  TH1F* hpPb_Jet80 = new TH1F("hpPb_Jet80","",1000,0,1000);
+  TH1F* hpPb_JetMB = new TH1F("hpPb_JetMB","",1000,0,1000);
+  TH1F* hpPb_Comb = new TH1F("hpPb_Comb","",1000,0,1000);
+
+  TH1F* hpPb_Trk40_60 = new TH1F("hpPb_Trk40_60","",1000,0,1000);
+  TH1F* hpPb_Trk60_75 = new TH1F("hpPb_Trk60_75","",1000,0,1000);
+  TH1F* hpPb_Trk75_95 = new TH1F("hpPb_Trk75_95","",1000,0,1000);
+  TH1F* hpPb_Trk95_120 = new TH1F("hpPb_Trk95_120","",1000,0,1000);
+  TH1F* hpPb_Trk120 = new TH1F("hpPb_Trk120","",1000,0,1000);
+  TH1F* hpPb_TrkComb = new TH1F("hpPb_TrkComb","",1000,0,1000);
+
+  TH1F* hpPb_Kurt100 = new TH1F("hpPb_Kurt100","",1000,0,1000);
+  TH1F* hpPb_Kurt80_100 = new TH1F("hpPb_Kurt80_100","",1000,0,1000);
+  TH1F* hpPb_Kurt60_80 = new TH1F("hpPb_Kurt60_80","",1000,0,1000);
+  TH1F* hpPb_Kurt40_60 = new TH1F("hpPb_Kurt40_60","",1000,0,1000);
+  TH1F* hpPb_Kurt20_40 = new TH1F("hpPb_Kurt20_40","",1000,0,1000);
+  TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",1000,0,1000);
+
+  Float_t N_MB_pPb = 2.6026e10; //taken from the merged_MinBiasCentrality_Histo.root
   
   //now we are taking only the files from the given start number to the end number. 
   for(int ifile=startfile;ifile<endfile;ifile++){
@@ -407,6 +434,8 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 
     jetTree->SetBranchAddress("HLT_PAZeroBiasPixel_SingleTrack_v1",&jetMB);
     jetTree->SetBranchAddress("HLT_PAZeroBiasPixel_SingleTrack_v1_Prescl",&jetMB_p);
+    jetTree->SetBranchAddress("L1_ZeroBias",&L1_MB);
+    jetTree->SetBranchAddress("L1_ZeroBias_Prescl",&L1_MB_p);
     jetTree->SetBranchAddress("HLT_PAJet20_NoJetID_v1",&jet20);
     jetTree->SetBranchAddress("HLT_PAJet20_NoJetID_v1_Prescl",&jet20_p);
     jetTree->SetBranchAddress("HLT_PAJet40_NoJetID_v1",&jet40);
@@ -430,6 +459,61 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     //lets start the event loop process. 
     cout<<"finished setting branch address"<<endl;
 
+
+    //number convention is going to change here to better understand the merging. 
+    // 0 - MB
+    // 1 - 20
+    // 2 - 40
+    // 3 - 60
+    // 4 - 80
+    // 5 - 100
+    // 6 - 120
+    
+    //before we go into the event and jet loop lets get the histogram for the 12-003 merging which we can just use the project. 
+    TH1F *hppb0 = new TH1F("hppb0","",1000,0,1000);
+    TH1F *hppb4 = new TH1F("hppb4","",1000,0,1000);
+    TH1F *hppb5 = new TH1F("hppb5","",1000,0,1000);
+    TH1F *hppbComb = new TH1F("hppbComb","",1000,0,1000);
+    
+    //histogams for track merging 12-017
+    TH1F* hppb_trk40_60 = new TH1F("hppb_trk40_60","",1000,0,1000);
+    TH1F* hppb_trk60_75 = new TH1F("hppb_trk60_75","",1000,0,1000);
+    TH1F* hppb_trk75_95 = new TH1F("hppb_trk75_95","",1000,0,1000);
+    TH1F* hppb_trk95_120 = new TH1F("hppb_trk95_120","",1000,0,1000);
+    TH1F* hppb_trk120 = new TH1F("hppb_trk120","",1000,0,1000);
+    TH1F* hppb_trkComb = new TH1F("hppb_trkComb","",1000,0,1000);
+    
+    //histograms for kurt's merging 
+    TH1F* hppb_kurt100 = new TH1F("hppb_kurt100","",1000,0,1000);
+    TH1F* hppb_kurt80_100 = new TH1F("hppb_kurt80_100","",1000,0,1000);
+    TH1F* hppb_kurt60_80 = new TH1F("hppb_kurt60_80","",1000,0,1000);
+    TH1F* hppb_kurt40_60 = new TH1F("hppb_kurt40_60","",1000,0,1000);
+    TH1F* hppb_kurt20_40 = new TH1F("hppb_kurt20_40","",1000,0,1000);
+    TH1F* hppb_kurtComb = new TH1F("hppb_kurtComb","",1000,0,1000);
+  
+    //this is going to be problematic since we dont have eta_CM here. 
+    /*
+    TCut eventcut = "fabs(vz)<15&&pHBHENoiseFilter&&pprimaryvertexFilter&&pPAcollisionEventSelectionPA&&pVertexFilterCutGplus";
+    TCut ppb0 = "abs(eta_CM)<1&&jetMB&&!jet80&&!jet100&&raw>20";
+    TCut ppb1 = "abs(eta_CM)<1&&jet20&&!jet80&&!jet100&&raw>20";
+    TCut ppb2 = "abs(eta_CM)<1&&jet40&&!jet80&&!jet100&&raw>20";
+    TCut ppb3 = "abs(eta_CM)<1&&jet60&&!jet80&&!jet100&&raw>20";
+    TCut ppb4 = "abs(eta_CM)<1&&jet80&&!jet100&&raw>20";//try with or without 60 first and then try without 60
+    TCut ppb5 = "abs(eta_CM)<1&&jet100&&raw>20";
+    
+    jetTree->Project("hppb0","jtpt","jetMB_p*L1_MB_p"*ppb0);
+    jetTree->Project("hppb4","jtpt",ppb4);
+    jetTree->Project("hppb5","jtpt",ppb5);
+
+    hpPb_Jet100->Add(hppb5);
+    hpPb_Jet80->Add(hppb4);
+    hpPb_JetMb->Add(hppb0);
+    hppbComb->Add(hppb0);
+    hppbComb->Add(hppb4);
+    hppbComb->Add(hppb5);
+    hpPb_Comb->Add(hppbComb);
+    */
+      
     Long64_t nentries = jetTree->GetEntries();
 
     for (int i = 0; i < nentries; i++){ //start of event loop. 
@@ -512,30 +596,30 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     
       if(!pHBHENoiseFilter || !pprimaryvertexFilter || !pPAcollisionEventSelectionPA) continue;
       if(!pVertexFilterCutGplus) continue;
-    
+      
       //cout<<"event = "<<evt<<endl;
       //cout<<"run = "<<run<<endl;
 
-      for(int j = 0;j<nrefe3;j++){//start of jet loop
-      
-	if(run>211256){
-	  eta3_CM[j] = eta3[j] - 0.465;
-	
-	}else {
-	  eta3_CM[i] = eta3[j] + 0.465;
-	}
+      //here add all the different trigger combination methods 
+      double treePrescl[6] = {jetMB_p,jet20_p,jet40_p,jet60_p,jet80_p,jet100_p};
 
-	//apply the JEC here? 
-      
-	//raw pt cut - keep that for the analysis level.  
-	//if(raw3<20) continue;
+
+      for(int j = 0;j<nrefe3;j++){//start of jet loop
+
+      	//raw pt cut - keep that for the analysis level.  
+	if(raw3[j]<20) continue;
+
+	//do the 
+	if(){
+	  hppb0->Fill("");
+	}
       
       }
 
-      jetR3Tree->Fill();
-      evtTree->Fill();
-      hltTree->Fill();
-      trkTree->Fill();
+      //jetR3Tree->Fill();
+      //evtTree->Fill();
+      //hltTree->Fill();
+      //trkTree->Fill();
     
     }//new event loop 
     
@@ -738,10 +822,16 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   
   f.cd();
 
-  jetR3Tree->Write();
-  evtTree->Write();
-  hltTree->Write();
-  trkTree->Write();
+  //jetR3Tree->Write();
+  //evtTree->Write();
+  //hltTree->Write();
+  //trkTree->Write();
+  
+  hpPb_Comb->Write();
+  hpPb_Jet100->Write();
+  hpPb_Jet80->Write();
+  hpPb_JetMB->Write();
+
   f.Close();
 
   timer.Stop();
