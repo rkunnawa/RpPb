@@ -43,6 +43,21 @@ typedef std::vector<trigger::TriggerObject> trigO;
 
 TStopwatch timer;
 
+float triggerMatch(int trgObjSize, float* trigPhi, float* trigEta, float *trigPt, float jtphi, float jteta, float jtpt){
+  float triggerPt=0;
+  float closestMatch=999999.;
+  
+  for(int iObj=0; iObj<trgObjSize; iObj++){
+    if(abs(trigPhi[iObj]-jtphi)<0.2 &&  abs(trigEta[iObj]-jteta)<0.2 && abs(trigPt[iObj]-jtpt)/jtpt<1. && abs(trigPt[iObj]-TMath::Floor(trigPt[iObj]))>0.0001){
+      if(sqrt(pow((trigPhi[iObj]-jtphi),2)+pow((trigEta[iObj]-jteta),2))<closestMatch){
+	closestMatch = sqrt(pow((trigPhi[iObj]-jtphi),2)+pow((trigEta[iObj]-jteta),2));
+	triggerPt = trigPt[iObj];
+      }
+    }
+  }
+  return triggerPt;
+}
+
 void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   
   TH1::SetDefaultSumw2();
@@ -83,7 +98,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     "HiTree"
   };
   */
-  //double         triggerPt;
+  double         triggerPt;
 
   //output file:
   TFile f(Form("trig_merge_crosscheck_purdueforests_%d.root",endfile),"RECREATE");
@@ -225,16 +240,14 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   int jet100_p;
   int jet120_p;
   
-  int trigObj_20_size;
-  int trigObj_40_size;
-  int trigObj_60_size;
-  int trigObj_80_size;
-  int trigObj_100_size;
-  int trigObj_120_size;
-  float trigObj_20_id[1000];
-  float trigObj_20_pt[1000];
-  float trigObj_20_eta[1000];
-  float trigObj_20_phi[1000];
+  int trigObjSize[5];
+
+  float trigObjId[5][1000];
+  float trigObjPt[5][1000];
+  float trigObjEta[5][1000];
+  float trigObjPhi[5][1000];
+  float trigObjMass[5][1000];
+  /*
   float trigObj_20_mass[1000];
   float trigObj_40_id[1000];
   float trigObj_40_pt[1000];
@@ -261,6 +274,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   float trigObj_120_eta[1000];
   float trigObj_120_phi[1000];
   float trigObj_120_mass[1000]; 
+  */
   /*
   TTree *hltTree = new TTree("hlt","HLT");
   hltTree->Branch("jetMB",&jetMB,"jetMB/I");
@@ -315,7 +329,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   hltTree->Branch("trigObj_120_mass",&trigObj_120_mass,"trigObj_120_mass[trigObj_120_size]/F");  
   */
   trigO *HLT_PAJet_NoJetID_v1_trigObject[6];
-  for(int i=0; i<6; i++){
+  for(int i=0; i<5; i++){
     HLT_PAJet_NoJetID_v1_trigObject[i] = new trigO;
   } 
     
@@ -455,7 +469,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     jetTree->SetBranchAddress("HLT_PAJet60_NoJetID_v1_trigObject",&HLT_PAJet_NoJetID_v1_trigObject[2]);
     jetTree->SetBranchAddress("HLT_PAJet80_NoJetID_v1_trigObject",&HLT_PAJet_NoJetID_v1_trigObject[3]);
     jetTree->SetBranchAddress("HLT_PAJet100_NoJetID_v1_trigObject",&HLT_PAJet_NoJetID_v1_trigObject[4]);
-    jetTree->SetBranchAddress("HLT_PAJet120_NoJetID_v1_trigObject",&HLT_PAJet_NoJetID_v1_trigObject[5]);
+    //jetTree->SetBranchAddress("HLT_PAJet120_NoJetID_v1_trigObject",&HLT_PAJet_NoJetID_v1_trigObject[5]);
 
     //now that we have all the branch addresses set! 
     //lets start the event loop process. 
@@ -517,23 +531,44 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     */
       
     Long64_t nentries = jetTree->GetEntries();
+    cout<<"nentries = "<<nentries<<endl;
 
     for (int i = 0; i < nentries; i++){ //start of event loop. 
-      if(i%1000==0)cout<<"event = "<<i<<endl;
+    //for(int i = 0;i<100;i++){ //event loop test 
     
       jetTree->GetEntry(i);
+      cout<<vz<<endl;
+      if(i%1000==0)cout<<"event = "<<i<<"; run = "<<run<<endl;
 
+         
+      if(!pHBHENoiseFilter || !pprimaryvertexFilter || !pPAcollisionEventSelectionPA) continue;
+      if(!pVertexFilterCutGplus) continue;
+      //if(vz>15. || vz<-15.) continue;
+      if(fabs(vz)<15)cout<<"hi inside vz<15"<<endl;
+      //cout<<"hi"<<endl;
+      for(int j=0; j<5; j++){ trigObjSize[j] = HLT_PAJet_NoJetID_v1_trigObject[j]->size();}
+      
+      //Fill the trigger Pt/Eta/Phi from the TriggerObjects
+      for(int ii=0; ii<5; ii++){
+	for(unsigned int iObj=0; iObj<trigObjSize[ii]; iObj++){
+	  trigObjPt[ii][iObj] = HLT_PAJet_NoJetID_v1_trigObject[ii]->at(iObj).pt();
+	  trigObjEta[ii][iObj] = HLT_PAJet_NoJetID_v1_trigObject[ii]->at(iObj).eta();
+	  trigObjPhi[ii][iObj] = HLT_PAJet_NoJetID_v1_trigObject[ii]->at(iObj).phi();
+	}
+      }
+      
+      /*
       //cout<<"A"<<endl;
-
+      
       trigObj_20_size = HLT_PAJet_NoJetID_v1_trigObject[0]->size();
-
+      
       //cout<<" = "<<trigObj_20_size<<endl;
       for (int j = 0; j < trigObj_20_size; j++){
-	trigObj_20_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).id();
-	trigObj_20_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).pt();
-	trigObj_20_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).eta();
-	trigObj_20_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).phi();
-	trigObj_20_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).mass();
+        trigObj_20_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).id();
+        trigObj_20_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).pt();
+        trigObj_20_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).eta();
+        trigObj_20_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).phi();
+        trigObj_20_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).mass();
       }
 
       //cout<<"B"<<endl;
@@ -594,10 +629,8 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 	trigObj_120_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).mass();
       }
       
-   
-    
-      if(!pHBHENoiseFilter || !pprimaryvertexFilter || !pPAcollisionEventSelectionPA) continue;
-      if(!pVertexFilterCutGplus) continue;
+       */
+ 
       
       //cout<<"event = "<<evt<<endl;
       //cout<<"run = "<<run<<endl;
@@ -610,7 +643,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       double treePrescl[6] = {jetMB_p,jet20_p,jet40_p,jet60_p,jet80_p,jet100_p};
       bool trgDec[5] = {(bool)jet20, (bool)jet40, (bool)jet60, (bool)jet80, (bool)jet100};
       
-      if(i&1000==0)cout<<"leading jet step"<endl;
+      if(i&1000==0)cout<<"leading jet step"<<endl;
       //lets get the leading jet information here
       int leadJet = -1;
       float temppt = -9;
@@ -626,6 +659,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       }
 
       if(i%1000==0)cout<<"start of jet loop"<<endl;
+      //cout<<"number of jets = "<<nrefe3<<endl;
       for(int j = 0;j<nrefe3;j++){//start of jet loop
 
       	//raw pt cut - keep that for the analysis level.  
@@ -633,58 +667,88 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 
 	//first do the 12-003 merging 
 	if(fabs(eta3[j]+etashift)<1){
-	  if(jet100) hppb5->Fill(pt3[i],1);
-	  if(jet80 && !jet100) hppb4->Fill(pt3[i],1);
-	  if(jetMB && !jet80 && !jet100) hppb0->Fill(pt3[i],L1_MB_p*jetMB_p);
+	  //cout<<"inside 12-003 method"<<endl;
+	  if(jet100) hppb5->Fill(pt3[j],jet100_p);
+	  if(jet80 && !jet100) hppb4->Fill(pt3[j],1);
+	  if(jetMB && !jet80 && !jet100) hppb0->Fill(pt3[j],L1_MB_p*jetMB_p);
 	}
-	//add the histograms here. 
-	hpPb_Jet100->Add(hppb5);
-	hpPb_Jet80->Add(hppb4);
-	hpPb_JetMB->Add(hppb0);
-	hppbComb->Add(hppb0);
-	hppbComb->Add(hppb4);
-	hppbComb->Add(hppb5);
-	hpPb_Comb->Add(hppbComb);
-
-
 
 	//now do 12-017 
 	if(fabs(eta3[j]+etashift)<1){
+	  //cout<<"inside 12-017 method"<<endl;
 	  if(jet20 && pt3[j]>40 && pt3[j]<60) hppb_trk40_60->Fill(pt3[j],jet20_p);
 	  if(jet40 && pt3[j]>60 && pt3[j]<75) hppb_trk60_75->Fill(pt3[j],jet40_p);
 	  if(jet60 && pt3[j]>75 && pt3[j]<95) hppb_trk75_95->Fill(pt3[j],jet60_p);
 	  if(jet80 && pt3[j]>95 && pt3[j]<120) hppb_trk95_120->Fill(pt3[j],jet80_p);
-	  if(jet100 && pt3[j]>120) hppb_trk120->Fill(pt3[j],1);
+	  if(jet100 && pt3[j]>120) hppb_trk120->Fill(pt3[j],jet100_p);
 	}
 
-	//add the histograms from this 
-	hpPb_Trk40_60->Add(hppb_trk40_60);
-	hpPb_Trk60_75->Add(hppb_trk60_75);
-	hpPb_Trk75_95->Add(hppb_trk75_95);
-	hpPb_Trk95_120->Add(hppb_trk95_120);
-	hpPb_Trk120->Add(hppb_trk120);
-	hppb_trkComb->Add(hppb_trk40_60);
-	hppb_trkComb->Add(hppb_trk60_75);
-	hppb_trkComb->Add(hppb_trk75_95);
-	hppb_trkComb->Add(hppb_trk95_120);
-	hppb_trkComb->Add(hppb_trk120);
-	hpPb_TrkComb->Add(hppb_trkComb);
+	//now do it for kurt's method
+	if(fabs(eta3[j]+etashift)<1){
+	  for(int ii=0; ii<5; ii++){
+	    if(trgDec[ii]){
+	      triggerPt = triggerMatch(trigObjSize[ii], trigObjPhi[ii], trigObjEta[ii], trigObjPt[ii], phi3[j], eta3[j], pt3[j]);
+	      //if you find a trigger match that has the right pt window for that particular trigger, break out of the for loop!
+	      if((triggerPt>(ii+1)*20 && triggerPt<(ii+2)*20) || (triggerPt>100 && ii==4)){
+		break;
+	      }
+	    }
+	  }
+	  if(jet100 && triggerPt>=100) hppb_kurt100->Fill(pt3[j],jet100_p);
+	  if(jet80 && triggerPt>=80 && triggerPt<100) hppb_kurt80_100->Fill(pt3[j],jet80_p);
+	  if(jet60 && triggerPt>=60 && triggerPt<80) hppb_kurt60_80->Fill(pt3[j],jet60_p);
+	  if(jet40 && triggerPt>=40 && triggerPt<60) hppb_kurt40_60->Fill(pt3[j],jet40_p);
+	  if(jet20 && triggerPt>=20 && triggerPt<40) hppb_kurt20_40->Fill(pt3[j],jet20_p);
+	}
+	
+
 
 	
-	//now do it for the kurt's method
-	
-
       }//end jet loop 
 
       
       if(i%1000==0)cout<<"finished jet loop"<<endl;
       
       
-    
+      //add the histograms from the 12-003 method. 
+      hpPb_Jet100->Add(hppb5);
+      hpPb_Jet80->Add(hppb4);
+      hpPb_JetMB->Add(hppb0);
+      hppbComb->Add(hppb0);
+      hppbComb->Add(hppb4);
+      hppbComb->Add(hppb5);
+      hpPb_Comb->Add(hppbComb);
+      if(i%1000==0)hppbComb->Print("base");
 
+      //add the histograms from the 12-017 method
+      hpPb_Trk40_60->Add(hppb_trk40_60);
+      hpPb_Trk60_75->Add(hppb_trk60_75);
+      hpPb_Trk75_95->Add(hppb_trk75_95);
+      hpPb_Trk95_120->Add(hppb_trk95_120);
+      hpPb_Trk120->Add(hppb_trk120);
+      hppb_trkComb->Add(hppb_trk40_60);
+      hppb_trkComb->Add(hppb_trk60_75);
+      hppb_trkComb->Add(hppb_trk75_95);
+      hppb_trkComb->Add(hppb_trk95_120);
+      hppb_trkComb->Add(hppb_trk120);
+      hpPb_TrkComb->Add(hppb_trkComb);
+      if(i%1000==0)hppb_trkComb->Print("base");
 
+      //add the histogram from kurt's method 
+      hpPb_Kurt100->Add(hppb_kurt100);
+      hpPb_Kurt80_100->Add(hppb_kurt80_100);
+      hpPb_Kurt60_80->Add(hppb_kurt60_80);
+      hpPb_Kurt40_60->Add(hppb_kurt40_60);
+      hpPb_Kurt20_40->Add(hppb_kurt20_40);
+      hppb_kurtComb->Add(hppb_kurt100);
+      hppb_kurtComb->Add(hppb_kurt80_100);
+      hppb_kurtComb->Add(hppb_kurt60_80);
+      hppb_kurtComb->Add(hppb_kurt40_60);
+      hppb_kurtComb->Add(hppb_kurt20_40);
+      hpPb_KurtComb->Add(hppb_kurtComb);
+      if(i%1000==0)hppb_kurtComb->Print("base");
 
-
+      
       //jetR3Tree->Fill();
       //evtTree->Fill();
       //hltTree->Fill();
