@@ -369,14 +369,22 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   TH1F* hpPb_Trk95_120 = new TH1F("hpPb_Trk95_120","",1000,0,1000);
   TH1F* hpPb_Trk120 = new TH1F("hpPb_Trk120","",1000,0,1000);
   TH1F* hpPb_TrkComb = new TH1F("hpPb_TrkComb","",1000,0,1000);
-
+  /*
   TH1F* hpPb_Kurt100 = new TH1F("hpPb_Kurt100","",1000,0,1000);
   TH1F* hpPb_Kurt80_100 = new TH1F("hpPb_Kurt80_100","",1000,0,1000);
   TH1F* hpPb_Kurt60_80 = new TH1F("hpPb_Kurt60_80","",1000,0,1000);
   TH1F* hpPb_Kurt40_60 = new TH1F("hpPb_Kurt40_60","",1000,0,1000);
   TH1F* hpPb_Kurt20_40 = new TH1F("hpPb_Kurt20_40","",1000,0,1000);
   TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",1000,0,1000);
+  */
 
+  TH1F* hpPb_Kurt100 = new TH1F("hpPb_Kurt100","",50,0,200);
+  TH1F* hpPb_Kurt80_100 = new TH1F("hpPb_Kurt80_100","",50,0,200);
+  TH1F* hpPb_Kurt60_80 = new TH1F("hpPb_Kurt60_80","",50,0,200);
+  TH1F* hpPb_Kurt40_60 = new TH1F("hpPb_Kurt40_60","",50,0,200);
+  TH1F* hpPb_Kurt20_40 = new TH1F("hpPb_Kurt20_40","",50,0,200);
+  TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",50,0,200);
+  
   Float_t N_MB_pPb = 2.6026e10; //taken from the merged_MinBiasCentrality_Histo.root
   
   //now we are taking only the files from the given start number to the end number. 
@@ -393,14 +401,14 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     
     TFile *fin = TFile::Open(filename.c_str());
     
-    TTree* jetTree = (TTree*)fin->Get("akPu3PFJetAnalyzer/t");
+    TTree* jetTree = (TTree*)fin->Get("ak3PFJetAnalyzer/t");
     TTree* skimTree_in = (TTree*)fin->Get("skimanalysis/HltTree");
-    TTree* trackTree_in = (TTree*)fin->Get("ppTrack/trackTree");
+    //TTree* trackTree_in = (TTree*)fin->Get("ppTrack/trackTree");
     TTree* evtTree_in = (TTree*)fin->Get("hiEvtAnalyzer/HiTree");
     TTree* hltTree_in = (TTree*)fin->Get("hltanalysis/HltTree");
     
     jetTree->AddFriend(skimTree_in);
-    jetTree->AddFriend(trackTree_in);
+    //jetTree->AddFriend(trackTree_in);
     jetTree->AddFriend(evtTree_in);
     jetTree->AddFriend(hltTree_in);
 
@@ -437,7 +445,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     jetTree->SetBranchAddress("photonSum",&phSum3);
     jetTree->SetBranchAddress("neutralMax",&neMax3);
     jetTree->SetBranchAddress("neutralSum",&neSum3);
-
+    /*
     jetTree->SetBranchAddress("nTrk",&nTrack);
     jetTree->SetBranchAddress("trkPt",&trkPt);
     jetTree->SetBranchAddress("trkEta",&trkEta);
@@ -447,7 +455,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     jetTree->SetBranchAddress("trkDzError1",&trkDzError1);
     jetTree->SetBranchAddress("trkDxy1",&trkDxy1);
     jetTree->SetBranchAddress("trkDxyError1",&trkDxyError1);
-
+    */
     jetTree->SetBranchAddress("HLT_PAZeroBiasPixel_SingleTrack_v1",&jetMB);
     jetTree->SetBranchAddress("HLT_PAZeroBiasPixel_SingleTrack_v1_Prescl",&jetMB_p);
     jetTree->SetBranchAddress("L1_ZeroBias",&L1_MB);
@@ -500,12 +508,12 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     TH1F* hppb_trkComb = new TH1F("hppb_trkComb","",1000,0,1000);
     
     //histograms for kurt's merging 
-    TH1F* hppb_kurt100 = new TH1F("hppb_kurt100","",1000,0,1000);
-    TH1F* hppb_kurt80_100 = new TH1F("hppb_kurt80_100","",1000,0,1000);
-    TH1F* hppb_kurt60_80 = new TH1F("hppb_kurt60_80","",1000,0,1000);
-    TH1F* hppb_kurt40_60 = new TH1F("hppb_kurt40_60","",1000,0,1000);
-    TH1F* hppb_kurt20_40 = new TH1F("hppb_kurt20_40","",1000,0,1000);
-    TH1F* hppb_kurtComb = new TH1F("hppb_kurtComb","",1000,0,1000);
+    TH1F* hppb_kurt100 = new TH1F("hppb_kurt100","",50,0,200);
+    TH1F* hppb_kurt80_100 = new TH1F("hppb_kurt80_100","",50,0,200);
+    TH1F* hppb_kurt60_80 = new TH1F("hppb_kurt60_80","",50,0,200);
+    TH1F* hppb_kurt40_60 = new TH1F("hppb_kurt40_60","",50,0,200);
+    TH1F* hppb_kurt20_40 = new TH1F("hppb_kurt20_40","",50,0,200);
+    TH1F* hppb_kurtComb = new TH1F("hppb_kurtComb","",50,0,200);
   
     //this is going to be problematic since we dont have eta_CM here. 
     /*
@@ -537,14 +545,14 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     //for(int i = 0;i<100;i++){ //event loop test 
     
       jetTree->GetEntry(i);
-      cout<<vz<<endl;
+      //cout<<vz<<endl;
       if(i%1000==0)cout<<"event = "<<i<<"; run = "<<run<<endl;
-
-         
+      
+      
       if(!pHBHENoiseFilter || !pprimaryvertexFilter || !pPAcollisionEventSelectionPA) continue;
       if(!pVertexFilterCutGplus) continue;
       //if(vz>15. || vz<-15.) continue;
-      if(fabs(vz)<15)cout<<"hi inside vz<15"<<endl;
+      if(fabs(vz)>15) continue;
       //cout<<"hi"<<endl;
       for(int j=0; j<5; j++){ trigObjSize[j] = HLT_PAJet_NoJetID_v1_trigObject[j]->size();}
       
@@ -664,7 +672,8 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 
       	//raw pt cut - keep that for the analysis level.  
 	if(raw3[j]<20) continue;
-
+	if(pt3[j]<10) continue;
+	/*
 	//first do the 12-003 merging 
 	if(fabs(eta3[j]+etashift)<1){
 	  //cout<<"inside 12-003 method"<<endl;
@@ -682,7 +691,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 	  if(jet80 && pt3[j]>95 && pt3[j]<120) hppb_trk95_120->Fill(pt3[j],jet80_p);
 	  if(jet100 && pt3[j]>120) hppb_trk120->Fill(pt3[j],jet100_p);
 	}
-
+	*/
 	//now do it for kurt's method
 	if(fabs(eta3[j]+etashift)<1){
 	  for(int ii=0; ii<5; ii++){
@@ -709,7 +718,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       
       if(i%1000==0)cout<<"finished jet loop"<<endl;
       
-      
+      /*
       //add the histograms from the 12-003 method. 
       hpPb_Jet100->Add(hppb5);
       hpPb_Jet80->Add(hppb4);
@@ -733,7 +742,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       hppb_trkComb->Add(hppb_trk120);
       hpPb_TrkComb->Add(hppb_trkComb);
       if(i%1000==0)hppb_trkComb->Print("base");
-
+      */
       //add the histogram from kurt's method 
       hpPb_Kurt100->Add(hppb_kurt100);
       hpPb_Kurt80_100->Add(hppb_kurt80_100);
@@ -747,6 +756,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       hppb_kurtComb->Add(hppb_kurt20_40);
       hpPb_KurtComb->Add(hppb_kurtComb);
       if(i%1000==0)hppb_kurtComb->Print("base");
+      if(i%1000==0)hpPb_KurtComb->Print("base");
 
       
       //jetR3Tree->Fill();
