@@ -1,4 +1,4 @@
-//  Raghav Kunnawalkam Elayavalli
+ //  Raghav Kunnawalkam Elayavalli
 //  created: 21th Feb 2014
 
 //  sample macro to read in forest files from a file list which is given to us through a condor script. the output file will 
@@ -377,16 +377,32 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   TH1F* hpPb_Kurt20_40 = new TH1F("hpPb_Kurt20_40","",1000,0,1000);
   TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",1000,0,1000);
   */
-
-  TH1F* hpPb_Kurt100 = new TH1F("hpPb_Kurt100","",1000,0,1000);
-  TH1F* hpPb_Kurt80_100 = new TH1F("hpPb_Kurt80_100","",1000,0,1000);
-  TH1F* hpPb_Kurt60_80 = new TH1F("hpPb_Kurt60_80","",1000,0,1000);
-  TH1F* hpPb_Kurt40_60 = new TH1F("hpPb_Kurt40_60","",1000,0,1000);
-  TH1F* hpPb_Kurt20_40 = new TH1F("hpPb_Kurt20_40","",1000,0,1000);
-  TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",1000,0,1000);
+  
+  TH1F* hpPb_Kurt100 = new TH1F("hpPb_Kurt100","",50,0,200);
+  TH1F* hpPb_Kurt80_100 = new TH1F("hpPb_Kurt80_100","",50,0,200);
+  TH1F* hpPb_Kurt60_80 = new TH1F("hpPb_Kurt60_80","",50,0,200);
+  TH1F* hpPb_Kurt40_60 = new TH1F("hpPb_Kurt40_60","",50,0,200);
+  TH1F* hpPb_Kurt20_40 = new TH1F("hpPb_Kurt20_40","",50,0,200);
+  TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",50,0,200);
   
   Float_t N_MB_pPb = 2.6026e10; //taken from the merged_MinBiasCentrality_Histo.root
+
+  TFile* fJEC_pPb = TFile::Open("/net/hidsk0001/d00/scratch/dgulhan/RelativeResponse/Corrections/Casym_pPb_double_hcalbins_algo_akPu3PF_pt100_140_jet80_alphahigh_20_phicut250.root");
+  TFile* fJEC_Pbp = TFile::Open("/net/hidsk0001/d00/scratch/dgulhan/RelativeResponse/Corrections/Casym_Pbp_double_hcalbins_algo_akPu3PF_pt100_140_jet80_alphahigh_20_phicut250.root");
+
+  TH1F* c_eta_pPb = (TH1F*)fJEC_pPb->Get("C_asym");
+  c_eta_pPb->Print("base");
+  TH1F* c_eta_Pbp = (TH1F*)fJEC_Pbp->Get("C_asym");
+  c_eta_Pbp->Print("base");
   
+  TF1* f_pPb = new TF1("f_pPb","1-[0]/pow(x,[1])",20,300);
+  f_pPb->SetParameters(0.3015,0.8913);
+  //for akPu3PF
+
+  //TF1* f_pPb = new TF1("f_pPb","1-[0]/pow(x,[1])",20,300);
+  //f_pPb->SetParameters(0.3015,0.8913);
+  //for ak3PF
+
   //now we are taking only the files from the given start number to the end number. 
   for(int ifile=startfile;ifile<endfile;ifile++){
     instr >> filename;
@@ -543,16 +559,30 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 	  temppt = jetpt;
 	  leadJet = j;
 	}
-      
       }
 
       if(i%1000==0)cout<<"start of jet loop"<<endl;
       //cout<<"number of jets = "<<nrefe3<<endl;
+      float corrected_pt = 0;
+
       for(int j = 0;j<nrefe3;j++){//start of jet loop
 
       	//raw pt cut - keep that for the analysis level.  
 	if(raw3[j]<20) continue;
 	if(pt3[j]<10) continue;
+	
+	//add Doga's corrections 
+	if(pt3[j]>=20 && pt3[j]<=300){
+	  if (run>211300) {
+	    corrected_pt = pt3[j]*c_eta_Pbp->GetBinContent(c_eta_Pbp->FindBin(eta3[j]));
+	    corrected_pt = corrected_pt*f_pPb->Eval(pt3[j]);
+	    pt3[i] = corrected_pt;
+	  }else {
+	    corrected_pt = pt3[j]*c_eta_pPb->GetBinContent(c_eta_pPb->FindBin(eta3[j]));
+	    corrected_pt = corrected_pt*f_pPb->Eval(pt3[j]);
+	    pt3[j] = corrected_pt;
+	  }
+	}
 	
 	//first do the 12-003 merging 
 	if(fabs(eta3[j]+etashift)<1){
@@ -591,21 +621,21 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 	}
 	
       }//end jet loop 
-
+      
       
       if(i%1000==0)cout<<"finished jet loop"<<endl;
       
       
- 
-
- 
-     
+      
+      
+      
+      
       
       //jetR3Tree->Fill();
       //evtTree->Fill();
       //hltTree->Fill();
       //trkTree->Fill();
-    
+      
     }//new event loop 
     
     fin->Close();
