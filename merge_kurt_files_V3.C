@@ -524,6 +524,9 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       //if(!pVertexFilterCutGplus) continue;
       //if(vz>15. || vz<-15.) continue;
       if(fabs(vz)>15) continue;
+
+      if(!jetMB && !jet20 && !jet40 && !jet60 && !jet80 && !jet100) continue;
+
       //cout<<"hi"<<endl;
       for(int j=0; j<5; j++){ trigObjSize[j] = HLT_PAJet_NoJetID_v1_trigObject[j]->size();}
       
@@ -572,11 +575,11 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 	if(pt3[j]<10) continue;
 	
 	//add Doga's corrections 
-	if(pt3[j]>=20 && pt3[j]<=300){
+	//if(pt3[j]>=20 && pt3[j]<=300){
+        if(pt3[j]>=20){
 	  if (run>211300) {
 	    corrected_pt = pt3[j]*c_eta_Pbp->GetBinContent(c_eta_Pbp->FindBin(eta3[j]));
 	    corrected_pt = corrected_pt*f_pPb->Eval(pt3[j]);
-	    
 	    pt3[j] = corrected_pt;
 	  }else {
 	    corrected_pt = pt3[j]*c_eta_pPb->GetBinContent(c_eta_pPb->FindBin(eta3[j]));
@@ -609,6 +612,9 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 	  if(jet100 && pt3[j]>120) hpPb_Trk120->Fill(pt3[j],jet100_p);
 	}
 	
+
+	triggerPt = 0;
+
 	//now do it for kurt's method
 	if(fabs(eta3[j]+etashift)<1){
 	  for(int ii=0; ii<5; ii++){
@@ -622,7 +628,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 	    }
 	  }
 	  
-	  if(jet100 && triggerPt>=100) hpPb_Kurt100->Fill(pt3[j],jet100_p);
+	  if(jet100 && triggerPt>=100) hpPb_Kurt100->Fill(pt3[j],1);
 	  if(jet80 && triggerPt>=80 && triggerPt<100) hpPb_Kurt80_100->Fill(pt3[j],jet80_p);
 	  if(jet60 && triggerPt>=60 && triggerPt<80) hpPb_Kurt60_80->Fill(pt3[j],jet60_p);
 	  if(jet40 && triggerPt>=40 && triggerPt<60) hpPb_Kurt40_60->Fill(pt3[j],jet40_p);
@@ -781,7 +787,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   hpPb_Comb->Add(hpPb_JetMB);
   hpPb_Comb->Add(hpPb_Jet80);
   hpPb_Comb->Add(hpPb_Jet100);
-  
+  hpPb_Comb->Print();
   
   //add the histograms from the 12-017 method
   hpPb_TrkComb->Add(hpPb_Trk40_60);
@@ -789,7 +795,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   hpPb_TrkComb->Add(hpPb_Trk75_95);
   hpPb_TrkComb->Add(hpPb_Trk95_120);
   hpPb_TrkComb->Add(hpPb_Trk120);
-  
+  hpPb_TrkComb->Print();
   
   //add the histogram from kurt's method 
   hpPb_KurtComb->Add(hpPb_Kurt100);
@@ -797,6 +803,8 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   hpPb_KurtComb->Add(hpPb_Kurt60_80);
   hpPb_KurtComb->Add(hpPb_Kurt40_60);
   hpPb_KurtComb->Add(hpPb_Kurt20_40);
+
+  hpPb_KurtComb->Print();
 
   f.Write();
 
