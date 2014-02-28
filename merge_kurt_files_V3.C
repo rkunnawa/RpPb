@@ -378,12 +378,12 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",1000,0,1000);
   */
 
-  TH1F* hpPb_Kurt100 = new TH1F("hpPb_Kurt100","",50,0,200);
-  TH1F* hpPb_Kurt80_100 = new TH1F("hpPb_Kurt80_100","",50,0,200);
-  TH1F* hpPb_Kurt60_80 = new TH1F("hpPb_Kurt60_80","",50,0,200);
-  TH1F* hpPb_Kurt40_60 = new TH1F("hpPb_Kurt40_60","",50,0,200);
-  TH1F* hpPb_Kurt20_40 = new TH1F("hpPb_Kurt20_40","",50,0,200);
-  TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",50,0,200);
+  TH1F* hpPb_Kurt100 = new TH1F("hpPb_Kurt100","",1000,0,1000);
+  TH1F* hpPb_Kurt80_100 = new TH1F("hpPb_Kurt80_100","",1000,0,1000);
+  TH1F* hpPb_Kurt60_80 = new TH1F("hpPb_Kurt60_80","",1000,0,1000);
+  TH1F* hpPb_Kurt40_60 = new TH1F("hpPb_Kurt40_60","",1000,0,1000);
+  TH1F* hpPb_Kurt20_40 = new TH1F("hpPb_Kurt20_40","",1000,0,1000);
+  TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",1000,0,1000);
   
   Float_t N_MB_pPb = 2.6026e10; //taken from the merged_MinBiasCentrality_Histo.root
   
@@ -519,81 +519,6 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 	  trigObjPhi[ii][iObj] = HLT_PAJet_NoJetID_v1_trigObject[ii]->at(iObj).phi();
 	}
       }
-      
-      /*
-      //cout<<"A"<<endl;
-      
-      trigObj_20_size = HLT_PAJet_NoJetID_v1_trigObject[0]->size();
-      
-      //cout<<" = "<<trigObj_20_size<<endl;
-      for (int j = 0; j < trigObj_20_size; j++){
-        trigObj_20_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).id();
-        trigObj_20_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).pt();
-        trigObj_20_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).eta();
-        trigObj_20_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).phi();
-        trigObj_20_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).mass();
-      }
-
-      //cout<<"B"<<endl;
-
-      trigObj_40_size = HLT_PAJet_NoJetID_v1_trigObject[1]->size();
-      //cout<<" = "<<trigObj_40_size<<endl;
-      for (int j = 0; j < trigObj_40_size; j++){
-	trigObj_40_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).id();
-	trigObj_40_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).pt();
-	trigObj_40_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).eta();
-	trigObj_40_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).phi();
-	trigObj_40_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).mass();
-      }
-
-      //cout<<"C"<<endl;
-
-      trigObj_60_size = HLT_PAJet_NoJetID_v1_trigObject[2]->size();
-      //cout<<"trigObj_60_size = "<<trigObj_60_size<<endl;
-      for (int j = 0; j < trigObj_60_size; j++){
-	trigObj_60_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).id();
-	trigObj_60_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).pt();
-	trigObj_60_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).eta();
-	trigObj_60_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).phi();
-	trigObj_60_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).mass();
-      }
-
-      //cout<<"D"<<endl;
-
-      trigObj_80_size = HLT_PAJet_NoJetID_v1_trigObject[3]->size();
-      //cout<<" = "<<trigObj_80_size<<endl;
-      for (int j = 0; j < trigObj_80_size; j++){
-	trigObj_80_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).id();
-	trigObj_80_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).pt();
-	trigObj_80_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).eta();
-	trigObj_80_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).phi();
-	trigObj_80_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).mass();
-      }
-
-      //cout<<"E"<<endl;
-
-      trigObj_100_size = HLT_PAJet_NoJetID_v1_trigObject[4]->size();
-      for (int j = 0; j < trigObj_100_size; j++){
-	trigObj_100_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).id();
-	trigObj_100_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).pt();
-	trigObj_100_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).eta();
-	trigObj_100_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).phi();
-	trigObj_100_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).mass();
-      }
-
-      //cout<<"F"<<endl;
-
-      trigObj_120_size = HLT_PAJet_NoJetID_v1_trigObject[5]->size();
-      for (int j = 0; j < trigObj_120_size; j++){
-	trigObj_120_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).id();
-	trigObj_120_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).pt();
-	trigObj_120_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).eta();
-	trigObj_120_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).phi();
-	trigObj_120_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).mass();
-      }
-      
-       */
- 
       
       //cout<<"event = "<<evt<<endl;
       //cout<<"run = "<<run<<endl;
