@@ -492,51 +492,6 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     // 4 - 80
     // 5 - 100
     // 6 - 120
-    
-    //before we go into the event and jet loop lets get the histogram for the 12-003 merging which we can just use the project. 
-    TH1F *hppb0 = new TH1F("hppb0","",1000,0,1000);
-    TH1F *hppb4 = new TH1F("hppb4","",1000,0,1000);
-    TH1F *hppb5 = new TH1F("hppb5","",1000,0,1000);
-    TH1F *hppbComb = new TH1F("hppbComb","",1000,0,1000);
-    
-    //histogams for track merging 12-017
-    TH1F* hppb_trk40_60 = new TH1F("hppb_trk40_60","",1000,0,1000);
-    TH1F* hppb_trk60_75 = new TH1F("hppb_trk60_75","",1000,0,1000);
-    TH1F* hppb_trk75_95 = new TH1F("hppb_trk75_95","",1000,0,1000);
-    TH1F* hppb_trk95_120 = new TH1F("hppb_trk95_120","",1000,0,1000);
-    TH1F* hppb_trk120 = new TH1F("hppb_trk120","",1000,0,1000);
-    TH1F* hppb_trkComb = new TH1F("hppb_trkComb","",1000,0,1000);
-    
-    //histograms for kurt's merging 
-    TH1F* hppb_kurt100 = new TH1F("hppb_kurt100","",50,0,200);
-    TH1F* hppb_kurt80_100 = new TH1F("hppb_kurt80_100","",50,0,200);
-    TH1F* hppb_kurt60_80 = new TH1F("hppb_kurt60_80","",50,0,200);
-    TH1F* hppb_kurt40_60 = new TH1F("hppb_kurt40_60","",50,0,200);
-    TH1F* hppb_kurt20_40 = new TH1F("hppb_kurt20_40","",50,0,200);
-    TH1F* hppb_kurtComb = new TH1F("hppb_kurtComb","",50,0,200);
-  
-    //this is going to be problematic since we dont have eta_CM here. 
-    /*
-    TCut eventcut = "fabs(vz)<15&&pHBHENoiseFilter&&pprimaryvertexFilter&&pPAcollisionEventSelectionPA&&pVertexFilterCutGplus";
-    TCut ppb0 = "abs(eta_CM)<1&&jetMB&&!jet80&&!jet100&&raw>20";
-    TCut ppb1 = "abs(eta_CM)<1&&jet20&&!jet80&&!jet100&&raw>20";
-    TCut ppb2 = "abs(eta_CM)<1&&jet40&&!jet80&&!jet100&&raw>20";
-    TCut ppb3 = "abs(eta_CM)<1&&jet60&&!jet80&&!jet100&&raw>20";
-    TCut ppb4 = "abs(eta_CM)<1&&jet80&&!jet100&&raw>20";//try with or without 60 first and then try without 60
-    TCut ppb5 = "abs(eta_CM)<1&&jet100&&raw>20";
-    
-    jetTree->Project("hppb0","jtpt","jetMB_p*L1_MB_p"*ppb0);
-    jetTree->Project("hppb4","jtpt",ppb4);
-    jetTree->Project("hppb5","jtpt",ppb5);
-
-    hpPb_Jet100->Add(hppb5);
-    hpPb_Jet80->Add(hppb4);
-    hpPb_JetMb->Add(hppb0);
-    hppbComb->Add(hppb0);
-    hppbComb->Add(hppb4);
-    hppbComb->Add(hppb5);
-    hpPb_Comb->Add(hppbComb);
-    */
       
     Long64_t nentries = jetTree->GetEntries();
     cout<<"nentries = "<<nentries<<endl;
@@ -673,25 +628,25 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       	//raw pt cut - keep that for the analysis level.  
 	if(raw3[j]<20) continue;
 	if(pt3[j]<10) continue;
-	/*
+	
 	//first do the 12-003 merging 
 	if(fabs(eta3[j]+etashift)<1){
 	  //cout<<"inside 12-003 method"<<endl;
-	  if(jet100) hppb5->Fill(pt3[j],jet100_p);
-	  if(jet80 && !jet100) hppb4->Fill(pt3[j],1);
-	  if(jetMB && !jet80 && !jet100) hppb0->Fill(pt3[j],L1_MB_p*jetMB_p);
+	  if(jet100) hpPb_Jet100->Fill(pt3[j],jet100_p);
+	  if(jet80 && !jet100) hpPb_Jet80->Fill(pt3[j],1);
+	  if(jetMB && !jet80 && !jet100) hpPb_JetMB->Fill(pt3[j],L1_MB_p*jetMB_p);
 	}
 
 	//now do 12-017 
 	if(fabs(eta3[j]+etashift)<1){
 	  //cout<<"inside 12-017 method"<<endl;
-	  if(jet20 && pt3[j]>40 && pt3[j]<60) hppb_trk40_60->Fill(pt3[j],jet20_p);
-	  if(jet40 && pt3[j]>60 && pt3[j]<75) hppb_trk60_75->Fill(pt3[j],jet40_p);
-	  if(jet60 && pt3[j]>75 && pt3[j]<95) hppb_trk75_95->Fill(pt3[j],jet60_p);
-	  if(jet80 && pt3[j]>95 && pt3[j]<120) hppb_trk95_120->Fill(pt3[j],jet80_p);
-	  if(jet100 && pt3[j]>120) hppb_trk120->Fill(pt3[j],jet100_p);
+	  if(jet20 && pt3[j]>40 && pt3[j]<60) hpPb_Trk40_60->Fill(pt3[j],jet20_p);
+	  if(jet40 && pt3[j]>60 && pt3[j]<75) hpPb_Trk60_75->Fill(pt3[j],jet40_p);
+	  if(jet60 && pt3[j]>75 && pt3[j]<95) hpPb_Trk75_95->Fill(pt3[j],jet60_p);
+	  if(jet80 && pt3[j]>95 && pt3[j]<120) hpPb_Trk95_120->Fill(pt3[j],jet80_p);
+	  if(jet100 && pt3[j]>120) hpPb_Trk120->Fill(pt3[j],jet100_p);
 	}
-	*/
+	
 	//now do it for kurt's method
 	if(fabs(eta3[j]+etashift)<1){
 	  for(int ii=0; ii<5; ii++){
@@ -703,61 +658,23 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 	      }
 	    }
 	  }
-	  if(jet100 && triggerPt>=100) hppb_kurt100->Fill(pt3[j],jet100_p);
-	  if(jet80 && triggerPt>=80 && triggerPt<100) hppb_kurt80_100->Fill(pt3[j],jet80_p);
-	  if(jet60 && triggerPt>=60 && triggerPt<80) hppb_kurt60_80->Fill(pt3[j],jet60_p);
-	  if(jet40 && triggerPt>=40 && triggerPt<60) hppb_kurt40_60->Fill(pt3[j],jet40_p);
-	  if(jet20 && triggerPt>=20 && triggerPt<40) hppb_kurt20_40->Fill(pt3[j],jet20_p);
+	  if(jet100 && triggerPt>=100) hpPb_Kurt100->Fill(pt3[j],jet100_p);
+	  if(jet80 && triggerPt>=80 && triggerPt<100) hpPb_Kurt80_100->Fill(pt3[j],jet80_p);
+	  if(jet60 && triggerPt>=60 && triggerPt<80) hpPb_Kurt60_80->Fill(pt3[j],jet60_p);
+	  if(jet40 && triggerPt>=40 && triggerPt<60) hpPb_Kurt40_60->Fill(pt3[j],jet40_p);
+	  if(jet20 && triggerPt>=20 && triggerPt<40) hpPb_Kurt20_40->Fill(pt3[j],jet20_p);
 	}
-	
-
-
 	
       }//end jet loop 
 
       
       if(i%1000==0)cout<<"finished jet loop"<<endl;
       
-      /*
-      //add the histograms from the 12-003 method. 
-      hpPb_Jet100->Add(hppb5);
-      hpPb_Jet80->Add(hppb4);
-      hpPb_JetMB->Add(hppb0);
-      hppbComb->Add(hppb0);
-      hppbComb->Add(hppb4);
-      hppbComb->Add(hppb5);
-      hpPb_Comb->Add(hppbComb);
-      if(i%1000==0)hppbComb->Print("base");
+      
+ 
 
-      //add the histograms from the 12-017 method
-      hpPb_Trk40_60->Add(hppb_trk40_60);
-      hpPb_Trk60_75->Add(hppb_trk60_75);
-      hpPb_Trk75_95->Add(hppb_trk75_95);
-      hpPb_Trk95_120->Add(hppb_trk95_120);
-      hpPb_Trk120->Add(hppb_trk120);
-      hppb_trkComb->Add(hppb_trk40_60);
-      hppb_trkComb->Add(hppb_trk60_75);
-      hppb_trkComb->Add(hppb_trk75_95);
-      hppb_trkComb->Add(hppb_trk95_120);
-      hppb_trkComb->Add(hppb_trk120);
-      hpPb_TrkComb->Add(hppb_trkComb);
-      if(i%1000==0)hppb_trkComb->Print("base");
-      */
-      //add the histogram from kurt's method 
-      hpPb_Kurt100->Add(hppb_kurt100);
-      hpPb_Kurt80_100->Add(hppb_kurt80_100);
-      hpPb_Kurt60_80->Add(hppb_kurt60_80);
-      hpPb_Kurt40_60->Add(hppb_kurt40_60);
-      hpPb_Kurt20_40->Add(hppb_kurt20_40);
-      hppb_kurtComb->Add(hppb_kurt100);
-      hppb_kurtComb->Add(hppb_kurt80_100);
-      hppb_kurtComb->Add(hppb_kurt60_80);
-      hppb_kurtComb->Add(hppb_kurt40_60);
-      hppb_kurtComb->Add(hppb_kurt20_40);
-      hpPb_KurtComb->Add(hppb_kurtComb);
-      if(i%1000==0)hppb_kurtComb->Print("base");
-      if(i%1000==0)hpPb_KurtComb->Print("base");
-
+ 
+     
       
       //jetR3Tree->Fill();
       //evtTree->Fill();
@@ -854,76 +771,6 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     
     ch[2]->GetEntry(i);
 
-    //cout<<"A"<<endl;
-
-    trigObj_20_size = HLT_PAJet_NoJetID_v1_trigObject[0]->size();
-
-    //cout<<" = "<<trigObj_20_size<<endl;
-    for (int j = 0; j < trigObj_20_size; j++){
-      trigObj_20_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).id();
-      trigObj_20_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).pt();
-      trigObj_20_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).eta();
-      trigObj_20_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).phi();
-      trigObj_20_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[0]->at(j).mass();
-    }
-
-    //cout<<"B"<<endl;
-
-    trigObj_40_size = HLT_PAJet_NoJetID_v1_trigObject[1]->size();
-    //cout<<" = "<<trigObj_40_size<<endl;
-    for (int j = 0; j < trigObj_40_size; j++){
-      trigObj_40_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).id();
-      trigObj_40_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).pt();
-      trigObj_40_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).eta();
-      trigObj_40_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).phi();
-      trigObj_40_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[1]->at(j).mass();
-    }
-
-    //cout<<"C"<<endl;
-
-    trigObj_60_size = HLT_PAJet_NoJetID_v1_trigObject[2]->size();
-    //cout<<"trigObj_60_size = "<<trigObj_60_size<<endl;
-    for (int j = 0; j < trigObj_60_size; j++){
-      trigObj_60_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).id();
-      trigObj_60_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).pt();
-      trigObj_60_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).eta();
-      trigObj_60_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).phi();
-      trigObj_60_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[2]->at(j).mass();
-    }
-
-    //cout<<"D"<<endl;
-
-    trigObj_80_size = HLT_PAJet_NoJetID_v1_trigObject[3]->size();
-    //cout<<" = "<<trigObj_80_size<<endl;
-    for (int j = 0; j < trigObj_80_size; j++){
-      trigObj_80_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).id();
-      trigObj_80_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).pt();
-      trigObj_80_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).eta();
-      trigObj_80_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).phi();
-      trigObj_80_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[3]->at(j).mass();
-    }
-
-    //cout<<"E"<<endl;
-
-    trigObj_100_size = HLT_PAJet_NoJetID_v1_trigObject[4]->size();
-    for (int j = 0; j < trigObj_100_size; j++){
-      trigObj_100_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).id();
-      trigObj_100_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).pt();
-      trigObj_100_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).eta();
-      trigObj_100_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).phi();
-      trigObj_100_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[4]->at(j).mass();
-    }
-
-    //cout<<"F"<<endl;
-
-    trigObj_120_size = HLT_PAJet_NoJetID_v1_trigObject[5]->size();
-    for (int j = 0; j < trigObj_120_size; j++){
-      trigObj_120_id[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).id();
-      trigObj_120_pt[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).pt();
-      trigObj_120_eta[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).eta();
-      trigObj_120_phi[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).phi();
-      trigObj_120_mass[j] =  HLT_PAJet_NoJetID_v1_trigObject[5]->at(j).mass();
-    }
 
     //cout<<"E"<<endl;
 
@@ -964,18 +811,29 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   //output file definition 
   
   f.cd();
+  
+  //add the histograms from the 12-003 method. 
+  hpPb_Comb->Add(hpPb_JetMB);
+  hpPb_Comb->Add(hpPb_Jet80);
+  hpPb_Comb->Add(hpPb_Jet100);
+  
+  
+  //add the histograms from the 12-017 method
+  hpPb_TrkComb->Add(hpPb_Trk40_60);
+  hpPb_TrkComb->Add(hpPb_Trk60_75);
+  hpPb_TrkComb->Add(hpPb_Trk75_95);
+  hpPb_TrkComb->Add(hpPb_Trk95_120);
+  hpPb_TrkComb->Add(hpPb_Trk120);
+  
+  
+  //add the histogram from kurt's method 
+  hpPb_KurtComb->Add(hpPb_Kurt100);
+  hpPb_KurtComb->Add(hpPb_Kurt80_100);
+  hpPb_KurtComb->Add(hpPb_Kurt60_80);
+  hpPb_KurtComb->Add(hpPb_Kurt40_60);
+  hpPb_KurtComb->Add(hpPb_Kurt20_40);
 
-  //jetR3Tree->Write();
-  //evtTree->Write();
-  //hltTree->Write();
-  //trkTree->Write();
-  
   f.Write();
-  
-  //hpPb_Comb->Write();
-  //hpPb_Jet100->Write();
-  //hpPb_Jet80->Write();
-  //hpPb_JetMB->Write();
 
   f.Close();
 
