@@ -417,7 +417,7 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
     
     TFile *fin = TFile::Open(filename.c_str());
     
-    TTree* jetTree = (TTree*)fin->Get("ak3PFJetAnalyzer/t");
+    TTree* jetTree = (TTree*)fin->Get("akPu3PFJetAnalyzer/t");
     TTree* skimTree_in = (TTree*)fin->Get("skimanalysis/HltTree");
     //TTree* trackTree_in = (TTree*)fin->Get("ppTrack/trackTree");
     TTree* evtTree_in = (TTree*)fin->Get("hiEvtAnalyzer/HiTree");
@@ -520,8 +520,8 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       if(i%1000==0)cout<<"event = "<<i<<"; run = "<<run<<endl;
       
       
-      if(!pHBHENoiseFilter || !pprimaryvertexFilter || !pPAcollisionEventSelectionPA) continue;
-      if(!pVertexFilterCutGplus) continue;
+      if(!pHBHENoiseFilter || !pprimaryvertexFilter || !pPAcollisionEventSelectionPA || !pVertexFilterCutGplus) continue;
+      //if(!pVertexFilterCutGplus) continue;
       //if(vz>15. || vz<-15.) continue;
       if(fabs(vz)>15) continue;
       //cout<<"hi"<<endl;
@@ -576,13 +576,20 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 	  if (run>211300) {
 	    corrected_pt = pt3[j]*c_eta_Pbp->GetBinContent(c_eta_Pbp->FindBin(eta3[j]));
 	    corrected_pt = corrected_pt*f_pPb->Eval(pt3[j]);
-	    pt3[i] = corrected_pt;
+	    
+	    pt3[j] = corrected_pt;
 	  }else {
 	    corrected_pt = pt3[j]*c_eta_pPb->GetBinContent(c_eta_pPb->FindBin(eta3[j]));
 	    corrected_pt = corrected_pt*f_pPb->Eval(pt3[j]);
 	    pt3[j] = corrected_pt;
+
+	    //cout<<"corrected pt = "<<corrected_pt<<endl;
+	    //cout<<"uncorrected pt = "<<pt3[j]<<endl;
+
 	  }
 	}
+
+	//if(corrected_pt != pt3[j]) cout<<"JEC not working"<<endl;
 	
 	//first do the 12-003 merging 
 	if(fabs(eta3[j]+etashift)<1){
@@ -607,17 +614,20 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
 	  for(int ii=0; ii<5; ii++){
 	    if(trgDec[ii]){
 	      triggerPt = triggerMatch(trigObjSize[ii], trigObjPhi[ii], trigObjEta[ii], trigObjPt[ii], phi3[j], eta3[j], pt3[j]);
+	      //triggerPt = triggerMatch(trigObjSize[ii], trigObjPhi[ii], trigObjEta[ii], trigObjPt[ii], phi3[j], eta3[j], corrected_pt);
 	      //if you find a trigger match that has the right pt window for that particular trigger, break out of the for loop!
 	      if((triggerPt>(ii+1)*20 && triggerPt<(ii+2)*20) || (triggerPt>100 && ii==4)){
 		break;
 	      }
 	    }
 	  }
+	  
 	  if(jet100 && triggerPt>=100) hpPb_Kurt100->Fill(pt3[j],jet100_p);
 	  if(jet80 && triggerPt>=80 && triggerPt<100) hpPb_Kurt80_100->Fill(pt3[j],jet80_p);
 	  if(jet60 && triggerPt>=60 && triggerPt<80) hpPb_Kurt60_80->Fill(pt3[j],jet60_p);
 	  if(jet40 && triggerPt>=40 && triggerPt<60) hpPb_Kurt40_60->Fill(pt3[j],jet40_p);
 	  if(jet20 && triggerPt>=20 && triggerPt<40) hpPb_Kurt20_40->Fill(pt3[j],jet20_p);
+	  
 	}
 	
       }//end jet loop 
