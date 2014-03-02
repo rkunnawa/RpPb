@@ -27,7 +27,7 @@ echo "Processing..."
 
 root -b -q merge_kurt_files_V3.C\+\($startfile,$endfile\)
 
-hadoop dfs -moveFromLocal trig_merge_crosscheck_purdueforests_$endfile.root /cms/store/user/rkunnawa/rootfiles/pPb/2013/data/purdue_forests/
+hadoop dfs -moveFromLocal trig_merge_crosscheck_purdueforests_$endfile.root /cms/store/user/rkunnawa/rootfiles/pPb/2013/data/purdue_forests_V2/
 
 echo "Done!"
 

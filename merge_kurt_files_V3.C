@@ -1,4 +1,4 @@
- //  Raghav Kunnawalkam Elayavalli
+//  Raghav Kunnawalkam Elayavalli
 //  created: 21th Feb 2014
 
 //  sample macro to read in forest files from a file list which is given to us through a condor script. the output file will 
@@ -378,12 +378,12 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",1000,0,1000);
   */
   
-  TH1F* hpPb_Kurt100 = new TH1F("hpPb_Kurt100","",50,0,200);
-  TH1F* hpPb_Kurt80_100 = new TH1F("hpPb_Kurt80_100","",50,0,200);
-  TH1F* hpPb_Kurt60_80 = new TH1F("hpPb_Kurt60_80","",50,0,200);
-  TH1F* hpPb_Kurt40_60 = new TH1F("hpPb_Kurt40_60","",50,0,200);
-  TH1F* hpPb_Kurt20_40 = new TH1F("hpPb_Kurt20_40","",50,0,200);
-  TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",50,0,200);
+  TH1F* hpPb_Kurt100 = new TH1F("hpPb_Kurt100","",1000,0,1000);
+  TH1F* hpPb_Kurt80_100 = new TH1F("hpPb_Kurt80_100","",1000,0,1000);
+  TH1F* hpPb_Kurt60_80 = new TH1F("hpPb_Kurt60_80","",1000,0,1000);
+  TH1F* hpPb_Kurt40_60 = new TH1F("hpPb_Kurt40_60","",1000,0,1000);
+  TH1F* hpPb_Kurt20_40 = new TH1F("hpPb_Kurt20_40","",1000,0,1000);
+  TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",1000,0,1000);
   
   Float_t N_MB_pPb = 2.6026e10; //taken from the merged_MinBiasCentrality_Histo.root
 

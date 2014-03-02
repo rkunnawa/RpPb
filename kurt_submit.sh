@@ -5,6 +5,7 @@ incrementer=1
 
 destination=/mnt/hadoop/cms/store/user/rkunnawa/rootfiles/pPb/2013/data/purdue_forests/
 filelist=PAHighPtPurdueForest_4th.txt
+#filelist=file_rerun.list
 macrolib=merge_kurt_files_V3_C.so
 #filelist=kurt_small_filelist.txt
 #filelist=wxie_MinBiasUPC_all.txt
