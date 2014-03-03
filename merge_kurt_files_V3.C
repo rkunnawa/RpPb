@@ -384,6 +384,9 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   TH1F* hpPb_Kurt40_60 = new TH1F("hpPb_Kurt40_60","",1000,0,1000);
   TH1F* hpPb_Kurt20_40 = new TH1F("hpPb_Kurt20_40","",1000,0,1000);
   TH1F* hpPb_KurtComb = new TH1F("hpPb_KurtComb","",1000,0,1000);
+
+  TH1F* hPHI = new TH1F("hPHI","",1000,-4,4);
+  TH1F* hETA = new TH1F("hETA","",1000,-3,3);
   
   Float_t N_MB_pPb = 2.6026e10; //taken from the merged_MinBiasCentrality_Histo.root
 
@@ -573,6 +576,9 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
       	//raw pt cut - keep that for the analysis level.  
 	if(raw3[j]<20) continue;
 	if(pt3[j]<10) continue;
+
+	hETA->Fill(eta3[j]);
+	hPHI->Fill(phi3[j]);
 	
 	//add Doga's corrections 
 	//if(pt3[j]>=20 && pt3[j]<=300){
@@ -805,6 +811,9 @@ void merge_kurt_files_V3(const int startfile=0, const int endfile=1){
   hpPb_KurtComb->Add(hpPb_Kurt20_40);
 
   hpPb_KurtComb->Print();
+
+  hETA->Print();
+  hPHI->Print();
 
   f.Write();
 

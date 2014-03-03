@@ -3,7 +3,7 @@
 counter=0
 incrementer=1
 
-destination=/mnt/hadoop/cms/store/user/rkunnawa/rootfiles/pPb/2013/data/purdue_forests/
+destination=/mnt/hadoop/cms/store/user/rkunnawa/rootfiles/pPb/2013/data/purdue_forests_V2/
 filelist=PAHighPtPurdueForest_4th.txt
 #filelist=file_rerun.list
 macrolib=merge_kurt_files_V3_C.so
