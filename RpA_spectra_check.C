@@ -182,12 +182,12 @@ void RpA_spectra_check(){
 
   TFile *finMC = TFile::Open("RpA_pp_MC_NLO_reference_5020GeV.root");
   TFile *finData = TFile::Open("trig_merge_crosscheck_purdueforests_merge.root");
-  TFile *fPP = TFile::Open("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/result-2013-ppb-ak3PF-cent-1/ppb_merge_ak3PF_MB_correctedMC_weighting_eta_CM_1_lowest_pp_mc_Unfo_ak3PF_cent_1.root");
+  TFile *fPP = TFile::Open("ppb_merge_ak3PF_MB_correctedMC_weighting_eta_CM_1_lowest_pp_mc_Unfo_ak3PF_cent_1-5.root");
   TFile *fYaxian = TFile::Open("PPbJetTrigPYTHIAak3PFJetSpectraRpAHFsumEta4Bin1.root");
 
   TFile fout("RpA_spectra_check.root","RECREATE");
 
-  TH1F* hRaghav_test = (TH1F*)finData->Get("hpPb_Comb");
+  TH1F* hRaghav_test = (TH1F*)finData->Get("hpPb_KurtComb");
   TH1F* hKurt_test = (TH1F*)finData->Get("hpPb_KurtComb");
   TH1F* hYaxian_test = (TH1F*)finData->Get("hpPb_TrkComb");
 
@@ -207,46 +207,47 @@ void RpA_spectra_check(){
 
   TH1F* hPPMC = (TH1F*)finMC->Get("hPPrebin");
   hPPMC->Print("base");
+  hPPMC->Scale(1e-9);//to take them back to milli barns
   TH1F* hPP_nnpdf_NLO = (TH1F*)finMC->Get("hPP_nnpdf21_NLO");
+  hPP_nnpdf_NLO->Scale(1e-9);
   TH1F* hPP_ct10n_NLO = (TH1F*)finMC->Get("hPP_ct10n_NLO");
   TH1F* hPP_hera15all_NLO = (TH1F*)finMC->Get("hPP_hera15all_NLO");
   //TH1F* hPPMCrebin = rebin_yaxian(hPPMC,"hPPMCrebin");
 
   hRaghav->Scale(1./208);
-  hRaghav->Scale(1./15.612e-9);
+  hRaghav->Scale(1./15.612e6);
   hRaghav->Scale(1./2);
   divideBinWidth(hRaghav);
-
+  
   hRaghav_v2->Scale(1./208);
-  hRaghav_v2->Scale(1./15.612e-9);
+  hRaghav_v2->Scale(1./15.612e6);
   hRaghav_v2->Scale(1./2);
   divideBinWidth(hRaghav_v2);
 
   hRpA_12003->Scale(1./208);
-  hRpA_12003->Scale(1./15.612e-9);
+  hRpA_12003->Scale(1./15.612e6);
   hRpA_12003->Scale(1./2);
   divideBinWidth(hRpA_12003);
-
   hRpA_12017->Scale(1./208);
-  hRpA_12017->Scale(1./15.612e-9);
+  hRpA_12017->Scale(1./15.612e6);
   hRpA_12017->Scale(1./2);
   divideBinWidth(hRpA_12017);
 
   hRpA_14007->Scale(1./208);
-  hRpA_14007->Scale(1./15.612e-9);
+  hRpA_14007->Scale(1./15.612e6);
   hRpA_14007->Scale(1./2);
   divideBinWidth(hRpA_14007);
-
+  /*
   TH1F* hYaxian_2 = (TH1F*)fYaxian->Get("DataJetInEtaBin-10_10;1");
   hYaxian_2->Scale(1./208);
-  hYaxian_2->Scale(1./15.612e-9);
+  hYaxian_2->Scale(1./15.612e6);
   hYaxian_2->Scale(1./2);
   divideBinWidth(hYaxian_2);
   hYaxian_2->Print("base");
-
+  */
   //hRaghav_v2->Scale(1./15.612e-9);
   //hRaghav_v2->Scale(1./208);
-
+  /*
   TCanvas *c1 = new TCanvas("c1","",800,600);
   c1->SetLogy();
   //hRaghav_v2->Draw();
@@ -259,10 +260,10 @@ void RpA_spectra_check(){
   title2->AddEntry(hYaxian_2,"Yaxian code - 12-017(unfolded)","pl");
   title2->Draw();
   c1->SaveAs("RpA_12003_yaxian_12017_comparison.pdf","RECREATE");
+  */
 
-
-  hPPMC->Scale(1./1e-6);
-  hPP_nnpdf_NLO->Scale(1./1e-6);
+  //hPPMC->Scale(1./1e-6);
+  //hPP_nnpdf_NLO->Scale(1./1e-6);
   hRpA_12003->Divide(hPP_nnpdf_NLO);
   hRpA_12017->Divide(hPP_nnpdf_NLO);
   hRpA_14007->Divide(hPP_nnpdf_NLO);
@@ -272,7 +273,7 @@ void RpA_spectra_check(){
   TCanvas *c2 = new TCanvas("c2","",800,600);
   hRaghav->SetMarkerStyle(25);
   hRaghav->SetMarkerColor(kBlack);
-  hRaghav->SetTitle("RpA using 12-003 (measured) method with different PP references");
+  hRaghav->SetTitle("RpA using 14-007 (measured) method with different PP references");
   hRaghav->Draw();
   hRpA_12003->SetMarkerStyle(26);
   hRpA_12003->SetMarkerColor(kRed);
@@ -283,7 +284,7 @@ void RpA_spectra_check(){
   title->AddEntry(hRpA_12003,"NLO pp at 5.02TeV","pl");
   title->Draw();
   
-  c2->SaveAs("RpA_nlo_vs_pp_gen_12003.pdf","RECREATE");
+  c2->SaveAs("RpA_nlo_vs_pp_gen_14007.pdf","RECREATE");
 
   
   
@@ -291,7 +292,7 @@ void RpA_spectra_check(){
   
 
   fout.cd();
-  hYaxian_2->Write();
+  //hYaxian_2->Write();
   //hRaghav->Write();
   fout.Write();
   fout.Close();
