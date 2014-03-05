@@ -187,17 +187,23 @@ void RpA_spectra_check(){
 
   TFile fout("RpA_spectra_check.root","RECREATE");
 
-  TH1F* hRaghav_test = (TH1F*)finData->Get("hpPb_KurtComb");
+  TH1F* hRaghav_test = (TH1F*)finData->Get("hpPb_Comb");
   TH1F* hKurt_test = (TH1F*)finData->Get("hpPb_KurtComb");
   TH1F* hYaxian_test = (TH1F*)finData->Get("hpPb_TrkComb");
 
-  TH1F* hRaghav = rebin_yaxian(hRaghav_test,"hRaghav");
-  TH1F* hKurt = rebin_yaxian(hKurt_test,"hKurt");
-  TH1F* hYaxian = rebin_yaxian(hYaxian_test,"hYaxian");
+  //TH1F* hRaghav = rebin_yaxian(hRaghav_test,"hRaghav");
+  //TH1F* hKurt = rebin_yaxian(hKurt_test,"hKurt");
+  //TH1F* hYaxian = rebin_yaxian(hYaxian_test,"hYaxian");
+
+  TH1F* hRaghav = (TH1F*)hRaghav_test->Rebin(nbins_yaxian,"hRaghav",boundaries_yaxian);
+  TH1F* hKurt = (TH1F*)hKurt_test->Rebin(nbins_yaxian,"hKurt",boundaries_yaxian);
+  TH1F* hYaxian = (TH1F*)hYaxian_test->Rebin(nbins_yaxian,"hYaxian",boundaries_yaxian);
+  
 
   TH1F* hPP = (TH1F*)fPP->Get("hGen_cent1");
-  TH1F* hPPrebin = rebin_yaxian(hPP,"hPPrebin");
-  
+  //TH1F* hPPrebin = rebin_yaxian(hPP,"hPPrebin");
+  TH1F* hPPrebin = (TH1F*)hPP->Rebin(nbins_yaxian,"hPPrebin",boundaries_yaxian);
+
   hRaghav->Print("base");
   TH1F* hRaghav_v2 = (TH1F*)hRaghav->Clone("hRaghav_v2");
 
@@ -215,26 +221,37 @@ void RpA_spectra_check(){
   //TH1F* hPPMCrebin = rebin_yaxian(hPPMC,"hPPMCrebin");
 
   hRaghav->Scale(1./208);
-  hRaghav->Scale(1./15.612e6);
+  hRaghav->Scale(1./15.61e6);
   hRaghav->Scale(1./2);
   divideBinWidth(hRaghav);
+
+  hKurt->Scale(1./208);
+  hKurt->Scale(1./15.61e6);
+  hKurt->Scale(1./2);
+  divideBinWidth(hKurt);
+
+  hYaxian->Scale(1./208);
+  hYaxian->Scale(1./15.61e6);
+  hYaxian->Scale(1./2);
+  divideBinWidth(hYaxian);
   
   hRaghav_v2->Scale(1./208);
-  hRaghav_v2->Scale(1./15.612e6);
+  hRaghav_v2->Scale(1./15.61e6);
   hRaghav_v2->Scale(1./2);
   divideBinWidth(hRaghav_v2);
 
   hRpA_12003->Scale(1./208);
-  hRpA_12003->Scale(1./15.612e6);
+  hRpA_12003->Scale(1./15.61e6);
   hRpA_12003->Scale(1./2);
   divideBinWidth(hRpA_12003);
+
   hRpA_12017->Scale(1./208);
-  hRpA_12017->Scale(1./15.612e6);
+  hRpA_12017->Scale(1./15.61e6);
   hRpA_12017->Scale(1./2);
   divideBinWidth(hRpA_12017);
 
   hRpA_14007->Scale(1./208);
-  hRpA_14007->Scale(1./15.612e6);
+  hRpA_14007->Scale(1./15.61e6);
   hRpA_14007->Scale(1./2);
   divideBinWidth(hRpA_14007);
   /*
@@ -269,11 +286,13 @@ void RpA_spectra_check(){
   hRpA_14007->Divide(hPP_nnpdf_NLO);
 
   hRaghav->Divide(hPPMC);
+  hKurt->Divide(hPPMC);
+  hYaxian->Divide(hPPMC);
 
   TCanvas *c2 = new TCanvas("c2","",800,600);
   hRaghav->SetMarkerStyle(25);
   hRaghav->SetMarkerColor(kBlack);
-  hRaghav->SetTitle("RpA using 14-007 (measured) method with different PP references");
+  hRaghav->SetTitle("RpA using 12-003 (measured) method with different PP references");
   hRaghav->Draw();
   hRpA_12003->SetMarkerStyle(26);
   hRpA_12003->SetMarkerColor(kRed);
@@ -284,9 +303,39 @@ void RpA_spectra_check(){
   title->AddEntry(hRpA_12003,"NLO pp at 5.02TeV","pl");
   title->Draw();
   
-  c2->SaveAs("RpA_nlo_vs_pp_gen_14007.pdf","RECREATE");
+  c2->SaveAs("RpA_nlo_vs_pp_gen_12003.pdf","RECREATE");
 
+  TCanvas *c3 = new TCanvas("c3","",800,600);
+  hKurt->SetMarkerStyle(25);
+  hKurt->SetMarkerColor(kBlack);
+  hKurt->SetTitle("RpA using 14-007 (measured) method with different PP references");
+  hKurt->Draw();
+  hRpA_14007->SetMarkerStyle(26);
+  hRpA_14007->SetMarkerColor(kRed);
+  hRpA_14007->Draw("same");
+
+  TLegend *title2 = myLegend(0.34,0.65,0.65,0.9);
+  title2->AddEntry(hKurt,"MC Gen reference","pl");
+  title2->AddEntry(hRpA_14007,"NLO pp at 5.02TeV","pl");
+  title2->Draw();
   
+  c3->SaveAs("RpA_nlo_vs_pp_gen_14007.pdf","RECREATE");
+
+  TCanvas *c4 = new TCanvas("c4","",800,600);
+  hYaxian->SetMarkerStyle(25);
+  hYaxian->SetMarkerColor(kBlack);
+  hYaxian->SetTitle("RpA using 12-017 (measured) method with different PP references");
+  hYaxian->Draw();
+  hRpA_12017->SetMarkerStyle(26);
+  hRpA_12017->SetMarkerColor(kRed);
+  hRpA_12017->Draw("same");
+
+  TLegend *title3 = myLegend(0.34,0.65,0.65,0.9);
+  title3->AddEntry(hYaxian,"MC Gen reference","pl");
+  title3->AddEntry(hRpA_12017,"NLO pp at 5.02TeV","pl");
+  title3->Draw();
+  
+  c4->SaveAs("RpA_nlo_vs_pp_gen_12017.pdf","RECREATE");
   
   
   

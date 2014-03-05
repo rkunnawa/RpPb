@@ -199,6 +199,7 @@ void RpA_NLO_cross_section_comparison(){
   TFile * fhera15all_4 = TFile::Open("fnl5350eta4_hera15all-nlo_aspdf.root");
 
   TFile * fPP = TFile::Open("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/result-2013-ppb-ak3PF-cent-1/ppb_merge_ak3PF_MB_correctedMC_weighting_eta_CM_1_lowest_pp_mc_Unfo_ak3PF_cent_1.root");
+  //TFile *fPP = TFile::Open("ppb_merge_ak3PF_MB_correctedMC_weighting_eta_CM_1_lowest_pp_mc_Unfo_ak3PF_cent_1-5.root");
 
   // we are going to look at nnpdf21 nlo calculatino and the eta bins we are interested in are 0.0 to 0.3, 0.3 to 0.7 and 0.7 to 1. there are in +eta since for pp the final output is symmetric. the histogram from the root file are named accroding to 
   // The R in histogram number xxxxRxx goes from 0.2 jet size to 0.4 jet size for R=1,2,3.
@@ -246,7 +247,8 @@ void RpA_NLO_cross_section_comparison(){
   TH1F* hpt_hera15all_4 = (TH1F*)fhera15all_4->Get("h100200");
 
   TH1F* hPP = (TH1F*)fPP->Get("hGen_cent1");
-  TH1F* hPPrebin = rebin_yaxian(hPP,"hPPrebin");
+  //TH1F* hPPrebin = rebin_yaxian(hPP,"hPPrebin");
+  TH1F* hPPrebin = (TH1F*)hPP->Rebin(nbins_yaxian,"hPPrebin",boundaries_yaxian);
 
   /*
   hpt_0->Print("base");
