@@ -172,19 +172,32 @@ void RpA_crosscheck(){
   //timer.start();
 
 
-  TFile *fin = TFile::Open("RpA_trig_merge_crosscheck_purdue_forests_merge.root");
+  TFile *fin = TFile::Open("trig_merge_crosscheck_purdueforests_merge.root");
+  TFile *fin_rerun = TFile::Open("trig_merge_crosscheck_purdueforests_rerun_103.root");
+  TFile * fYaxian = TFile::Open("PPbJetTrigPYTHIAak3PFJetSpectraRpAHFsumEta4Bin1.root");
 
   TH1F* hRaghav_test = (TH1F*)fin->Get("hpPb_Comb");
-  TH1F* hKurt = (TH1F*)fin->Get("hpPb_KurtComb");
+  TH1F* hKurt_test = (TH1F*)fin->Get("hpPb_KurtComb");
   TH1F* hYaxian_test = (TH1F*)fin->Get("hpPb_TrkComb");
 
+  TH1F* hRaghav_rerun = (TH1F*)fin_rerun->Get("hpPb_Comb");
+  TH1F* hKurt_rerun = (TH1F*)fin_rerun->Get("hpPb_KurtComb");
+  TH1F* hYaxian_rerun = (TH1F*)fin_rerun->Get("hpPb_TrkComb");
+
+  //TH1F* hYaxian
+
+  hRaghav_test->Add(hRaghav_rerun);
+  hYaxian_test->Add(hYaxian_rerun);
+
   hRaghav_test->Print();
-  hKurt->Print();
+  hKurt_test->Print();
   hYaxian_test->Print();
 
   TH1F* hRaghav = rebin(hRaghav_test,"hRaghav");
   TH1F* hYaxian = rebin(hYaxian_test,"hYaxian");
-
+  TH1F* hKurt = rebin(hKurt_test,"hKurt");
+  
+  hKurt->Add(hKurt_rerun);
 
   TCanvas *c1 = new TCanvas("c1","",800,600);
   c1->Divide(2,1);
@@ -246,6 +259,14 @@ void RpA_crosscheck(){
   title2->Draw();
 
   c1->SaveAs("RpA_trigger_Crosscheck.pdf","RECREATE");
+
+  TFile fout("RpA_trigcombination_check.root","RECREATE");
+  hRaghav->Write();
+  hKurt->Write();
+  hYaxian->Write();
+  fout.Write();
+  fout.Close();
+
   
  
 
