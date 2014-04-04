@@ -118,7 +118,7 @@ void formatCanvas(TCanvas *c){
   c->Divide(1,2,0.01,0.01);
   c->cd(1);
   c->GetPad(1)->SetLogy();
-  c->GetPad(1)->SetPad(0.,0.425,1.,1.);
+  c->GetPad(1)->SetPad(0.,0.4,1.,1.);
   c->GetPad(2)->SetPad(0.,0.0,1.,0.45);
   c->GetPad(2)->SetBottomMargin(0.3);
   c->GetPad(2)->SetGridy(1);
@@ -134,8 +134,8 @@ static const double boundaries_yaxian[nbins_yaxian+1] = {22, 27, 33, 39, 47, 55,
 //static const int nbins_rec = 50;
 //statis const int boundaries_rec[]
 
-static const int nbins_trigger = 26;
-static const double boundaries_trigger[nbins_trigger+1] = {0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90, 96, 102, 108, 114, 120, 126, 132, 138,144,150,156};
+static const int nbins_trigger = 25;
+static const double boundaries_trigger[nbins_trigger+1] = {0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90, 96, 102, 108, 114, 120, 126, 132, 138,144,150};
 
 static const int nbins_trigger20 = 15;
 static const double boundaries_trigger20[nbins_trigger20+1] = {0, 6, 12, 18, 24, 30, 36, 42, 54, 66, 72, 84, 102, 120, 138,156};
@@ -192,11 +192,11 @@ void RpA_crosscheck(){
   TH1::SetDefaultSumw2();
 
   gStyle->SetOptStat(0);
-  gStyle->SetErrorX(0);
+  //gStyle->SetErrorX(0);
 
   //timer.start();
 
-  TFile *fin = TFile::Open("pAforest_merge_output_akPu3PF_v2.root");
+  TFile *fin = TFile::Open("pPb_spectrahistos.root");
   //TFile *fin_2 = TFile::Open("pAforest_trig_nocut.root");
   //TFile *fin_rerun = TFile::Open("trig_merge_crosscheck_purdueforests_2368.root");
   TFile * fYaxian = TFile::Open("PPbJetTrigPYTHIAak3PFJetSpectraRpAHFsumEta4Bin1.root");
@@ -474,7 +474,16 @@ void RpA_crosscheck(){
   hTurnon80->Draw("same");
   hTurnon60->Draw("same");
   hTurnon40->Draw("same");
-  hTurnon20->Draw("same");				
+  hTurnon20->Draw("same");
+  hTurnon40->Draw("same");
+  hTurnon60->Draw("same");
+  hTurnon80->Draw("same");
+  hTurnon100->Draw("same");
+
+  TLine *line = new TLine(0,1,150,1);
+  line->SetLineStyle(2);
+  line->SetLineWidth(2);
+  line->Draw();
 
   TLegend *title3 = myLegend(0.68,0.15,0.92,0.45);
   title3->AddEntry(hTurnon20,"HLT_PAJet20","pl");
@@ -535,7 +544,7 @@ void RpA_crosscheck(){
 
   putCMSPrel(0.1,0.9,0.06);
   drawText("#sqrt{s_{NN}}=5.02 TeV",0.5,0.91,16);
-  drawText("pPb #int dt = 15.784 nb^{-1}, |#eta_{CM}|<1, 0-100%",0.5,0.5,16);
+  drawText("pPb #int dt = 20.7 nb^{-1}, |#eta_{CM}|<1, 0-100%",0.5,0.5,16);
   //drawText();
 
   c3->SaveAs("RpA_14007_method_combination.pdf","RECREATE");
@@ -563,6 +572,7 @@ void RpA_crosscheck(){
   hpPb_raghav_comb_20->Draw("same");
   hpPb_raghav_comb_40->Draw("same");
   hpPb_raghav_comb_60->Draw("same");
+  hpPb_kurt_comb->Draw("same");
   
   TLegend* title5 = myLegend(0.5,0.6,0.9,0.9);
   title5->AddEntry(hpPb_kurt_comb,"14-007 method","pl");
@@ -574,7 +584,7 @@ void RpA_crosscheck(){
 
   putCMSPrel(0.1,0.9,0.06);
   drawText("#sqrt{s_{NN}}=5.02 TeV",0.5,0.91,16);
-  drawText("pPb #int dt = 15.784 nb^{-1}, |#eta_{CM}|<1, 0-100%",0.5,0.5,16);
+  drawText("pPb #int dt = 20.7 nb^{-1}, |#eta_{CM}|<1, 0-100%",0.5,0.5,16);
   c4->SaveAs("RpA_12003_comparingwith_14007.pdf","RECREATE");
 
   TCanvas *c5 = new TCanvas("c5","",800,600);
@@ -608,9 +618,50 @@ void RpA_crosscheck(){
 
   putCMSPrel(0.1,0.9,0.06);
   drawText("#sqrt{s_{NN}}=5.02 TeV",0.5,0.91,16);
-  drawText("pPb #int dt = 15.784 nb^{-1}, |#eta_{CM}|<1, 0-100%",0.5,0.5,16);
+  drawText("pPb #int dt = 20.7 nb^{-1}, |#eta_{CM}|<1, 0-100%",0.5,0.5,16);
   c5->SaveAs("RpA_12003_method_combination.pdf","RECREATE");
 
+  TH1F* hpPb_eta = (TH1F*)fin->Get("hETA");
+  TH1F* hpPb_rapidity = (TH1F*)fin->Get("hJetRapidity");
+
+  TH2F* hRap_vs_eta = new TH2F("hRap_vs_eta","",1000,-5,5,1000,-5,5);
+  
+  for(int i = 0;i<hpPb_eta->GetNbinsX();i++){
+    float val_eta = hpPb_eta->GetBinContent(i);
+    float val_rapidity = hpPb_rapidity->GetBinContent(i);
+    hRap_vs_eta->Fill(val_eta,val_rapidity);
+  }
+
+  TCanvas *c6 = new TCanvas("c6","",800,600);
+  c6->Divide(2,1);
+  c6->cd(1);
+  hpPb_eta->SetMarkerStyle(20);
+  hpPb_eta->SetMarkerColor(kBlue);
+  hpPb_rapidity->SetMarkerStyle(20);
+  hpPb_rapidity->SetMarkerColor(kRed);
+
+  hpPb_eta->Draw("p");
+  hpPb_rapidity->Draw("same p");
+
+  TLegend* title7 = myLegend(0.5,0.7,0.8,0.9);
+  title7->AddEntry(hpPb_eta,"Pseudorapidity(CM) #eta","pl");
+  title7->AddEntry(hpPb_rapidity,"Rapidity y","pl");
+  title7->Draw();
+  
+  putCMSPrel(0.1,0.92,0.06);
+  drawText("pPb #int dt = 20.7 nb^{-1}, 0-100%",0.6,0.6,16);
+
+  c6->cd(2);
+  hRap_vs_eta->SetXTitle("Pseudorapidity (CM) #eta");
+  hRap_vs_eta->SetYTitle("Rapidity y");
+  drawText("#sqrt{s_{NN}}=5.02 TeV",0.5,0.92,16);
+
+  hRap_vs_eta->Draw("colz");
+
+  c6->SaveAs("RpA_eta_vs_rapidity_comp.pdf","RECREATE");
+
+  
+  
   TFile fout("RpA_trigcombination_check.root","RECREATE");
   hRaghav->Write();
   hKurt->Write();
