@@ -1,4 +1,3 @@
-
 // Raghav Kunnawalkam Elayavalli
 // created: Marth 3rd 2014
 
@@ -20,6 +19,7 @@
 #include <TGraphErrors.h>
 #include <TGraphAsymmErrors.h>
 #include <TH1.h>
+#include <TDirectoryFile.h>
 #include <TH2.h>
 #include <TH3.h>
 #include <TFile.h>
@@ -122,7 +122,7 @@ void formatCanvas(TCanvas *c){
   c->cd(1);
   c->GetPad(1)->SetLogy();
   c->GetPad(1)->SetPad(0.,0.425,1.,1.);
-  c->GetPad(2)->SetPad(0.,0.0,1.,0.45);
+  c->GetPad(2)->SetPad(0.,0.0,1.,0.425);
   c->GetPad(2)->SetBottomMargin(0.3);
   c->GetPad(2)->SetGridy(1);
 }
@@ -131,8 +131,11 @@ void formatCanvas(TCanvas *c){
 //static const int nbins_yaxian = 29;
 //static const double boundaries_yaxian[nbins_yaxian+1] = {3,4,5,7,9,12,15,18,22,27,33,39,47,55,64,74,84,97,114,133,153,174,196,220,245,272,300,429,692,1000};
 
-static const int nbins_yaxian = 29;
-static const double boundaries_yaxian[nbins_yaxian+1] = {22, 27, 33, 39, 47, 55, 64, 74, 84, 97, 114, 133, 153, 174, 196, 220, 245, 272, 300, 330, 362, 395, 430, 468, 507, 548, 592, 638, 790, 967};
+static const int nbins_yaxian_large = 29;
+static const double boundaries_yaxian_large[nbins_yaxian_large+1] = {22, 27, 33, 39, 47, 55, 64, 74, 84, 97, 114, 133, 153, 174, 196, 220, 245, 272, 300, 330, 362, 395, 430, 468, 507, 548, 592, 638,790,967};
+
+static const int nbins_yaxian = 18;
+static const double boundaries_yaxian[nbins_yaxian+1] = {22, 27, 33, 39, 47, 55, 64, 74, 84, 97, 114, 133, 153, 174, 196, 220, 245, 272, 300};
 
 //static const int nbins_rec = 50;
 //statis const int boundaries_rec[]
@@ -176,17 +179,21 @@ TH1F *rebin_yaxian(TH1F *h, char *histName)
   return hRebin;
 }
 
-
 using namespace std;
 
 TStopwatch timer;
 
 
-void RpA_NLO_cross_section_comparison(int radius = 4){
+void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true){
   // r = 5 histos doesnt exist. 
 
   timer.Start();
   gStyle->SetOptStat(0);
+	
+  gStyle->SetErrorX(0.5);
+  gStyle->SetPaintTextFormat("3.2f");
+  gStyle->SetOptLogz(1);
+  gStyle->SetPadRightMargin(0.13);
 
   TH1::SetDefaultSumw2();
 
@@ -228,10 +235,14 @@ void RpA_NLO_cross_section_comparison(int radius = 4){
   // 1 : 0.3 to 0.7 
   // 2 : 0.7 to 1.0 
   // 3 : 1.0 to 1.2
-  // 4 : 1.2 to 2.2                    
-  
-  // for our ourput - -1 to 1. no number
-  
+  // 4 : 1.2 to 2.2   
+  // this is what is there in the NLO file. lets change it to the eta bins that im going to show the spectra in: 
+  // 0 : -0.3 to +0.3
+  // 1 : -0.7 to -0.3 and 0.3 to 0.7
+  // 2 : -1.2 to -0.7 and 0.7 to 1.2
+  // 3 : -2.2 to -1.2 and 1.2 to 2.2 
+  // no number: -1 to +1 
+    
   // once we get the histograms from the file we have to add them to get to eta range from -1 to 1. 
   // for this we need to multiply/scale the histograms by delta eta for its respective bin. 
 
@@ -243,12 +254,37 @@ void RpA_NLO_cross_section_comparison(int radius = 4){
 
   cout<<Form("ak%dPF",radius)<<endl;
   //output file 
-  TFile fout(Form("RpA_pp_MC_NLO_reference_ak%dPF_5020GeV.root",radius),"RECREATE");
+  TFile fout(Form("RpA_pp_MC_eric_NLO_reference_ak%dPF_5020GeV.root",radius),"RECREATE");
   TFile * fPP = TFile::Open(Form("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/result-2013-ppb-akPu%dPF-cent-1/ppb_merge_correctedMC_weighting_eta_CM_1_mc__akPu%dPF_cent_1.root",radius,radius));
-  
-  //TFile *fPP = TFile::Open("ppb_merge_ak3PF_MB_correctedMC_weighting_eta_CM_1_lowest_pp_mc_Unfo_ak3PF_cent_1-5.root");
+  //TFile *fEric = TFile::Open("pythiaZ2ForNLOComp.root");
+  TFile *fEric = TFile::Open("AnaGENJetR3_Apr2_Z2Combined.root");
+  TDirectoryFile *ak3GenJetSpectrum_n22_n12 = (TDirectoryFile*)fEric->Get("ak3GenJetSpectrum_n22_n12");
+  TDirectoryFile *ak3GenJetSpectrum_n12_n07 = (TDirectoryFile*)fEric->Get("ak3GenJetSpectrum_n12_n07");
+  TDirectoryFile *ak3GenJetSpectrum_n07_n03 = (TDirectoryFile*)fEric->Get("ak3GenJetSpectrum_n07_n03");
+  TDirectoryFile *ak3GenJetSpectrum_n03_p03 = (TDirectoryFile*)fEric->Get("ak3GenJetSpectrum_n03_p03");
+  TDirectoryFile *ak3GenJetSpectrum_p03_p07 = (TDirectoryFile*)fEric->Get("ak3GenJetSpectrum_p03_p07");
+  TDirectoryFile *ak3GenJetSpectrum_p07_p12 = (TDirectoryFile*)fEric->Get("ak3GenJetSpectrum_p07_p12");
+  TDirectoryFile *ak3GenJetSpectrum_p12_p22 = (TDirectoryFile*)fEric->Get("ak3GenJetSpectrum_p12_p22");
+  TDirectoryFile *ak3GenJetSpectrum_n10_p10 = (TDirectoryFile*)fEric->Get("ak3GenJetSpectrum_n10_p10");
 
+  TH1F* hpp_eric_n22_n12 = (TH1F*)ak3GenJetSpectrum_n22_n12->Get("JetSpectrum_Fine");
+  TH1F* hpp_eric_n12_n07 = (TH1F*)ak3GenJetSpectrum_n12_n07->Get("JetSpectrum_Fine");
+  TH1F* hpp_eric_n07_n03 = (TH1F*)ak3GenJetSpectrum_n07_n03->Get("JetSpectrum_Fine");
+  TH1F* hpp_eric_n03_p03 = (TH1F*)ak3GenJetSpectrum_n03_p03->Get("JetSpectrum_Fine");
+  TH1F* hpp_eric_p03_p07 = (TH1F*)ak3GenJetSpectrum_p03_p07->Get("JetSpectrum_Fine");
+  TH1F* hpp_eric_p07_p12 = (TH1F*)ak3GenJetSpectrum_p07_p12->Get("JetSpectrum_Fine");
+  TH1F* hpp_eric_p12_p22 = (TH1F*)ak3GenJetSpectrum_p12_p22->Get("JetSpectrum_Fine");
+  TH1F* hpp_eric_n10_p10 = (TH1F*)ak3GenJetSpectrum_n10_p10->Get("JetSpectrum_Fine");
   
+  TH1F* hpp_mc_n22_n12 = (TH1F*)fPP->Get("hpp_pythia_gen_n22n12");
+  TH1F* hpp_mc_n12_n07 = (TH1F*)fPP->Get("hpp_pythia_gen_n12n07");
+  TH1F* hpp_mc_n07_n03 = (TH1F*)fPP->Get("hpp_pythia_gen_n07n03");
+  TH1F* hpp_mc_n03_p03 = (TH1F*)fPP->Get("hpp_pythia_gen_n03p03");
+  TH1F* hpp_mc_p03_p07 = (TH1F*)fPP->Get("hpp_pythia_gen_p03p07");
+  TH1F* hpp_mc_p07_p12 = (TH1F*)fPP->Get("hpp_pythia_gen_p07p12");
+  TH1F* hpp_mc_p12_p22 = (TH1F*)fPP->Get("hpp_pythia_gen_p12p22");
+  TH1F* hpp_mc_n10_p10 = (TH1F*)fPP->Get("hpp_pythia_gen_n10p10");
+
   Double_t deta_0 = 0.6;
   Double_t deta_1 = 0.8;
   Double_t deta_2 = 0.6;
@@ -256,6 +292,42 @@ void RpA_NLO_cross_section_comparison(int radius = 4){
   Double_t deta_4 = 2.0;
 
   Double_t deta = 2;
+
+  // now get the correct histograms which follow whats given in the NLO. and scale it by delta eta 
+  TH1F* hpp_mc_0 = (TH1F*)hpp_mc_n03_p03->Clone("hpp_mc_0");
+  hpp_mc_0->Scale(1./0.6);
+  TH1F* hpp_mc_1 = (TH1F*)hpp_mc_n07_n03->Clone("hpp_mc_1");
+  hpp_mc_1->Divide(1./0.4);
+  hpp_mc_p03_p07->Scale(1./0.4);
+  hpp_mc_1->Add(hpp_mc_p03_p07);
+  hpp_mc_1->Scale(1./0.8);
+  
+  TH1F* hpp_mc_2 = (TH1F*)hpp_mc_n12_n07->Clone("hpp_mc_2");
+  hpp_mc_2->Scale(1./0.5);
+  hpp_mc_p07_p12->Scale(1./0.5);
+  hpp_mc_2->Add(hpp_mc_p07_p12);
+  hpp_mc_2->Scale(1./1);
+
+  TH1F* hpp_mc_3 = (TH1F*)hpp_mc_n22_n12->Clone("hpp_mc_3");
+  hpp_mc_3->Scale(1./1);
+  hpp_mc_p12_p22->Scale(1./1);
+  hpp_mc_3->Add(hpp_mc_p12_p22);
+  hpp_mc_3->Scale(1./2);
+
+  TH1F* hpp_mc = (TH1F*)hpp_mc_n10_p10->Clone("hpp_mc");
+  hpp_mc->Scale(1./2);
+
+  hpp_eric_n22_n12 = (TH1F*)hpp_eric_n22_n12->Rebin(nbins_yaxian_large,"hpp_eric_n22_n12",nbins_yaxian_large);
+  hpp_eric_n12_n07 = (TH1F*)hpp_eric_n12_n07->Rebin(nbins_yaxian_large,"hpp_eric_n12_n07",nbins_yaxian_large);
+  hpp_eric_n07_n03 = (TH1F*)hpp_eric_n07_n03->Rebin(nbins_yaxian_large,"hpp_eric_n07_n03",nbins_yaxian_large);
+  hpp_eric_n03_p03 = (TH1F*)hpp_eric_n03_p03->Rebin(nbins_yaxian_large,"hpp_eric_n03_p03",nbins_yaxian_large);
+  hpp_eric_p03_p07 = (TH1F*)hpp_eric_p03_p07->Rebin(nbins_yaxian_large,"hpp_eric_p03_p07",nbins_yaxian_large);
+  hpp_eric_p07_p12 = (TH1F*)hpp_eric_p07_p12->Rebin(nbins_yaxian_large,"hpp_eric_p07_p12",nbins_yaxian_large);
+  hpp_eric_p12_p22 = (TH1F*)hpp_eric_p12_p22->Rebin(nbins_yaxian_large,"hpp_eric_p12_p22",nbins_yaxian_large);
+  hpp_eric_n10_p10 = (TH1F*)hpp_eric_n10_n10->Rebin(nbins_yaxian_large,"hpp_eric_n22_p12",nbins_yaxian_large);
+
+  TH1F* hpp_eric_0 = (TH1F*)hpp_eric_n03_p03->Clone("bpp_eric_0");
+  
 
 
   //get the histograms 
@@ -284,10 +356,34 @@ void RpA_NLO_cross_section_comparison(int radius = 4){
   TH1F* hStatUncert_3 = (TH1F*)fStatErr_3->Get(Form("h100%d03",radius-1));
   TH1F* hStatUncert_4 = (TH1F*)fStatErr_4->Get(Form("h100%d03",radius-1));
 
-  TH1F* hPP = (TH1F*)fPP->Get("hGen_cent1");
-  //TH1F* hPPrebin = rebin_yaxian(hPP,"hPPrebin");
-  TH1F* hPPrebin = (TH1F*)hPP->Rebin(nbins_yaxian,"hPPrebin",boundaries_yaxian);
 
+  if(!useEricSpectra){
+    TH1F* hPP = (TH1F*)fPP->Get("hGen_cent1");
+    TH1F* hPPrebin = (TH1F*)hPP->Rebin(nbins_yaxian_large,"hPPrebin",boundaries_yaxian_large);
+  }else {
+    TH1F* hEric_test = (TH1F*)fEric->Get("pythiaJetSpectrum");// this spectra is from Eric's file. 
+    TH1F* hPPrebin = (TH1F*)hEric_test->Rebin(nbins_yaxian,"hPPrebin",boundaries_yaxian);
+    
+    TH1F* hPPrebin = new TH1F("hPPrebin","",nbins_yaxian_large,boundaries_yaxian_large);
+    
+    TString dir = gSystem->UnixPathName(gInterpreter->GetCurrentMacroName());
+    dir.ReplaceAll("RpA_NLO_cross_Section_comparison.C","");
+    dir.ReplaceAll("/./","/");
+    ifstream in;
+    in.open(Form("eric_spectra.txt",dir.Data()));
+    Float_t eric_content;
+    Float_t bin;
+    int counter = 1;
+    while(1){
+      in>>bin>>eric_content;
+      if(!in.good())break;
+      
+      hPPrebin->SetBinContent(counter,eric_content);
+      counter++;
+      
+    }
+  }
+  
   /*
   hpt_0->Print("base");
   hpt_1->Print("base");
@@ -327,9 +423,9 @@ void RpA_NLO_cross_section_comparison(int radius = 4){
 
   fout.cd();
 
-  TH1F* hPP_nnpdf21_NLO = new TH1F("hPP_nnpdf21_NLO","",nbins_yaxian,boundaries_yaxian);
-  TH1F* hPP_ct10n_NLO = new TH1F("hPP_ct10n_NLO","",nbins_yaxian,boundaries_yaxian);
-  TH1F* hPP_hera15all_NLO = new TH1F("hPP_hera15all_NLO","",nbins_yaxian,boundaries_yaxian);
+  TH1F* hPP_nnpdf21_NLO = new TH1F("hPP_nnpdf21_NLO","",nbins_yaxian_large,boundaries_yaxian_large);
+  TH1F* hPP_ct10n_NLO = new TH1F("hPP_ct10n_NLO","",nbins_yaxian_large,boundaries_yaxian_large);
+  TH1F* hPP_hera15all_NLO = new TH1F("hPP_hera15all_NLO","",nbins_yaxian_large,boundaries_yaxian_large);
 
   //
 
@@ -372,32 +468,33 @@ void RpA_NLO_cross_section_comparison(int radius = 4){
   hPP_hera15all_NLO->Scale(1./deta);
   hPP_hera15all_NLO->Print("base");
 
-  hPPrebin->Scale(1./deta);
   hPPrebin->Scale(1e9);//take it to pico barns
-  divideBinWidth(hPPrebin);
-
+  if(!useEricSpectra){
+    hPPrebin->Scale(1./deta);
+    divideBinWidth(hPPrebin);
+  }
   
   //double integral = hPP_refe_NLO->Integral();
   //hPP_refe_NLO->Scale(1./integral);
 
   //divide the two histograms 
 
-  TH1F* hRatio_nnpdf21 = (TH1F*)hPP_nnpdf21_NLO->Clone("hRatio");
+  TH1F* hRatio_nnpdf21 = (TH1F*)hPP_nnpdf21_NLO->Rebin(nbins_yaxian_large,"hRatio_nnpdf21",boundaries_yaxian_large);
   hRatio_nnpdf21->Divide(hPPrebin);
 
   hPP_nnpdf21_NLO->Write();
 
-  TH1F* hRatio_ct10n = (TH1F*)hPP_ct10n_NLO->Clone("hRatio");
+  TH1F* hRatio_ct10n = (TH1F*)hPP_ct10n_NLO->Rebin(nbins_yaxian_large,"hRatio_ct10n",boundaries_yaxian_large);
   hRatio_ct10n->Divide(hPPrebin);
 
   hPP_ct10n_NLO->Write();
 
-  TH1F* hRatio_hera15all = (TH1F*)hPP_hera15all_NLO->Clone("hRatio");
+  TH1F* hRatio_hera15all = (TH1F*)hPP_hera15all_NLO->Rebin(nbins_yaxian_large,"hRatio_hera15all",boundaries_yaxian_large);
   hRatio_hera15all->Divide(hPPrebin);
 
   hPP_hera15all_NLO->Write();
   hPPrebin->Write();
-  hRatio->Write();
+  //hRatio->Write();
 
   fout.Write();
   
@@ -427,41 +524,53 @@ void RpA_NLO_cross_section_comparison(int radius = 4){
   formatCanvas(c1);
   c1->cd(1);
   c1->cd(1)->SetLogy();
-  hPP_nnpdf21_NLO->SetLineColor(kRed);
-  hPP_ct10n_NLO->SetLineColor(kBlue);
-  hPP_hera15all_NLO->SetLineColor(kGreen);
+  hPP_nnpdf21_NLO->SetMarkerColor(kRed);
+  hPP_nnpdf21_NLO->SetMarkerStyle(20);
+  hPP_ct10n_NLO->SetMarkerColor(kBlue);
+  hPP_ct10n_NLO->SetMarkerStyle(20);
+  hPP_hera15all_NLO->SetMarkerColor(kGreen);
+  hPP_hera15all_NLO->SetMarkerStyle(20);
   hPPrebin->SetMarkerColor(kBlack);
-  hPPrebin->SetMarkerStyle(6);
+  hPPrebin->SetMarkerStyle(8);
+  //hPPrebin->SetMarkerSize();
   
-  hPP_nnpdf21_NLO->SetYTitle("#sigma pico barns");
-  hPP_nnpdf21_NLO->SetXTitle("p_{T} GeV/c");
+  hPPrebin->SetYTitle("#frac{d^{2} #sigma}{d p_{T} d #eta} (pb)");
+  hPPrebin->SetXTitle("p_{T} GeV/c");
+  hPPrebin->SetAxisRange(22,600,"X");
+  hPPrebin->SetTitle(" ");
+  hPPrebin->Draw();
+  hPP_nnpdf21_NLO->Draw("same p");
+  hPP_ct10n_NLO->Draw("same p");
+  hPP_hera15all_NLO->Draw("same p");
+  hPPrebin->Draw("same p");
 
-  hPP_nnpdf21_NLO->Draw();
-  hPP_ct10n_NLO->Draw("same");
-  hPP_hera15all_NLO->Draw("same");
-  hPPrebin->Draw("same");
-
-  TLegend * title = myLegend(0.34, 0.65,0.65, 0.8);
-  title->AddEntry(hPP_nnpdf21_NLO,"NLO nnpdf21","l");
-  title->AddEntry(hPP_ct10n_NLO,"NLO ct10n","l");
-  title->AddEntry(hPP_hera15all_NLO,"NLO hera15all","l");
-  title->AddEntry(hPPrebin,"MC Gen spectra","pl");
+  TLegend * title = myLegend(0.47, 0.55,0.67, 0.8);
+  title->AddEntry(hPP_nnpdf21_NLO,"NLO nnpdf21","pl");
+  title->AddEntry(hPP_ct10n_NLO,"NLO ct10n","pl");
+  title->AddEntry(hPP_hera15all_NLO,"NLO hera15all","pl");
+  
+  if(useEricSpectra)title->AddEntry(hPPrebin,"MC Gen spectra (Eric)","pl");
+  if(!useEricSpectra)title->AddEntry(hPPrebin,"MC spectra","pl");
   title->SetTextSize(0.04);
   title->Draw();
 
-  putCMSPrel(0.2,0.83,0.06);
-  drawText(Form("ak%dPF, #sqrt{s} = 5.02 TeV",radius),0.47,0.6,16);
+  putCMSPrel(0.1,0.92,0.06);
+  drawText(Form("anti k_{T} R = 0.3, #sqrt{s} = 5.02 TeV",radius),0.47,0.83,16);
 
   c1->cd(2);
   hRatio_nnpdf21->SetYTitle("NLO / MC Gen");
   hRatio_nnpdf21->SetXTitle("p_{T} GeV/c");
-  hRatio_nnpdf21->SetAxisRange(0,2,"Y");
-  hRatio_nnpdf21->SetLineColor(kRed);
-  hRatio_hera15all->SetLineColor(kGreen);
-  hRatio_ct10n->SetLineColor(kBlue);
-  hRatio_nnpdf21->Draw();
-  hRatio_hera15all->Draw("same");
-  hRatio_ct10n->Draw("same");
+  hRatio_nnpdf21->SetAxisRange(0.8,1.5,"Y");
+  hRatio_nnpdf21->SetMarkerColor(kRed);
+  hRatio_nnpdf21->SetMarkerStyle(20);
+  hRatio_hera15all->SetMarkerColor(kGreen);
+  hRatio_hera15all->SetMarkerStyle(20);
+  hRatio_ct10n->SetMarkerColor(kBlue);
+  hRatio_ct10n->SetMarkerStyle(20);
+  hRatio_nnpdf21->Draw("p");
+  hRatio_nnpdf21->SetAxisRange(22,600,"X");
+  hRatio_hera15all->Draw("same p");
+  hRatio_ct10n->Draw("same p");
 
   c1->SaveAs(Form("pp_5020GeV_NLO_ak%dPF_vs_MC_gen_spectra.pdf",radius),"RECREATE");
   
