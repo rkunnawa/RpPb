@@ -317,6 +317,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   TH1F* hpp_mc = (TH1F*)hpp_mc_n10_p10->Clone("hpp_mc");
   hpp_mc->Scale(1./2);
 
+  //do it for eric's spectra 
   hpp_eric_n22_n12 = (TH1F*)hpp_eric_n22_n12->Rebin(nbins_yaxian_large,"hpp_eric_n22_n12",nbins_yaxian_large);
   hpp_eric_n12_n07 = (TH1F*)hpp_eric_n12_n07->Rebin(nbins_yaxian_large,"hpp_eric_n12_n07",nbins_yaxian_large);
   hpp_eric_n07_n03 = (TH1F*)hpp_eric_n07_n03->Rebin(nbins_yaxian_large,"hpp_eric_n07_n03",nbins_yaxian_large);
@@ -326,11 +327,33 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   hpp_eric_p12_p22 = (TH1F*)hpp_eric_p12_p22->Rebin(nbins_yaxian_large,"hpp_eric_p12_p22",nbins_yaxian_large);
   hpp_eric_n10_p10 = (TH1F*)hpp_eric_n10_n10->Rebin(nbins_yaxian_large,"hpp_eric_n22_p12",nbins_yaxian_large);
 
-  TH1F* hpp_eric_0 = (TH1F*)hpp_eric_n03_p03->Clone("bpp_eric_0");
+  TH1F* hpp_eric_0 = (TH1F*)hpp_eric_n03_p03->Clone("hpp_eric_0");
+  hpp_eric_0->Scale(1./0.6);
+  TH1F* hpp_eric_1 = (TH1F*)hpp_eric_n07_n03->Clone("hpp_eric_1");
+  hpp_eric_1->Divide(1./0.4);
+  hpp_eric_p03_p07->Scale(1./0.4);
+  hpp_eric_1->Add(hpp_eric_p03_p07);
+  hpp_eric_1->Scale(1./0.8);
+  
+  TH1F* hpp_eric_2 = (TH1F*)hpp_eric_n12_n07->Clone("hpp_eric_2");
+  hpp_eric_2->Scale(1./0.5);
+  hpp_eric_p07_p12->Scale(1./0.5);
+  hpp_eric_2->Add(hpp_eric_p07_p12);
+  hpp_eric_2->Scale(1./1);
+
+  TH1F* hpp_eric_3 = (TH1F*)hpp_eric_n22_n12->Clone("hpp_eric_3");
+  hpp_eric_3->Scale(1./1);
+  hpp_eric_p12_p22->Scale(1./1);
+  hpp_eric_3->Add(hpp_eric_p12_p22);
+  hpp_eric_3->Scale(1./2);
+
+  TH1F* hpp_eric = (TH1F*)hpp_eric_n10_p10->Clone("hpp_eric");
+  hpp_eric->Scale(1./2);  
+  
+  
   
 
-
-  //get the histograms 
+  //get the histograms - these numbers at the end corresond to the previous numbering. look above for more info. have to change it to the new comments after getting the required histograms. 
 
   TH1F* hpt_nnpdf21_0 = (TH1F*)fnnpdf21_0->Get(Form("h100%d00",radius-1));
   TH1F* hpt_nnpdf21_1 = (TH1F*)fnnpdf21_1->Get(Form("h100%d00",radius-1));
@@ -426,8 +449,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   TH1F* hPP_nnpdf21_NLO = new TH1F("hPP_nnpdf21_NLO","",nbins_yaxian_large,boundaries_yaxian_large);
   TH1F* hPP_ct10n_NLO = new TH1F("hPP_ct10n_NLO","",nbins_yaxian_large,boundaries_yaxian_large);
   TH1F* hPP_hera15all_NLO = new TH1F("hPP_hera15all_NLO","",nbins_yaxian_large,boundaries_yaxian_large);
-
-  //
+  
 
   hpt_nnpdf21_0->Scale(deta_0);
   hpt_nnpdf21_1->Scale(deta_1);
@@ -468,11 +490,28 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   hPP_hera15all_NLO->Scale(1./deta);
   hPP_hera15all_NLO->Print("base");
 
-  hPPrebin->Scale(1e9);//take it to pico barns
-  if(!useEricSpectra){
-    hPPrebin->Scale(1./deta);
-    divideBinWidth(hPPrebin);
-  }
+  
+  TH1F* hpp_nnpdf = (TH1F*)hPP_nnpdf21_NLO->Clone("hpp_nnpdf");
+  TH1F* hpp_nnpdf_0 = (TH1F*)hpt_nnpdf21_0->Clone("hpp_nnpdf_0");
+  TH1F* hpp_nnpdf_1 = (TH1F*)hpt_nnpdf21_1->Clone("hpp_nnpdf_1");
+  TH1F* hpp_nnpdf_2 = (TH1F*)hpt_nnpdf21_2->Clone("hpp_nnpdf_2");
+  hpp_nnpdf_2->Add(hpt_nnpdf21_3);
+  hpp_nnpdf_2->Scale(1./1);
+  TH1F* hpp_nnpdf_3 = (TH1F*)hpt_nnpdf21_4->Clone("hpp_nnpdf_3");
+
+  
+
+  //lets do all the remaining scaling business here: 
+  
+  
+
+
+
+  //hPPrebin->Scale(1e9);//take it to pico barns
+  //if(!useEricSpectra){
+  //  hPPrebin->Scale(1./deta);
+  //  divideBinWidth(hPPrebin);
+  //}
   
   //double integral = hPP_refe_NLO->Integral();
   //hPP_refe_NLO->Scale(1./integral);
