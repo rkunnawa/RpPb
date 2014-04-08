@@ -379,7 +379,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   TH1F* hStatUncert_3 = (TH1F*)fStatErr_3->Get(Form("h100%d03",radius-1));
   TH1F* hStatUncert_4 = (TH1F*)fStatErr_4->Get(Form("h100%d03",radius-1));
 
-
+  /*
   if(!useEricSpectra){
     TH1F* hPP = (TH1F*)fPP->Get("hGen_cent1");
     TH1F* hPPrebin = (TH1F*)hPP->Rebin(nbins_yaxian_large,"hPPrebin",boundaries_yaxian_large);
@@ -406,7 +406,8 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
       
     }
   }
-  
+  */
+
   /*
   hpt_0->Print("base");
   hpt_1->Print("base");
@@ -499,12 +500,48 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   hpp_nnpdf_2->Scale(1./1);
   TH1F* hpp_nnpdf_3 = (TH1F*)hpt_nnpdf21_4->Clone("hpp_nnpdf_3");
 
+  TH1F* hpp_ct10n = (TH1F*)hPP_ct10n21_NLO->Clone("hpp_ct10n");
+  TH1F* hpp_ct10n_0 = (TH1F*)hpt_ct10n21_0->Clone("hpp_ct10n_0");
+  TH1F* hpp_ct10n_1 = (TH1F*)hpt_ct10n21_1->Clone("hpp_ct10n_1");
+  TH1F* hpp_ct10n_2 = (TH1F*)hpt_ct10n21_2->Clone("hpp_ct10n_2");
+  hpp_ct10n_2->Add(hpt_ct10n21_3);
+  hpp_ct10n_2->Scale(1./1);
+  TH1F* hpp_ct10n_3 = (TH1F*)hpt_ct10n21_4->Clone("hpp_ct10n_3");
+
+  TH1F* hpp_hera15all = (TH1F*)hPP_hera15all21_NLO->Clone("hpp_hera15all");
+  TH1F* hpp_hera15all_0 = (TH1F*)hpt_hera15all21_0->Clone("hpp_hera15all_0");
+  TH1F* hpp_hera15all_1 = (TH1F*)hpt_hera15all21_1->Clone("hpp_hera15all_1");
+  TH1F* hpp_hera15all_2 = (TH1F*)hpt_hera15all21_2->Clone("hpp_hera15all_2");
+  hpp_hera15all_2->Add(hpt_hera15all21_3);
+  hpp_hera15all_2->Scale(1./1);
+  TH1F* hpp_hera15all_3 = (TH1F*)hpt_hera15all21_4->Clone("hpp_hera15all_3");
   
+
 
   //lets do all the remaining scaling business here: 
+  divideBinWidth(hpp_mc_0);
+  divideBinWidth(hpp_mc_1);
+  divideBinWidth(hpp_mc_2);
+  divideBinWidth(hpp_mc_3);
+  divideBinWidth(hpp_mc);
   
-  
+  divideBinWidth(hpp_eric_0);
+  divideBinWidth(hpp_eric_1);
+  divideBinWidth(hpp_eric_2);
+  divideBinWidth(hpp_eric_3);
+  divideBinWidth(hpp_eric);
 
+  hpp_mc_0->Scale(1e9);//taking it to the pico barns 
+  hpp_mc_1->Scale(1e9);
+  hpp_mc_2->Scale(1e9);
+  hpp_mc_3->Scale(1e9);
+  hpp_mc->Scale(1e9);
+
+  hpp_eric_0->Scale(1e9);
+  hpp_eric_1->Scale(1e9);
+  hpp_eric_2->Scale(1e9);
+  hpp_eric_3->Scale(1e9);
+  hpp_eric->Scale(1e9);
 
 
   //hPPrebin->Scale(1e9);//take it to pico barns
@@ -518,25 +555,45 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
 
   //divide the two histograms 
 
-  TH1F* hRatio_nnpdf21 = (TH1F*)hPP_nnpdf21_NLO->Rebin(nbins_yaxian_large,"hRatio_nnpdf21",boundaries_yaxian_large);
-  hRatio_nnpdf21->Divide(hPPrebin);
+  TH1F* hRatio_nnpdf_0 = (TH1F*)hpp_nnpdf_0->Rebin(nbins_yaxian_large,"hRatio_nnpdf_0",boundaries_yaxian_large);
+  hRatio_nnpdf_0->Divide(hpp_eric_0);
+  TH1F* hRatio_nnpdf_1 = (TH1F*)hpp_nnpdf_1->Rebin(nbins_yaxian_large,"hRatio_nnpdf_1",boundaries_yaxian_large);
+  hRatio_nnpdf_1->Divide(hpp_eric_1);
+  TH1F* hRatio_nnpdf_2 = (TH1F*)hpp_nnpdf_2->Rebin(nbins_yaxian_large,"hRatio_nnpdf_2",boundaries_yaxian_large);
+  hRatio_nnpdf_2->Divide(hpp_eric_2);
+  TH1F* hRatio_nnpdf_3 = (TH1F*)hpp_nnpdf_3->Rebin(nbins_yaxian_large,"hRatio_nnpdf_3",boundaries_yaxian_large);
+  hRatio_nnpdf_3->Divide(hpp_eric_3);
+  TH1F* hRatio_nnpdf = (TH1F*)hpp_nnpdf->Rebin(nbins_yaxian_large,"hRatio_nnpdf",boundaries_yaxian_large);
+  hRatio_nnpdf->Divide(hpp_eric);
 
-  hPP_nnpdf21_NLO->Write();
+  TH1F* hRatio_ct10n_0 = (TH1F*)hpp_ct10n_0->Rebin(nbins_yaxian_large,"hRatio_ct10n_0",boundaries_yaxian_large);
+  hRatio_ct10n_0->Divide(hpp_eric_0);
+  TH1F* hRatio_ct10n_1 = (TH1F*)hpp_ct10n_1->Rebin(nbins_yaxian_large,"hRatio_ct10n_1",boundaries_yaxian_large);
+  hRatio_ct10n_1->Divide(hpp_eric_1);
+  TH1F* hRatio_ct10n_2 = (TH1F*)hpp_ct10n_2->Rebin(nbins_yaxian_large,"hRatio_ct10n_2",boundaries_yaxian_large);
+  hRatio_ct10n_2->Divide(hpp_eric_2);
+  TH1F* hRatio_ct10n_3 = (TH1F*)hpp_ct10n_3->Rebin(nbins_yaxian_large,"hRatio_ct10n_3",boundaries_yaxian_large);
+  hRatio_ct10n_3->Divide(hpp_eric_3);
+  TH1F* hRatio_ct10n = (TH1F*)hpp_ct10n->Rebin(nbins_yaxian_large,"hRatio_ct10n",boundaries_yaxian_large);
+  hRatio_ct10n->Divide(hpp_eric);
 
-  TH1F* hRatio_ct10n = (TH1F*)hPP_ct10n_NLO->Rebin(nbins_yaxian_large,"hRatio_ct10n",boundaries_yaxian_large);
-  hRatio_ct10n->Divide(hPPrebin);
+  TH1F* hRatio_hera15all_0 = (TH1F*)hPP_hera15all_0->Rebin(nbins_yaxian_large,"hRatio_hera15all_0",boundaries_yaxian_large);
+  hRatio_hera15all_0->Divide(hpp_eric_0);
+  TH1F* hRatio_hera15all_1 = (TH1F*)hPP_hera15all_1->Rebin(nbins_yaxian_large,"hRatio_hera15all_1",boundaries_yaxian_large);
+  hRatio_hera15all_1->Divide(hpp_eric_1);
+  TH1F* hRatio_hera15all_2 = (TH1F*)hPP_hera15all_2->Rebin(nbins_yaxian_large,"hRatio_hera15all_2",boundaries_yaxian_large);
+  hRatio_hera15all_2->Divide(hpp_eric_2);
+  TH1F* hRatio_hera15all_3 = (TH1F*)hPP_hera15all_3->Rebin(nbins_yaxian_large,"hRatio_hera15all_3",boundaries_yaxian_large);
+  hRatio_hera15all_3->Divide(hpp_eric_3);
+  TH1F* hRatio_hera15all = (TH1F*)hPP_hera15all->Rebin(nbins_yaxian_large,"hRatio_hera15all",boundaries_yaxian_large);
+  hRatio_hera15all->Divide(hpp_eric);
 
-  hPP_ct10n_NLO->Write();
-
-  TH1F* hRatio_hera15all = (TH1F*)hPP_hera15all_NLO->Rebin(nbins_yaxian_large,"hRatio_hera15all",boundaries_yaxian_large);
-  hRatio_hera15all->Divide(hPPrebin);
-
-  hPP_hera15all_NLO->Write();
-  hPPrebin->Write();
-  //hRatio->Write();
 
   fout.Write();
+
   
+
+  /*
   int binvalue=hPP_ct10n_NLO->FindBin(50);
  
   Float_t val_a = hPP_ct10n_NLO->GetBinContent(binvalue);
@@ -544,7 +601,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
 
   Float_t err_a = hPP_ct10n_NLO->GetBinError(binvalue);
   Float_t err_b = hPPrebin->GetBinError(binvalue);
-
+  */
   /*
   //get the bin values to check error propagation
   cout<<"value   "<<hPP_ct10n_NLO->GetBinContent(binvalue)<<" pp mc   "<<hPPrebin->GetBinContent(binvalue)<<endl;
@@ -563,14 +620,14 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   formatCanvas(c1);
   c1->cd(1);
   c1->cd(1)->SetLogy();
-  hPP_nnpdf21_NLO->SetMarkerColor(kRed);
-  hPP_nnpdf21_NLO->SetMarkerStyle(20);
-  hPP_ct10n_NLO->SetMarkerColor(kBlue);
-  hPP_ct10n_NLO->SetMarkerStyle(20);
-  hPP_hera15all_NLO->SetMarkerColor(kGreen);
-  hPP_hera15all_NLO->SetMarkerStyle(20);
-  hPPrebin->SetMarkerColor(kBlack);
-  hPPrebin->SetMarkerStyle(8);
+  hpp_nnpdf_0->SetMarkerColor(kRed);
+  hpp_nnpdf_0->SetMarkerStyle(20);
+  hpp_ct10n_0->SetMarkerColor(kBlue);
+  hpp_ct10n_0->SetMarkerStyle(20);
+  hpp_hera15all_0->SetMarkerColor(kGreen);
+  hpp_hera15all_0->SetMarkerStyle(20);
+  hpp_eric_0->SetMarkerColor(kBlack);
+  hpp_eric_0->SetMarkerStyle(8);
   //hPPrebin->SetMarkerSize();
   
   hPPrebin->SetYTitle("#frac{d^{2} #sigma}{d p_{T} d #eta} (pb)");
