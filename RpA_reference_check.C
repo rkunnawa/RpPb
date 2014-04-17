@@ -317,7 +317,29 @@ void RpA_reference_check(){
   TH1F* hPP_2760_Pythia_05_10_4_5 = (TH1F*)hPP_2760_Pythia_05_10_R4->Clone("hPP_2760_Pythia_05_10_R_3_4");
   hPP_2760_Pythia_05_10_R_3_4->Divide(hPP_2760_Pythia_05_10_R5);
 
+  TH1F* hPP_5020_Pythia_05_R_3_5 = (TH1F*)hPP_5020_Pythia_05_R3->Clone("hPP_5020_Pythia_05_R_3_5");
+  hPP_5020_Pythia_05_R_3_5->Divide(hPP_5020_Pythia_05_R5);
 
+  TH1F* hPP_5020_Pythia_05_4_5 = (TH1F*)hPP_5020_Pythia_05_R4->Clone("hPP_5020_Pythia_05_R_3_4");
+  hPP_5020_Pythia_05_R_3_4->Divide(hPP_5020_Pythia_05_R5);
+
+  TH1F* hPP_5020_Pythia_05_10_R_3_5 = (TH1F*)hPP_5020_Pythia_05_10_R3->Clone("hPP_5020_Pythia_05_10_R_3_5");
+  hPP_5020_Pythia_05_10_R_3_5->Divide(hPP_5020_Pythia_05_10_R5);
+
+  TH1F* hPP_5020_Pythia_05_10_4_5 = (TH1F*)hPP_5020_Pythia_05_10_R4->Clone("hPP_5020_Pythia_05_10_R_3_4");
+  hPP_5020_Pythia_05_10_R_3_4->Divide(hPP_5020_Pythia_05_10_R5);
+
+  TH1F* hPP_7000_Pythia_05_R_3_5 = (TH1F*)hPP_7000_Pythia_05_R3->Clone("hPP_7000_Pythia_05_R_3_5");
+  hPP_7000_Pythia_05_R_3_5->Divide(hPP_7000_Pythia_05_R5);
+
+  TH1F* hPP_7000_Pythia_05_4_5 = (TH1F*)hPP_7000_Pythia_05_R4->Clone("hPP_7000_Pythia_05_R_3_4");
+  hPP_7000_Pythia_05_R_3_4->Divide(hPP_7000_Pythia_05_R5);
+
+  TH1F* hPP_7000_Pythia_05_10_R_3_5 = (TH1F*)hPP_7000_Pythia_05_10_R3->Clone("hPP_7000_Pythia_05_10_R_3_5");
+  hPP_7000_Pythia_05_10_R_3_5->Divide(hPP_7000_Pythia_05_10_R5);
+
+  TH1F* hPP_7000_Pythia_05_10_4_5 = (TH1F*)hPP_7000_Pythia_05_10_R4->Clone("hPP_7000_Pythia_05_10_R_3_4");
+  hPP_7000_Pythia_05_10_R_3_4->Divide(hPP_7000_Pythia_05_10_R5);
 
 
 
