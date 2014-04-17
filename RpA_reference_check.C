@@ -376,6 +376,8 @@ void RpA_reference_check(){
   TH1F* hPP_2760_nnpdf_R_3_4 = (TH1F*)fpp276->Get("hRatio_nnpdf_R_3_4");
 
   TH1F* hPP_data_2760_R_3_4 = (TH1F*)fpp276->Get("hRatio_data_R_3_4");
+  TH1F* hPP_data_2760_R_3_5 = (TH1F*)fpp276->Get("hRatio_data_R_3_5");
+  TH1F* hPP_data_2760_R_4_5 = (TH1F*)fpp276->Get("hRatio_data_R_4_5");
 
   TCanvas *c2 = new TCanvas("c2","",800,600);
   c2->SetGridy();
@@ -483,6 +485,115 @@ void RpA_reference_check(){
   title2->Draw();
 
   c1->SaveAs("RpA_reference_check_NLO_diff_energy_diff_radius.pdf","RECREATE");
+
+  TCanvas *c3 = new TCanvas("c3","",800,600);
+  c3->SetGridy();
+  hPP_5020_Pythia_05_R_3_5->SetMarkerStyle(20);
+  hPP_5020_Pythia_05_R_3_5->SetMarkerColor(3);
+  hPP_5020_Pythia_05_R_3_5->SetYTitle("Ratio of differential cross sections");
+  hPP_5020_Pythia_05_R_3_5->SetXTitle("Jet p_{T} (GeV/c)");
+  hPP_5020_Pythia_05_R_3_5->SetTitle(" ");
+  hPP_5020_Pythia_05_R_3_5->SetAxisRange(22,500,"X");
+  hPP_5020_Pythia_05_R_3_5->SetAxisRange(0.75,1.1,"Y");
+  hPP_5020_Pythia_05_R_3_5->Draw("p");
+  hPP_5020_Pythia_05_R_4_5->SetMarkerStyle(22);
+  hPP_5020_Pythia_05_R_4_5->SetMarkerColor(4);
+  hPP_5020_Pythia_05_R_4_5->Draw("same p");
+
+  hPP_2760_Pythia_05_R_3_5->SetMarkerStyle(20);
+  hPP_2760_Pythia_05_R_3_5->SetMarkerColor(6);
+  hPP_2760_Pythia_05_R_3_5->Draw("same p");
+  hPP_2760_Pythia_05_R_4_5->SetMarkerStyle(22);
+  hPP_2760_Pythia_05_R_4_5->SetMarkerColor(7);
+  hPP_2760_Pythia_05_R_4_5->Draw("same p");
+
+  hPP_7000_Pythia_05_R_3_5->SetMarkerStyle(20);
+  hPP_7000_Pythia_05_R_3_5->SetMarkerColor(12);
+  hPP_7000_Pythia_05_R_3_5->Draw("same p");
+  hPP_7000_Pythia_05_R_4_5->SetMarkerStyle(22);
+  hPP_7000_Pythia_05_R_4_5->SetMarkerColor(13);
+  hPP_7000_Pythia_05_R_4_5->Draw("same p");
+
+  hPP_data_2760_R_3_5->SetMarkerStyle(20);
+  hPP_data_2760_R_3_5->SetMarkerColor(8);
+  hPP_data_2760_R_3_5->Draw("same p");
+
+  hPP_data_2760_R_4_5->SetMarkerStyle(22);
+  hPP_data_2760_R_4_5->SetMarkerColor(9);
+  hPP_data_2760_R_4_5->Draw("same p");
+
+  TLegend *title4 = myLegend(0.13,0.55,0.33,0.85);
+  title4->AddEntry(hPP_5020_Pythia_05_R_3_5,"Z2 5.02, R=0.3/R=0.5","pl");
+  title4->AddEntry(hPP_5020_Pythia_05_R_4_5,"Z2 5.02, R=0.4/R=0.5","pl");
+  title4->AddEntry(hPP_2760_Pythia_05_R_3_5,"Z2 2.76, R=0.3/R=0.5","pl");
+  title4->AddEntry(hPP_2760_Pythia_05_R_4_5,"Z2 2.76, R=0.4/R=0.5","pl");
+  title4->AddEntry(hPP_7000_Pythia_05_R_3_5,"Z2 2.76, R=0.3/R=0.5","pl");
+  title4->AddEntry(hPP_7000_Pythia_05_R_4_5,"Z2 2.76, R=0.4/R=0.5","pl");
+  title4->AddEntry(hPP_data_2760_R_3_5,"Data 2.76 R=0.3/R=0.5","pl");
+  title4->AddEntry(hPP_data_2760_R_4_5,"Data 2.76 R=0.4/R=0.5","pl");
+  title4->SetTextSize(0.04);
+  title4->Draw();
+
+  putCMSPrel(0.1,0.92,0.04);
+  drawText("pp Pythia Z2 , #sqrt{s}=2.7, 5.02 and 7(TeV)",0.35,0.92,16);
+  drawText("Pythia |y|<0.5, Data:|eta|<2",0.47,0.83,16);
+
+  c3->SaveAs("RpA_reference_pythia_data_diff_energy_radius_cross_section_ratio_05.pdf","RECREATE");
+
+  TCanvas *c4 = new TCanvas("c4","",800,600);
+  c4->SetGridy();
+  hPP_5020_Pythia_05_10_R_3_5->SetMarkerStyle(20);
+  hPP_5020_Pythia_05_10_R_3_5->SetMarkerColor(3);
+  hPP_5020_Pythia_05_10_R_3_5->SetYTitle("Ratio of differential cross sections");
+  hPP_5020_Pythia_05_10_R_3_5->SetXTitle("Jet p_{T} (GeV/c)");
+  hPP_5020_Pythia_05_10_R_3_5->SetTitle(" ");
+  hPP_5020_Pythia_05_10_R_3_5->SetAxisRange(22,500,"X");
+  hPP_5020_Pythia_05_10_R_3_5->SetAxisRange(0.75,1.1,"Y");
+  hPP_5020_Pythia_05_10_R_3_5->Draw("p");
+  hPP_5020_Pythia_05_10_R_4_5->SetMarkerStyle(22);
+  hPP_5020_Pythia_05_10_R_4_5->SetMarkerColor(4);
+  hPP_5020_Pythia_05_10_R_4_5->Draw("same p");
+
+  hPP_2760_Pythia_05_10_R_3_5->SetMarkerStyle(20);
+  hPP_2760_Pythia_05_10_R_3_5->SetMarkerColor(6);
+  hPP_2760_Pythia_05_10_R_3_5->Draw("same p");
+  hPP_2760_Pythia_05_10_R_4_5->SetMarkerStyle(22);
+  hPP_2760_Pythia_05_10_R_4_5->SetMarkerColor(7);
+  hPP_2760_Pythia_05_10_R_4_5->Draw("same p");
+
+  hPP_7000_Pythia_05_10_R_3_5->SetMarkerStyle(20);
+  hPP_7000_Pythia_05_10_R_3_5->SetMarkerColor(12);
+  hPP_7000_Pythia_05_10_R_3_5->Draw("same p");
+  hPP_7000_Pythia_05_10_R_4_5->SetMarkerStyle(22);
+  hPP_7000_Pythia_05_10_R_4_5->SetMarkerColor(13);
+  hPP_7000_Pythia_05_10_R_4_5->Draw("same p");
+
+  //hPP_data_2760_R_3_5->SetMarkerStyle(20);
+  //hPP_data_2760_R_3_5->SetMarkerColor(8);
+  //hPP_data_2760_R_3_5->Draw("same p");
+
+  //hPP_data_2760_R_4_5->SetMarkerStyle(22);
+  //hPP_data_2760_R_4_5->SetMarkerColor(9);
+  //hPP_data_2760_R_4_5->Draw("same p");
+
+  TLegend *title4 = myLegend(0.13,0.55,0.33,0.85);
+  title4->AddEntry(hPP_5020_Pythia_05_10_R_3_5,"Z2 5.02, R=0.3/R=0.5","pl");
+  title4->AddEntry(hPP_5020_Pythia_05_10_R_4_5,"Z2 5.02, R=0.4/R=0.5","pl");
+  title4->AddEntry(hPP_2760_Pythia_05_10_R_3_5,"Z2 2.76, R=0.3/R=0.5","pl");
+  title4->AddEntry(hPP_2760_Pythia_05_10_R_4_5,"Z2 2.76, R=0.4/R=0.5","pl");
+  title4->AddEntry(hPP_7000_Pythia_05_10_R_3_5,"Z2 2.76, R=0.3/R=0.5","pl");
+  title4->AddEntry(hPP_7000_Pythia_05_10_R_4_5,"Z2 2.76, R=0.4/R=0.5","pl");
+  //title4->AddEntry(hPP_data_2760_R_3_5,"Data 2.76 R=0.3/R=0.5","pl");
+  //title4->AddEntry(hPP_data_2760_R_4_5,"Data 2.76 R=0.4/R=0.5","pl");
+  title4->SetTextSize(0.04);
+  title4->Draw();
+
+  putCMSPrel(0.1,0.92,0.04);
+  drawText("pp Pythia Z2 , #sqrt{s}=2.7, 5.02 and 7(TeV)",0.35,0.92,16);
+  //drawText("anti k_{T} Jets",0.47,0.83,16);
+
+  c4->SaveAs("RpA_reference_pythia_data_diff_energy_radius_cross_section_ratio_05_10.pdf","RECREATE");
+
   
   foutput.Write();
   foutput.Close();
