@@ -127,7 +127,52 @@ void RpA_reference_check(){
   TFile *fppPythia_5020 = TFile::Open("AnaGENJetR357_5020GeV_Apr15_Z2Combined.root");
   TFile *fppPythia_7000 = TFile::Open("AnaGENJetR357_7000GeV_Apr15_Z2Combined.root");
 
+  TFile* fpp276_05_ak3 = TFile::Open("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/pp_2013_2760_abs_eta_05_mc_ak3PF.root");
+  TFile* fpp276_05_ak4 = TFile::Open("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/pp_2013_2760_abs_eta_05_mc_ak4PF.root");
+  TFile* fpp276_05_ak4 = TFile::Open("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/pp_2013_2760_abs_eta_05_mc_ak5PF.root");
+
+  TFile* fpp276_15_20_ak3 = TFile::Open("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/pp_2013_2760_abs_eta_15_20_mc_ak3PF.root");
+  TFile* fpp276_15_20_ak4 = TFile::Open("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/pp_2013_2760_abs_eta_15_20_mc_ak4PF.root");
+  TFile* fpp276_15_20_ak5 = TFile::Open("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/pp_2013_2760_abs_eta_15_20_mc_ak5PF.root");
+
   TFile foutput("RpA_pp_nlo_ratios.root","RECREATE");
+
+  TH1F* hPP_2760_data_05_R_3 = (TH1F*)fpp276_05_ak3->Get("Unfolded_cent1");
+  hPP_2760_data_05_R_3->Scale(1./5300e6);
+  divideBinWidth(hPP_2760_data_05_R_3);
+  
+  TH1F* hPP_2760_data_05_R_4 = (TH1F*)fpp276_05_ak4->Get("Unfolded_cent1");
+  hPP_2760_data_05_R_4->Scale(1./5300e6);
+  divideBinWidth(hPP_2760_data_05_R_4);
+
+  TH1F* hPP_2760_data_05_R_5 = (TH1F*)fpp276_05_ak5->Get("Unfolded_cent1");
+  hPP_2760_data_05_R_5->Scale(1./5300e6);
+  divideBinWidth(hPP_2760_data_05_R_5);
+
+  TH1F* hPP_2760_data_15_20_R_3 = (TH1F*)fpp276_15_20_ak3->Get("Unfolded_cent1");
+  hPP_2760_data_15_20_R_3->Scale(1./5300e6);
+  divideBinWidth(hPP_2760_data_15_20_R_3);
+
+  TH1F* hPP_2760_data_15_20_R_4 = (TH1F*)fpp276_15_20_ak4->Get("Unfolded_cent1");
+  hPP_2760_data_15_20_R_4->Scale(1./5300e6);
+  divideBinWidth(hPP_2760_data_15_20_R_4);
+  
+  TH1F* hPP_2760_data_15_20_R_5 = (TH1F*)fpp276_15_20_ak5->Get("Unfolded_cent1");
+  hPP_2760_data_15_20_R_5->Scale(1./5300e6);
+  divideBinWidth(hPP_2760_data_15_20_R_5);
+
+  TH1F* hPP_2760_data_05_R_3_5 = (TH1F*)hPP_2760_data_05_R_3->Clone("hPP_2760_data_05_R_3_5");
+  hPP_2760_data_05_R_3_5->DIvide(hPP_2760_data_05_R_5);
+
+  TH1F* hPP_2760_data_05_R_4_5 = (TH1F*)hPP_2760_data_05_R_4->Clone("hPP_2760_data_05_R_4_5");
+  hPP_2760_data_05_R_4_5->DIvide(hPP_2760_data_05_R_5);
+
+  TH1F* hPP_2760_data_15_20_R_3_5 = (TH1F*)hPP_2760_data_15_20_R_3->Clone("hPP_2760_data_15_20_R_3_5");
+  hPP_2760_data_15_20_R_3_5->DIvide(hPP_2760_data_15_20_R_5);
+
+  TH1F* hPP_2760_data_15_20_R_4_5 = (TH1F*)hPP_2760_data_15_20_R_4->Clone("hPP_2760_data_15_20_R_4_5");
+  hPP_2760_data_15_20_R_4_5->DIvide(hPP_2760_data_15_20_R_5);
+
   
   //load the pp 2760 unfolded data and 
   //first lets do the NLO at 2.76 to NLO at 5.02 
@@ -174,17 +219,17 @@ void RpA_reference_check(){
   TDirectoryFile* ak3GenJet_2760_25_30 = (TDirectoryFile*)fppPythia_2760->Get("ak3GenJetSpectrum_QCD10001_25_30");
   TH1F* hPP_2760_Pythia_25_30_R3 = (TH1F*)ak3GenJet_2760_25_30->Get("JetSpectrum");
 
-  TDirectoryFile* ak4GenJet_2760_05 = (TDirectoryFile*)fppPythia_2760->Get("ak3GenJetSpectrum_QCD10001_00_05");
+  TDirectoryFile* ak4GenJet_2760_05 = (TDirectoryFile*)fppPythia_2760->Get("ak4GenJetSpectrum_QCD10001_00_05");
   TH1F* hPP_2760_Pythia_05_R4 = (TH1F*)ak4GenJet_2760_05->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_2760_05_10 = (TDirectoryFile*)fppPythia_2760->Get("ak3GenJetSpectrum_QCD10001_05_10");
+  TDirectoryFile* ak4GenJet_2760_05_10 = (TDirectoryFile*)fppPythia_2760->Get("ak4GenJetSpectrum_QCD10001_05_10");
   TH1F* hPP_2760_Pythia_05_10_R4 = (TH1F*)ak4GenJet_2760_05_10->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_2760_10_15 = (TDirectoryFile*)fppPythia_2760->Get("ak3GenJetSpectrum_QCD10001_10_15");
+  TDirectoryFile* ak4GenJet_2760_10_15 = (TDirectoryFile*)fppPythia_2760->Get("ak4GenJetSpectrum_QCD10001_10_15");
   TH1F* hPP_2760_Pythia_10_15_R4 = (TH1F*)ak4GenJet_2760_10_15->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_2760_15_20 = (TDirectoryFile*)fppPythia_2760->Get("ak3GenJetSpectrum_QCD10001_15_20");
+  TDirectoryFile* ak4GenJet_2760_15_20 = (TDirectoryFile*)fppPythia_2760->Get("ak4GenJetSpectrum_QCD10001_15_20");
   TH1F* hPP_2760_Pythia_15_20_R4 = (TH1F*)ak4GenJet_2760_15_20->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_2760_20_25 = (TDirectoryFile*)fppPythia_2760->Get("ak3GenJetSpectrum_QCD10001_20_25");
+  TDirectoryFile* ak4GenJet_2760_20_25 = (TDirectoryFile*)fppPythia_2760->Get("ak4GenJetSpectrum_QCD10001_20_25");
   TH1F* hPP_2760_Pythia_20_25_R4 = (TH1F*)ak4GenJet_2760_20_25->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_2760_25_30 = (TDirectoryFile*)fppPythia_2760->Get("ak3GenJetSpectrum_QCD10001_25_30");
+  TDirectoryFile* ak4GenJet_2760_25_30 = (TDirectoryFile*)fppPythia_2760->Get("ak4GenJetSpectrum_QCD10001_25_30");
   TH1F* hPP_2760_Pythia_25_30_R4 = (TH1F*)ak4GenJet_2760_25_30->Get("JetSpectrum");
 
   TDirectoryFile* ak5GenJet_2760_05 = (TDirectoryFile*)fppPythia_2760->Get("ak5GenJetSpectrum_QCD10001_00_05");
@@ -215,17 +260,17 @@ void RpA_reference_check(){
   TDirectoryFile* ak3GenJet_5020_25_30 = (TDirectoryFile*)fppPythia_5020->Get("ak3GenJetSpectrum_QCD10001_25_30");
   TH1F* hPP_5020_Pythia_25_30_R3 = (TH1F*)ak3GenJet_5020_25_30->Get("JetSpectrum");
 
-  TDirectoryFile* ak4GenJet_5020_05 = (TDirectoryFile*)fppPythia_5020->Get("ak3GenJetSpectrum_QCD10001_00_05");
+  TDirectoryFile* ak4GenJet_5020_05 = (TDirectoryFile*)fppPythia_5020->Get("ak4GenJetSpectrum_QCD10001_00_05");
   TH1F* hPP_5020_Pythia_05_R4 = (TH1F*)ak4GenJet_5020_05->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_5020_05_10 = (TDirectoryFile*)fppPythia_5020->Get("ak3GenJetSpectrum_QCD10001_05_10");
+  TDirectoryFile* ak4GenJet_5020_05_10 = (TDirectoryFile*)fppPythia_5020->Get("ak4GenJetSpectrum_QCD10001_05_10");
   TH1F* hPP_5020_Pythia_05_10_R4 = (TH1F*)ak4GenJet_5020_05_10->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_5020_10_15 = (TDirectoryFile*)fppPythia_5020->Get("ak3GenJetSpectrum_QCD10001_10_15");
+  TDirectoryFile* ak4GenJet_5020_10_15 = (TDirectoryFile*)fppPythia_5020->Get("ak4GenJetSpectrum_QCD10001_10_15");
   TH1F* hPP_5020_Pythia_10_15_R4 = (TH1F*)ak4GenJet_5020_10_15->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_5020_15_20 = (TDirectoryFile*)fppPythia_5020->Get("ak3GenJetSpectrum_QCD10001_15_20");
+  TDirectoryFile* ak4GenJet_5020_15_20 = (TDirectoryFile*)fppPythia_5020->Get("ak4GenJetSpectrum_QCD10001_15_20");
   TH1F* hPP_5020_Pythia_15_20_R4 = (TH1F*)ak4GenJet_5020_15_20->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_5020_20_25 = (TDirectoryFile*)fppPythia_5020->Get("ak3GenJetSpectrum_QCD10001_20_25");
+  TDirectoryFile* ak4GenJet_5020_20_25 = (TDirectoryFile*)fppPythia_5020->Get("ak4GenJetSpectrum_QCD10001_20_25");
   TH1F* hPP_5020_Pythia_20_25_R4 = (TH1F*)ak4GenJet_5020_20_25->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_5020_25_30 = (TDirectoryFile*)fppPythia_5020->Get("ak3GenJetSpectrum_QCD10001_25_30");
+  TDirectoryFile* ak4GenJet_5020_25_30 = (TDirectoryFile*)fppPythia_5020->Get("ak4GenJetSpectrum_QCD10001_25_30");
   TH1F* hPP_5020_Pythia_25_30_R4 = (TH1F*)ak4GenJet_5020_25_30->Get("JetSpectrum");
 
   TDirectoryFile* ak5GenJet_5020_05 = (TDirectoryFile*)fppPythia_5020->Get("ak5GenJetSpectrum_QCD10001_00_05");
@@ -256,17 +301,17 @@ void RpA_reference_check(){
   TDirectoryFile* ak3GenJet_7000_25_30 = (TDirectoryFile*)fppPythia_7000->Get("ak3GenJetSpectrum_QCD10001_25_30");
   TH1F* hPP_7000_Pythia_25_30_R3 = (TH1F*)ak3GenJet_7000_25_30->Get("JetSpectrum");
 
-  TDirectoryFile* ak4GenJet_7000_05 = (TDirectoryFile*)fppPythia_7000->Get("ak3GenJetSpectrum_QCD10001_00_05");
+  TDirectoryFile* ak4GenJet_7000_05 = (TDirectoryFile*)fppPythia_7000->Get("ak4GenJetSpectrum_QCD10001_00_05");
   TH1F* hPP_7000_Pythia_05_R4 = (TH1F*)ak4GenJet_7000_05->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_7000_05_10 = (TDirectoryFile*)fppPythia_7000->Get("ak3GenJetSpectrum_QCD10001_05_10");
+  TDirectoryFile* ak4GenJet_7000_05_10 = (TDirectoryFile*)fppPythia_7000->Get("ak4GenJetSpectrum_QCD10001_05_10");
   TH1F* hPP_7000_Pythia_05_10_R4 = (TH1F*)ak4GenJet_7000_05_10->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_7000_10_15 = (TDirectoryFile*)fppPythia_7000->Get("ak3GenJetSpectrum_QCD10001_10_15");
+  TDirectoryFile* ak4GenJet_7000_10_15 = (TDirectoryFile*)fppPythia_7000->Get("ak4GenJetSpectrum_QCD10001_10_15");
   TH1F* hPP_7000_Pythia_10_15_R4 = (TH1F*)ak4GenJet_7000_10_15->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_7000_15_20 = (TDirectoryFile*)fppPythia_7000->Get("ak3GenJetSpectrum_QCD10001_15_20");
+  TDirectoryFile* ak4GenJet_7000_15_20 = (TDirectoryFile*)fppPythia_7000->Get("ak4GenJetSpectrum_QCD10001_15_20");
   TH1F* hPP_7000_Pythia_15_20_R4 = (TH1F*)ak4GenJet_7000_15_20->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_7000_20_25 = (TDirectoryFile*)fppPythia_7000->Get("ak3GenJetSpectrum_QCD10001_20_25");
+  TDirectoryFile* ak4GenJet_7000_20_25 = (TDirectoryFile*)fppPythia_7000->Get("ak4GenJetSpectrum_QCD10001_20_25");
   TH1F* hPP_7000_Pythia_20_25_R4 = (TH1F*)ak4GenJet_7000_20_25->Get("JetSpectrum");
-  TDirectoryFile* ak4GenJet_7000_25_30 = (TDirectoryFile*)fppPythia_7000->Get("ak3GenJetSpectrum_QCD10001_25_30");
+  TDirectoryFile* ak4GenJet_7000_25_30 = (TDirectoryFile*)fppPythia_7000->Get("ak4GenJetSpectrum_QCD10001_25_30");
   TH1F* hPP_7000_Pythia_25_30_R4 = (TH1F*)ak4GenJet_7000_25_30->Get("JetSpectrum");
 
   TDirectoryFile* ak5GenJet_7000_05 = (TDirectoryFile*)fppPythia_7000->Get("ak5GenJetSpectrum_QCD10001_00_05");
@@ -308,42 +353,56 @@ void RpA_reference_check(){
   TH1F* hPP_2760_Pythia_05_R_3_5 = (TH1F*)hPP_2760_Pythia_05_R3->Clone("hPP_2760_Pythia_05_R_3_5");
   hPP_2760_Pythia_05_R_3_5->Divide(hPP_2760_Pythia_05_R5);
 
-  TH1F* hPP_2760_Pythia_05_4_5 = (TH1F*)hPP_2760_Pythia_05_R4->Clone("hPP_2760_Pythia_05_R_3_4");
-  hPP_2760_Pythia_05_R_3_4->Divide(hPP_2760_Pythia_05_R5);
+  TH1F* hPP_2760_Pythia_05_R_4_5 = (TH1F*)hPP_2760_Pythia_05_R4->Clone("hPP_2760_Pythia_05_R_4_5");
+  hPP_2760_Pythia_05_R_4_5->Divide(hPP_2760_Pythia_05_R5);
 
   TH1F* hPP_2760_Pythia_05_10_R_3_5 = (TH1F*)hPP_2760_Pythia_05_10_R3->Clone("hPP_2760_Pythia_05_10_R_3_5");
   hPP_2760_Pythia_05_10_R_3_5->Divide(hPP_2760_Pythia_05_10_R5);
 
-  TH1F* hPP_2760_Pythia_05_10_4_5 = (TH1F*)hPP_2760_Pythia_05_10_R4->Clone("hPP_2760_Pythia_05_10_R_3_4");
-  hPP_2760_Pythia_05_10_R_3_4->Divide(hPP_2760_Pythia_05_10_R5);
+  TH1F* hPP_2760_Pythia_05_10_R_4_5 = (TH1F*)hPP_2760_Pythia_05_10_R4->Clone("hPP_2760_Pythia_05_10_R_4_5");
+  hPP_2760_Pythia_05_10_R_4_5->Divide(hPP_2760_Pythia_05_10_R5);
+
+  TH1F* hPP_2760_Pythia_15_20_R_3_5 = (TH1F*)hPP_2760_Pythia_15_20_R3->Clone("hPP_2760_Pythia_15_20_R_3_5");
+  hPP_2760_Pythia_15_20_R_3_5->Divide(hPP_2760_Pythia_15_20_R5);
+
+  TH1F* hPP_2760_Pythia_15_20_R_4_5 = (TH1F*)hPP_2760_Pythia_15_20_R4->Clone("hPP_2760_Pythia_15_20_R_4_5");
+  hPP_2760_Pythia_15_20_R_4_5->Divide(hPP_2760_Pythia_15_20_R5);
 
   TH1F* hPP_5020_Pythia_05_R_3_5 = (TH1F*)hPP_5020_Pythia_05_R3->Clone("hPP_5020_Pythia_05_R_3_5");
   hPP_5020_Pythia_05_R_3_5->Divide(hPP_5020_Pythia_05_R5);
 
-  TH1F* hPP_5020_Pythia_05_4_5 = (TH1F*)hPP_5020_Pythia_05_R4->Clone("hPP_5020_Pythia_05_R_3_4");
-  hPP_5020_Pythia_05_R_3_4->Divide(hPP_5020_Pythia_05_R5);
+  TH1F* hPP_5020_Pythia_05_R_4_5 = (TH1F*)hPP_5020_Pythia_05_R4->Clone("hPP_5020_Pythia_05_R_4_5");
+  hPP_5020_Pythia_05_R_4_5->Divide(hPP_5020_Pythia_05_R5);
 
   TH1F* hPP_5020_Pythia_05_10_R_3_5 = (TH1F*)hPP_5020_Pythia_05_10_R3->Clone("hPP_5020_Pythia_05_10_R_3_5");
   hPP_5020_Pythia_05_10_R_3_5->Divide(hPP_5020_Pythia_05_10_R5);
 
-  TH1F* hPP_5020_Pythia_05_10_4_5 = (TH1F*)hPP_5020_Pythia_05_10_R4->Clone("hPP_5020_Pythia_05_10_R_3_4");
-  hPP_5020_Pythia_05_10_R_3_4->Divide(hPP_5020_Pythia_05_10_R5);
+  TH1F* hPP_5020_Pythia_05_10_R_4_5 = (TH1F*)hPP_5020_Pythia_05_10_R4->Clone("hPP_5020_Pythia_05_10_R_4_5");
+  hPP_5020_Pythia_05_10_R_4_5->Divide(hPP_5020_Pythia_05_10_R5);
+
+  TH1F* hPP_5020_Pythia_15_20_R_3_5 = (TH1F*)hPP_5020_Pythia_15_20_R3->Clone("hPP_5020_Pythia_15_20_R_3_5");
+  hPP_5020_Pythia_15_20_R_3_5->Divide(hPP_5020_Pythia_15_20_R5);
+
+  TH1F* hPP_5020_Pythia_15_20_R_4_5 = (TH1F*)hPP_5020_Pythia_15_20_R4->Clone("hPP_5020_Pythia_15_20_R_4_5");
+  hPP_5020_Pythia_15_20_R_4_5->Divide(hPP_5020_Pythia_15_20_R5);
 
   TH1F* hPP_7000_Pythia_05_R_3_5 = (TH1F*)hPP_7000_Pythia_05_R3->Clone("hPP_7000_Pythia_05_R_3_5");
   hPP_7000_Pythia_05_R_3_5->Divide(hPP_7000_Pythia_05_R5);
 
-  TH1F* hPP_7000_Pythia_05_4_5 = (TH1F*)hPP_7000_Pythia_05_R4->Clone("hPP_7000_Pythia_05_R_3_4");
-  hPP_7000_Pythia_05_R_3_4->Divide(hPP_7000_Pythia_05_R5);
+  TH1F* hPP_7000_Pythia_05_R_4_5 = (TH1F*)hPP_7000_Pythia_05_R4->Clone("hPP_7000_Pythia_05_R_4_5");
+  hPP_7000_Pythia_05_R_4_5->Divide(hPP_7000_Pythia_05_R5);
 
   TH1F* hPP_7000_Pythia_05_10_R_3_5 = (TH1F*)hPP_7000_Pythia_05_10_R3->Clone("hPP_7000_Pythia_05_10_R_3_5");
   hPP_7000_Pythia_05_10_R_3_5->Divide(hPP_7000_Pythia_05_10_R5);
 
-  TH1F* hPP_7000_Pythia_05_10_4_5 = (TH1F*)hPP_7000_Pythia_05_10_R4->Clone("hPP_7000_Pythia_05_10_R_3_4");
-  hPP_7000_Pythia_05_10_R_3_4->Divide(hPP_7000_Pythia_05_10_R5);
+  TH1F* hPP_7000_Pythia_05_10_R_4_5 = (TH1F*)hPP_7000_Pythia_05_10_R4->Clone("hPP_7000_Pythia_05_10_R_4_5");
+  hPP_7000_Pythia_05_10_R_4_5->Divide(hPP_7000_Pythia_05_10_R5);
 
+  TH1F* hPP_7000_Pythia_15_20_R_3_5 = (TH1F*)hPP_7000_Pythia_15_20_R3->Clone("hPP_7000_Pythia_15_20_R_3_5");
+  hPP_7000_Pythia_15_20_R_3_5->Divide(hPP_7000_Pythia_15_20_R5);
 
-
-
+  TH1F* hPP_7000_Pythia_15_20_R_4_5 = (TH1F*)hPP_7000_Pythia_15_20_R4->Clone("hPP_7000_Pythia_15_20_R_4_5");
+  hPP_7000_Pythia_15_20_R_4_5->Divide(hPP_7000_Pythia_15_20_R5);
 
   
   TH1F* hPP_5020_2760_nnpdf_R2 = (TH1F*)hPP_5020_nnpdf_22_22_R2->Clone("hPP_5020_2760_nnpdf_R2");
@@ -494,7 +553,7 @@ void RpA_reference_check(){
   hPP_5020_Pythia_05_R_3_5->SetXTitle("Jet p_{T} (GeV/c)");
   hPP_5020_Pythia_05_R_3_5->SetTitle(" ");
   hPP_5020_Pythia_05_R_3_5->SetAxisRange(22,500,"X");
-  hPP_5020_Pythia_05_R_3_5->SetAxisRange(0.75,1.1,"Y");
+  hPP_5020_Pythia_05_R_3_5->SetAxisRange(0,2,"Y");
   hPP_5020_Pythia_05_R_3_5->Draw("p");
   hPP_5020_Pythia_05_R_4_5->SetMarkerStyle(22);
   hPP_5020_Pythia_05_R_4_5->SetMarkerColor(4);
@@ -514,41 +573,98 @@ void RpA_reference_check(){
   hPP_7000_Pythia_05_R_4_5->SetMarkerColor(13);
   hPP_7000_Pythia_05_R_4_5->Draw("same p");
 
-  hPP_data_2760_R_3_5->SetMarkerStyle(20);
-  hPP_data_2760_R_3_5->SetMarkerColor(8);
-  hPP_data_2760_R_3_5->Draw("same p");
-
-  hPP_data_2760_R_4_5->SetMarkerStyle(22);
-  hPP_data_2760_R_4_5->SetMarkerColor(9);
-  hPP_data_2760_R_4_5->Draw("same p");
 
   TLegend *title4 = myLegend(0.13,0.55,0.33,0.85);
   title4->AddEntry(hPP_5020_Pythia_05_R_3_5,"Z2 5.02, R=0.3/R=0.5","pl");
   title4->AddEntry(hPP_5020_Pythia_05_R_4_5,"Z2 5.02, R=0.4/R=0.5","pl");
   title4->AddEntry(hPP_2760_Pythia_05_R_3_5,"Z2 2.76, R=0.3/R=0.5","pl");
   title4->AddEntry(hPP_2760_Pythia_05_R_4_5,"Z2 2.76, R=0.4/R=0.5","pl");
-  title4->AddEntry(hPP_7000_Pythia_05_R_3_5,"Z2 2.76, R=0.3/R=0.5","pl");
-  title4->AddEntry(hPP_7000_Pythia_05_R_4_5,"Z2 2.76, R=0.4/R=0.5","pl");
-  title4->AddEntry(hPP_data_2760_R_3_5,"Data 2.76 R=0.3/R=0.5","pl");
-  title4->AddEntry(hPP_data_2760_R_4_5,"Data 2.76 R=0.4/R=0.5","pl");
+  title4->AddEntry(hPP_7000_Pythia_05_R_3_5,"Z2 7, R=0.3/R=0.5","pl");
+  title4->AddEntry(hPP_7000_Pythia_05_R_4_5,"Z2 7, R=0.4/R=0.5","pl");
+
   title4->SetTextSize(0.04);
   title4->Draw();
 
   putCMSPrel(0.1,0.92,0.04);
   drawText("pp Pythia Z2 , #sqrt{s}=2.7, 5.02 and 7(TeV)",0.35,0.92,16);
-  drawText("Pythia |y|<0.5, Data:|eta|<2",0.47,0.83,16);
+  drawText("Pythia |y|<0.5",0.47,0.83,16);
 
-  c3->SaveAs("RpA_reference_pythia_data_diff_energy_radius_cross_section_ratio_05.pdf","RECREATE");
+  c3->SaveAs("RpA_reference_pythia_diff_energy_radius_cross_section_ratio_05.pdf","RECREATE");
+
+
+
+
 
   TCanvas *c4 = new TCanvas("c4","",800,600);
   c4->SetGridy();
+  hPP_5020_Pythia_05_R_3_5->SetMarkerStyle(20);
+  hPP_5020_Pythia_05_R_3_5->SetMarkerColor(3);
+  hPP_5020_Pythia_05_R_3_5->SetYTitle("Ratio of differential cross sections");
+  hPP_5020_Pythia_05_R_3_5->SetXTitle("Jet p_{T} (GeV/c)");
+  hPP_5020_Pythia_05_R_3_5->SetTitle(" ");
+  hPP_5020_Pythia_05_R_3_5->SetAxisRange(22,500,"X");
+  hPP_5020_Pythia_05_R_3_5->SetAxisRange(0,2,"Y");
+  hPP_5020_Pythia_05_R_3_5->Draw("p");
+  hPP_5020_Pythia_15_20_R_3_5->SetMarkerStyle(22);
+  hPP_5020_Pythia_15_20_R_3_5->SetMarkerColor(4);
+  hPP_5020_Pythia_15_20_R_3_5->Draw("same p");
+
+  hPP_2760_Pythia_05_R_3_5->SetMarkerStyle(20);
+  hPP_2760_Pythia_05_R_3_5->SetMarkerColor(6);
+  hPP_2760_Pythia_05_R_3_5->Draw("same p");
+  hPP_2760_Pythia_15_20_R_3_5->SetMarkerStyle(22);
+  hPP_2760_Pythia_15_20_R_3_5->SetMarkerColor(7);
+  hPP_2760_Pythia_15_20_R_3_5->Draw("same p");
+
+  hPP_7000_Pythia_05_R_3_5->SetMarkerStyle(20);
+  hPP_7000_Pythia_05_R_3_5->SetMarkerColor(12);
+  hPP_7000_Pythia_05_R_3_5->Draw("same p");
+  hPP_7000_Pythia_15_20_R_3_5->SetMarkerStyle(22);
+  hPP_7000_Pythia_15_20_R_3_5->SetMarkerColor(13);
+  hPP_7000_Pythia_15_20_R_3_5->Draw("same p");
+
+  hPP_2760_data_05_R_3_5->SetMarkerStyle(20);
+  hPP_2760_data_05_R_3_5->SetMarkerColor(8);
+  hPP_2760_data_05_R_3_5->Draw("same p");
+
+  hPP_2760_data_15_20_R_3_5->SetMarkerStyle(20);
+  hPP_2760_data_15_20_R_3_5->SetMarkerColor(8);
+  hPP_2760_data_15_20_R_3_5->Draw("same p");
+
+  TLegend *title5 = myLegend(0.13,0.55,0.33,0.85);
+  title5->AddEntry(hPP_5020_Pythia_05_R_3_5,"Z2 5.02, |y|<0.5","pl");
+  title5->AddEntry(hPP_5020_Pythia_15_20_R_3_5,"Z2 5.02, 1.5<|y|<2.0","pl");
+  title5->AddEntry(hPP_2760_Pythia_05_R_3_5,"Z2 2.76, |y|<0.5","pl");
+  title5->AddEntry(hPP_2760_Pythia_15_20_R_3_5,"Z2 2.76, 1.5<|y|<2.0","pl");
+  title5->AddEntry(hPP_7000_Pythia_05_R_3_5,"Z2 7, |y|<0.5","pl");
+  title5->AddEntry(hPP_7000_Pythia_15_20_R_3_5,"Z2 7, 1.5<|y|<2.0","pl");
+  title5->AddEntry(hPP_2760_data_05_R_3_5,"Data 2.76 |y|<0.5","pl");
+  title5->AddEntry(hPP_2760_data_15_20_R_3_5,"Data 2.76 1.5<|y|<2.0","pl");
+  title5->SetTextSize(0.04);
+  title5->Draw();
+
+  putCMSPrel(0.1,0.92,0.04);
+  drawText("pp Pythia Z2 , #sqrt{s}=2.7, 5.02 and 7(TeV)",0.35,0.92,16);
+  drawText("R=0.3/R=0.5",0.47,0.83,16);
+
+  c4->SaveAs("RpA_reference_pythia_data_diff_energy_radius_cross_section_ratio_R_3_5.pdf","RECREATE");
+
+
+
+
+
+
+
+
+  TCanvas *c5 = new TCanvas("c5","",800,600);
+  c5->SetGridy();
   hPP_5020_Pythia_05_10_R_3_5->SetMarkerStyle(20);
   hPP_5020_Pythia_05_10_R_3_5->SetMarkerColor(3);
   hPP_5020_Pythia_05_10_R_3_5->SetYTitle("Ratio of differential cross sections");
   hPP_5020_Pythia_05_10_R_3_5->SetXTitle("Jet p_{T} (GeV/c)");
   hPP_5020_Pythia_05_10_R_3_5->SetTitle(" ");
   hPP_5020_Pythia_05_10_R_3_5->SetAxisRange(22,500,"X");
-  hPP_5020_Pythia_05_10_R_3_5->SetAxisRange(0.75,1.1,"Y");
+  hPP_5020_Pythia_05_10_R_3_5->SetAxisRange(0,2,"Y");
   hPP_5020_Pythia_05_10_R_3_5->Draw("p");
   hPP_5020_Pythia_05_10_R_4_5->SetMarkerStyle(22);
   hPP_5020_Pythia_05_10_R_4_5->SetMarkerColor(4);
@@ -576,23 +692,25 @@ void RpA_reference_check(){
   //hPP_data_2760_R_4_5->SetMarkerColor(9);
   //hPP_data_2760_R_4_5->Draw("same p");
 
-  TLegend *title4 = myLegend(0.13,0.55,0.33,0.85);
-  title4->AddEntry(hPP_5020_Pythia_05_10_R_3_5,"Z2 5.02, R=0.3/R=0.5","pl");
-  title4->AddEntry(hPP_5020_Pythia_05_10_R_4_5,"Z2 5.02, R=0.4/R=0.5","pl");
-  title4->AddEntry(hPP_2760_Pythia_05_10_R_3_5,"Z2 2.76, R=0.3/R=0.5","pl");
-  title4->AddEntry(hPP_2760_Pythia_05_10_R_4_5,"Z2 2.76, R=0.4/R=0.5","pl");
-  title4->AddEntry(hPP_7000_Pythia_05_10_R_3_5,"Z2 2.76, R=0.3/R=0.5","pl");
-  title4->AddEntry(hPP_7000_Pythia_05_10_R_4_5,"Z2 2.76, R=0.4/R=0.5","pl");
-  //title4->AddEntry(hPP_data_2760_R_3_5,"Data 2.76 R=0.3/R=0.5","pl");
-  //title4->AddEntry(hPP_data_2760_R_4_5,"Data 2.76 R=0.4/R=0.5","pl");
-  title4->SetTextSize(0.04);
-  title4->Draw();
+  TLegend *title5 = myLegend(0.13,0.55,0.33,0.85);
+  title5->AddEntry(hPP_5020_Pythia_05_10_R_3_5,"Z2 5.02, R=0.3/R=0.5","pl");
+  title5->AddEntry(hPP_5020_Pythia_05_10_R_4_5,"Z2 5.02, R=0.4/R=0.5","pl");
+  title5->AddEntry(hPP_2760_Pythia_05_10_R_3_5,"Z2 2.76, R=0.3/R=0.5","pl");
+  title5->AddEntry(hPP_2760_Pythia_05_10_R_4_5,"Z2 2.76, R=0.4/R=0.5","pl");
+  title5->AddEntry(hPP_7000_Pythia_05_10_R_3_5,"Z2 7, R=0.3/R=0.5","pl");
+  title5->AddEntry(hPP_7000_Pythia_05_10_R_4_5,"Z2 7, R=0.4/R=0.5","pl");
+  //title5->AddEntry(hPP_data_2760_R_3_5,"Data 2.76 R=0.3/R=0.5","pl");
+  //title5->AddEntry(hPP_data_2760_R_4_5,"Data 2.76 R=0.4/R=0.5","pl");
+  title5->SetTextSize(0.04);
+  title5->Draw();
 
   putCMSPrel(0.1,0.92,0.04);
   drawText("pp Pythia Z2 , #sqrt{s}=2.7, 5.02 and 7(TeV)",0.35,0.92,16);
-  //drawText("anti k_{T} Jets",0.47,0.83,16);
+  drawText("Pythia 0.5<|y|<1.0",0.47,0.83,16);
 
-  c4->SaveAs("RpA_reference_pythia_data_diff_energy_radius_cross_section_ratio_05_10.pdf","RECREATE");
+  c5->SaveAs("RpA_reference_pythia_data_diff_energy_radius_cross_section_ratio_R_3_4.pdf","RECREATE");
+
+  
 
   
   foutput.Write();
