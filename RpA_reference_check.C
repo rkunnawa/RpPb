@@ -284,7 +284,8 @@ void RpA_reference_check(){
 
 
   //ok we got the histograms from the file. now lets get the histograms needed from these histograms. 
-
+  //these are all in differnet bins, so no way we can add them. for lets just do it with -0.5 to +0.5 for diff radius and diff energy 
+  /*
   TH1F* hPP_2760_Pythia_20_20_R3 = (TH1F*)hPP_2760_Pythia_05_R3->Clone("hPP_2760_Pythia_20_20_R3");
   hPP_2760_Pythia_20_20_R3->Add(hPP_2760_Pythia_05_10_R3);
   hPP_2760_Pythia_20_20_R3->Add(hPP_2760_Pythia_10_15_R3);
@@ -302,6 +303,25 @@ void RpA_reference_check(){
   hPP_2760_Pythia_20_20_R4->Add(hPP_2760_Pythia_10_15_R4);
   hPP_2760_Pythia_20_20_R4->Add(hPP_2760_Pythia_15_20_R4);
   hPP_2760_Pythia_20_20_R4->Divide(1./4);
+  */
+
+  TH1F* hPP_2760_Pythia_05_R_3_5 = (TH1F*)hPP_2760_Pythia_05_R3->Clone("hPP_2760_Pythia_05_R_3_5");
+  hPP_2760_Pythia_05_R_3_5->Divide(hPP_2760_Pythia_05_R5);
+
+  TH1F* hPP_2760_Pythia_05_4_5 = (TH1F*)hPP_2760_Pythia_05_R4->Clone("hPP_2760_Pythia_05_R_3_4");
+  hPP_2760_Pythia_05_R_3_4->Divide(hPP_2760_Pythia_05_R5);
+
+  TH1F* hPP_2760_Pythia_05_10_R_3_5 = (TH1F*)hPP_2760_Pythia_05_10_R3->Clone("hPP_2760_Pythia_05_10_R_3_5");
+  hPP_2760_Pythia_05_10_R_3_5->Divide(hPP_2760_Pythia_05_10_R5);
+
+  TH1F* hPP_2760_Pythia_05_10_4_5 = (TH1F*)hPP_2760_Pythia_05_10_R4->Clone("hPP_2760_Pythia_05_10_R_3_4");
+  hPP_2760_Pythia_05_10_R_3_4->Divide(hPP_2760_Pythia_05_10_R5);
+
+
+
+
+
+
 
   
   TH1F* hPP_5020_2760_nnpdf_R2 = (TH1F*)hPP_5020_nnpdf_22_22_R2->Clone("hPP_5020_2760_nnpdf_R2");
