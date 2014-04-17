@@ -253,6 +253,37 @@ void RpA_reference_check(){
   TH1F* hPP_5020_ct10n_nnpdf_10_10_R3 = (TH1F*)hPP_5020_ct10n_10_10_R3->Clone("hPP_5020_ct10n_nnpdf_10_10_R3");
   hPP_5020_ct10n_nnpdf_10_10_R3->Divide(hPP_5020_nnpdf_10_10_R3);
 
+  TH1F* hPP_5020_ct10n_hera_03_03_R3 = (TH1F*)hPP_5020_ct10n_03_03_R3->Clone("hPP_5020_ct10n_hera_03_03_R3");
+  hPP_5020_ct10n_hera_03_03_R3->Divide(hPP_5020_hera_03_03_R3);
+
+  TH1F* hPP_5020_ct10n_hera_03_07_R3 = (TH1F*)hPP_5020_ct10n_03_07_R3->Clone("hPP_5020_ct10n_hera_03_07_R3");
+  hPP_5020_ct10n_hera_03_07_R3->Divide(hPP_5020_hera_03_07_R3);
+
+  TH1F* hPP_5020_ct10n_hera_07_10_R3 = (TH1F*)hPP_5020_ct10n_07_10_R3->Clone("hPP_5020_ct10n_hera_07_10_R3");
+  hPP_5020_ct10n_hera_07_10_R3->Divide(hPP_5020_hera_07_10_R3);
+
+  TH1F* hPP_5020_ct10n_hera_10_12_R3 = (TH1F*)hPP_5020_ct10n_10_12_R3->Clone("hPP_5020_ct10n_hera_10_12_R3");
+  hPP_5020_ct10n_hera_10_12_R3->Divide(hPP_5020_hera_10_12_R3);
+
+  TH1F* hPP_5020_ct10n_hera_12_22_R3 = (TH1F*)hPP_5020_ct10n_12_22_R3->Clone("hPP_5020_ct10n_hera_12_22_R3");
+  hPP_5020_ct10n_hera_12_22_R3->Divide(hPP_5020_hera_12_22_R3);
+
+  TH1F* hPP_5020_ct10n_hera_10_10_R3 = (TH1F*)hPP_5020_ct10n_10_10_R3->Clone("hPP_5020_ct10n_hera_10_10_R3");
+  hPP_5020_ct10n_hera_10_10_R3->Divide(hPP_5020_hera_10_10_R3);
+  
+  //now lets make the text files and get the values required. 
+  
+  //03_03
+  ofstream pp_5020_ct10n_nnpdf_03_03_R3;
+  pp_5020_ct10n_nnpdf_03_03_R3.open("pp_5020_ct10n_nnpdf_03_03_R3.txt");
+  for(int i = 0;i<hPP_5020_ct10n_nnpdf_03_03_R3->GetNbinsX();i++){
+    float bincenter = hPP_5020_ct10n_nnpdf_03_03_R3->GetBinCenter(i);
+    float val = hPP_5020_ct10n_nnpdf_03_03_R3->GetBinContent(i);
+    val = 100*TMath::Abs(1-val);
+    pp_5020_ct10n_nnpdf_03_03_R3<<i<<" "<<val<<endl;
+  }
+  pp_5020_ct10n_nnpdf_03_03_R3.close();
+
 
   //2.76 TeV
   TDirectoryFile* ak3GenJet_2760_05 = (TDirectoryFile*)fppPythia_2760->Get("ak3GenJetSpectrum_QCD10001_00_05");
