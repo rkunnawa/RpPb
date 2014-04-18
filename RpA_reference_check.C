@@ -278,154 +278,99 @@ void RpA_reference_check(){
   pp_5020_ct10n_nnpdf_03_03_R3.open("pp_5020_ct10n_nnpdf_03_03_R3.txt");
   for(int i = 0;i<hPP_5020_ct10n_nnpdf_03_03_R3->GetNbinsX();i++){
     float bincenter = hPP_5020_ct10n_nnpdf_03_03_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_nnpdf_03_03_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_nnpdf_03_03_R3<<i<<" "<<val<<endl;
+    float val_1 = hPP_5020_ct10n_nnpdf_03_03_R3->GetBinContent(i);
+    val_1 = 100*TMath::Abs(1-val_1);
+    float val_2 = hPP_5020_ct10n_hera_03_03_R3->GetBinContent(i);
+    val_2 = 100*TMath::Abs(1-val_2);
+    pp_5020_ct10n_nnpdf_03_03_R3<<bincenter<<" "<<TMath::Max(val_1,val_2)<<endl;
   }
   pp_5020_ct10n_nnpdf_03_03_R3.close();
 
-  //03_03
-  ofstream pp_5020_ct10n_hera_03_03_R3;
-  pp_5020_ct10n_hera_03_03_R3.open("pp_5020_ct10n_hera_03_03_R3.txt");
-  for(int i = 0;i<hPP_5020_ct10n_hera_03_03_R3->GetNbinsX();i++){
-    float bincenter = hPP_5020_ct10n_hera_03_03_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_hera_03_03_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_hera_03_03_R3<<i<<" "<<val<<endl;
-  }
-  pp_5020_ct10n_hera_03_03_R3.close();
 
   //03_07
   ofstream pp_5020_ct10n_nnpdf_03_07_R3;
   pp_5020_ct10n_nnpdf_03_07_R3.open("pp_5020_ct10n_nnpdf_03_07_R3.txt");
   for(int i = 0;i<hPP_5020_ct10n_nnpdf_03_07_R3->GetNbinsX();i++){
     float bincenter = hPP_5020_ct10n_nnpdf_03_07_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_nnpdf_03_07_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_nnpdf_03_07_R3<<i<<" "<<val<<endl;
+    float val_1 = hPP_5020_ct10n_nnpdf_03_07_R3->GetBinContent(i);
+    val_1 = 100*TMath::Abs(1-val_1);
+    float val_2 = hPP_5020_ct10n_hera_03_07_R3->GetBinContent(i);
+    val_2 = 100*TMath::Abs(1-val_2);
+    pp_5020_ct10n_nnpdf_03_07_R3<<bincenter<<" "<<TMath::Max(val_1,val_2)<<endl;
   }
   pp_5020_ct10n_nnpdf_03_07_R3.close();
 
-  //03_07
-  ofstream pp_5020_ct10n_hera_03_07_R3;
-  pp_5020_ct10n_hera_03_07_R3.open("pp_5020_ct10n_hera_03_07_R3.txt");
-  for(int i = 0;i<hPP_5020_ct10n_hera_03_07_R3->GetNbinsX();i++){
-    float bincenter = hPP_5020_ct10n_hera_03_07_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_hera_03_07_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_hera_03_07_R3<<i<<" "<<val<<endl;
-  }
-  pp_5020_ct10n_hera_03_07_R3.close();
+
 
   //07_10
   ofstream pp_5020_ct10n_nnpdf_07_10_R3;
   pp_5020_ct10n_nnpdf_07_10_R3.open("pp_5020_ct10n_nnpdf_07_10_R3.txt");
   for(int i = 0;i<hPP_5020_ct10n_nnpdf_07_10_R3->GetNbinsX();i++){
     float bincenter = hPP_5020_ct10n_nnpdf_07_10_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_nnpdf_07_10_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_nnpdf_07_10_R3<<i<<" "<<val<<endl;
+    float val_1 = hPP_5020_ct10n_nnpdf_07_10_R3->GetBinContent(i);
+    val_1 = 100*TMath::Abs(1-val_1);
+    float val_2 = hPP_5020_ct10n_hera_07_10_R3->GetBinContent(i);
+    val_2 = 100*TMath::Abs(1-val_2);
+    pp_5020_ct10n_nnpdf_07_10_R3<<bincenter<<" "<<TMath::Max(val_1,val_2)<<endl;
   }
   pp_5020_ct10n_nnpdf_07_10_R3.close();
 
-  //07_10
-  ofstream pp_5020_ct10n_hera_07_10_R3;
-  pp_5020_ct10n_hera_07_10_R3.open("pp_5020_ct10n_hera_07_10_R3.txt");
-  for(int i = 0;i<hPP_5020_ct10n_hera_07_10_R3->GetNbinsX();i++){
-    float bincenter = hPP_5020_ct10n_hera_07_10_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_hera_07_10_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_hera_07_10_R3<<i<<" "<<val<<endl;
-  }
-  pp_5020_ct10n_hera_07_10_R3.close();
+ 
 
  //10_12
   ofstream pp_5020_ct10n_nnpdf_10_12_R3;
   pp_5020_ct10n_nnpdf_10_12_R3.open("pp_5020_ct10n_nnpdf_10_12_R3.txt");
   for(int i = 0;i<hPP_5020_ct10n_nnpdf_10_12_R3->GetNbinsX();i++){
     float bincenter = hPP_5020_ct10n_nnpdf_10_12_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_nnpdf_10_12_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_nnpdf_10_12_R3<<i<<" "<<val<<endl;
+    float val_1 = hPP_5020_ct10n_nnpdf_10_12_R3->GetBinContent(i);
+    val_1 = 100*TMath::Abs(1-val_1);
+    float val_2 = hPP_5020_ct10n_hera_10_12_R3->GetBinContent(i);
+    val_2 = 100*TMath::Abs(1-val_2);
+    pp_5020_ct10n_nnpdf_10_12_R3<<bincenter<<" "<<TMath::Max(val_1,val_2)<<endl;
   }
   pp_5020_ct10n_nnpdf_10_12_R3.close();
-
-  //10_12
-  ofstream pp_5020_ct10n_hera_10_12_R3;
-  pp_5020_ct10n_hera_10_12_R3.open("pp_5020_ct10n_hera_10_12_R3.txt");
-  for(int i = 0;i<hPP_5020_ct10n_hera_10_12_R3->GetNbinsX();i++){
-    float bincenter = hPP_5020_ct10n_hera_10_12_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_hera_10_12_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_hera_10_12_R3<<i<<" "<<val<<endl;
-  }
-  pp_5020_ct10n_hera_10_12_R3.close();
 
    //12_22
   ofstream pp_5020_ct10n_nnpdf_12_22_R3;
   pp_5020_ct10n_nnpdf_12_22_R3.open("pp_5020_ct10n_nnpdf_12_22_R3.txt");
   for(int i = 0;i<hPP_5020_ct10n_nnpdf_12_22_R3->GetNbinsX();i++){
     float bincenter = hPP_5020_ct10n_nnpdf_12_22_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_nnpdf_12_22_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_nnpdf_12_22_R3<<i<<" "<<val<<endl;
+    float val_1 = hPP_5020_ct10n_nnpdf_12_22_R3->GetBinContent(i);
+    val_1 = 100*TMath::Abs(1-val_1);
+    float val_2 = hPP_5020_ct10n_hera_12_22_R3->GetBinContent(i);
+    val_2 = 100*TMath::Abs(1-val_2);
+    pp_5020_ct10n_nnpdf_12_22_R3<<bincenter<<" "<<TMath::Max(val_1,val_2)<<endl;
   }
   pp_5020_ct10n_nnpdf_12_22_R3.close();
 
-  //12_22
-  ofstream pp_5020_ct10n_hera_12_22_R3;
-  pp_5020_ct10n_hera_12_22_R3.open("pp_5020_ct10n_hera_12_22_R3.txt");
-  for(int i = 0;i<hPP_5020_ct10n_hera_12_22_R3->GetNbinsX();i++){
-    float bincenter = hPP_5020_ct10n_hera_12_22_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_hera_12_22_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_hera_12_22_R3<<i<<" "<<val<<endl;
-  }
-  pp_5020_ct10n_hera_12_22_R3.close();
 
    //22_22
   ofstream pp_5020_ct10n_nnpdf_22_22_R3;
   pp_5020_ct10n_nnpdf_22_22_R3.open("pp_5020_ct10n_nnpdf_22_22_R3.txt");
   for(int i = 0;i<hPP_5020_ct10n_nnpdf_22_22_R3->GetNbinsX();i++){
     float bincenter = hPP_5020_ct10n_nnpdf_22_22_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_nnpdf_22_22_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_nnpdf_22_22_R3<<i<<" "<<val<<endl;
+    float val_1 = hPP_5020_ct10n_nnpdf_22_22_R3->GetBinContent(i);
+    val_1 = 100*TMath::Abs(1-val_1);
+    float val_2 = hPP_5020_ct10n_hera_22_22_R3->GetBinContent(i);
+    val_2 = 100*TMath::Abs(1-val_2);
+    pp_5020_ct10n_nnpdf_22_22_R3<<bincenter<<" "<<TMath::Max(val_1,val_2)<<endl;
   }
   pp_5020_ct10n_nnpdf_22_22_R3.close();
 
-  //22_22
-  ofstream pp_5020_ct10n_hera_22_22_R3;
-  pp_5020_ct10n_hera_22_22_R3.open("pp_5020_ct10n_hera_22_22_R3.txt");
-  for(int i = 0;i<hPP_5020_ct10n_hera_22_22_R3->GetNbinsX();i++){
-    float bincenter = hPP_5020_ct10n_hera_22_22_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_hera_22_22_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_hera_22_22_R3<<i<<" "<<val<<endl;
-  }
-  pp_5020_ct10n_hera_22_22_R3.close();
 
    //10_10
   ofstream pp_5020_ct10n_nnpdf_10_10_R3;
   pp_5020_ct10n_nnpdf_10_10_R3.open("pp_5020_ct10n_nnpdf_10_10_R3.txt");
   for(int i = 0;i<hPP_5020_ct10n_nnpdf_10_10_R3->GetNbinsX();i++){
     float bincenter = hPP_5020_ct10n_nnpdf_10_10_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_nnpdf_10_10_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_nnpdf_10_10_R3<<i<<" "<<val<<endl;
+    float val_1 = hPP_5020_ct10n_nnpdf_10_10_R3->GetBinContent(i);
+    val_1 = 100*TMath::Abs(1-val_1);
+    float val_2 = hPP_5020_ct10n_hera_10_10_R3->GetBinContent(i);
+    val_2 = 100*TMath::Abs(1-val_2);
+    pp_5020_ct10n_nnpdf_10_10_R3<<bincenter<<" "<<TMath::Max(val_1,val_2)<<endl;
   }
   pp_5020_ct10n_nnpdf_10_10_R3.close();
 
-  //10_10
-  ofstream pp_5020_ct10n_hera_10_10_R3;
-  pp_5020_ct10n_hera_10_10_R3.open("pp_5020_ct10n_hera_10_10_R3.txt");
-  for(int i = 0;i<hPP_5020_ct10n_hera_10_10_R3->GetNbinsX();i++){
-    float bincenter = hPP_5020_ct10n_hera_10_10_R3->GetBinCenter(i);
-    float val = hPP_5020_ct10n_hera_10_10_R3->GetBinContent(i);
-    val = 100*TMath::Abs(1-val);
-    pp_5020_ct10n_hera_10_10_R3<<i<<" "<<val<<endl;
-  }
-  pp_5020_ct10n_hera_10_10_R3.close();
 
 
   //2.76 TeV
