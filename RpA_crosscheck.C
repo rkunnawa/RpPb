@@ -870,17 +870,22 @@ void RpA_crosscheck(){
 
   //TFile* fin2 = TFile::Open("pPb_eta_rap_vals.root");
   
-  TH2D* heta_rap_ratio = new TH2D("heta_rap_ratio","",100,0,500,100,0.9,1.03);
-  TH2D* heta_rap_ratio_2 = new TH2D("heta_rap_ratio_2","",100,0,500,100,0.93,1.03);
-  TH1D* heta_rap_diff = new TH2D("heta_rap_diff","",100,0,500,100,0,0.03);
-
+  TH2F* heta_rap_ratio = new TH2F("heta_rap_ratio","",100,0,500,100,0.9,1.03);
+  TH2F* heta_rap_ratio_2 = new TH2F("heta_rap_ratio_2","",100,0,500,100,0.93,1.03);
+  TH1F* heta_rap_diff = new TH2F("heta_rap_diff","",100,0,500,100,0,0.03);
+  cout<<"A"<<endl;
   TTree* jet = (TTree*)fin->Get("t1");
   jet->Print();
-  jet->Draw("(jeteta/jetrap):jetpt>>heta_rap_ratio","abs(jeteta)<1&&jetpt>=30&&jetpt<500","colz");
+  //jet->Draw("(jeteta/jetrap):jetpt>>heta_rap_ratio","abs(jeteta)<1&&jetpt>=30&&jetpt<500","colz");
+  jet->Project("heta_rap_ratio","(jeteta/jetrap):jetpt","abs(jeteta)<1&&jetpt>=30&&jetpt<500");
+  cout<<"B"<<endl;
   heta_rap_ratio->Print("base");
-  jet->Draw("(jeteta/jetrap):jetpt>>heta_rap_ratio_2","abs(jeteta)<0.5&&jetpt>=30&&jetpt<500","colz");
+  cout<<"C"<<endl;
+  //jet->Draw("(jeteta/jetrap):jetpt>>heta_rap_ratio_2","abs(jeteta)<0.5&&jetpt>=30&&jetpt<500","colz");
+  jet->Project("heta_rap_ratio_2","(jeteta/jetrap):jetpt","abs(jeteta)<0.5&&jetpt>=30&&jetpt<500");
   heta_rap_ratio_2->Print("base");
-  jet->Draw("((jeteta-jetrap)/jeteta):jetpt>>heta_rap_diff","abs(jeteta)<1&&jetpt>=30&&jetpt<500","colz");
+  //jet->Draw("((jeteta-jetrap)/jeteta):jetpt>>heta_rap_diff","abs(jeteta)<1&&jetpt>=30&&jetpt<500","colz");
+  jet->Project("heta_rap_diff","((jeteta-jetrap)/jeteta):jetpt","abs(jeteta)<1&&jetpt>=30&&jetpt<500");
   heta_rap_diff->Print("base");
 
   //TH2F* heta_rap_ratio2,*heta_rap_ratio2_2,*heta_rap_diff2;
