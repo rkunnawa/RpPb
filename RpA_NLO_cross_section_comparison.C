@@ -91,6 +91,15 @@ void putCMSPrel(double x, double y, double size){
 	tex->Draw();
 }
 
+void putCMSSim(double x, double y, double size){
+	TLatex *tex=0;
+	tex = new TLatex(x,y,"CMS Simulation");
+	tex->SetTextSize(size);
+	tex->SetLineWidth(2);
+	tex->SetNDC();
+	tex->Draw();
+}
+
 
 TLegend *myLegend(double x1,double y1,double x2, double y2)
 {
@@ -128,14 +137,18 @@ void formatCanvas(TCanvas *c){
 }
 
 
-//static const int nbins_yaxian = 29;
-//static const double boundaries_yaxian[nbins_yaxian+1] = {3,4,5,7,9,12,15,18,22,27,33,39,47,55,64,74,84,97,114,133,153,174,196,220,245,272,300,429,692,1000};
+//static const int nbins_yaxian_large = 29;
+//static const double boundaries_yaxian_large[nbins_yaxian+1] = {3,4,5,7,9,12,15,18,22,27,33,39,47,55,64,74,84,97,114,133,153,174,196,220,245,272,300,429,692,1000};
 
 static const int nbins_yaxian_large = 29;
 static const double boundaries_yaxian_large[nbins_yaxian_large+1] = {22, 27, 33, 39, 47, 55, 64, 74, 84, 97, 114, 133, 153, 174, 196, 220, 245, 272, 300, 330, 362, 395, 430, 468, 507, 548, 592, 638,790,967};
 
 static const int nbins_yaxian = 18;
 static const double boundaries_yaxian[nbins_yaxian+1] = {22, 27, 33, 39, 47, 55, 64, 74, 84, 97, 114, 133, 153, 174, 196, 220, 245, 272, 300};
+
+//for pp 7TeV comparisons - |y|<0.5,
+static const int nbins_pp = 34;
+static const double boundaries_pp[nbins_pp+1] = {18,21,24,28,32,37,43,49,56,64,74,84,97,114,133,153,174,196,220,245,272,300,330,362,395,430,468,507,548,592,638,686,737,846,1684};
 
 //static const int nbins_rec = 50;
 //statis const int boundaries_rec[]
@@ -197,7 +210,6 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
 
   TH1::SetDefaultSumw2();
 
-
   // load the files required:
   TFile * fnnpdf21_0 = TFile::Open("fnl5350eta0_nnpdf21-nlo_aspdf.root"); 
   TFile * fnnpdf21_1 = TFile::Open("fnl5350eta1_nnpdf21-nlo_aspdf.root"); 
@@ -223,7 +235,6 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   TFile * fStatErr_3 = TFile::Open("fnl5350eta3_cteq66-nlo_aspdf_all.root");
   TFile * fStatErr_4 = TFile::Open("fnl5350eta4_cteq66-nlo_aspdf_all.root");
 
-
   // we are going to look at nnpdf21 nlo calculatino and the eta bins we are interested in are 0.0 to 0.3, 0.3 to 0.7 and 0.7 to 1. there are in +eta since for pp the final output is symmetric. the histogram from the root file are named accroding to 
   // The R in histogram number xxxxRxx goes from 0.2 jet size to 0.4 jet size for R=1,2,3.
   // So the NLO for anti-kT R=0.3 is in histogram 100200
@@ -246,7 +257,6 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   // once we get the histograms from the file we have to add them to get to eta range from -1 to 1. 
   // for this we need to multiply/scale the histograms by delta eta for its respective bin. 
 
-
   // statistical uncertainity is given in the histogram h100203 for each eta bin which is the same for all pdfs. 
   // so what we have to do is get that value and set it as bin error for each pt bin. 
 
@@ -255,8 +265,31 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   cout<<Form("ak%dPF",radius)<<endl;
   //output file 
   TFile fout(Form("RpA_pp_MC_eric_NLO_reference_ak%dPF_5020GeV.root",radius),"RECREATE");
-  TFile * fPP = TFile::Open(Form("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/result-2013-ppb-akPu%dPF-cent-1/ppb_merge_correctedMC_weighting_eta_CM_1_mc__akPu%dPF_cent_1.root",radius,radius));
+  TFile * fPP = TFile::Open(Form("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/result-2013-ppb-akPu%dPF-cent-1/ppb_merge_correctedMC_weighting_eta_CM_1_mc__akPu%dPF_cent_1.root",3,3));// changed to 3 from radius for comparing different NLO radius 
   //TFile *fEric = TFile::Open("pythiaZ2ForNLOComp.root");
+  TFile *fpp2760 = TFile::Open(Form("/net/hisrv0001/home/rkunnawa/WORK/CMSSW_6_0_0/src/pp_2760GeV_nlo_histos.root"));
+  
+  
+  
+  TFile* fpp502Intra = TFile::Open("R3_ScaleFactor7TeVto5TeVStartingCone5Sys.root");//get the intrapolated histograms 
+  //TH1F* hpp5020_intra = new TH1F("hPP5020_intra","",nbins_pp,boundaries_pp);
+  TGraphErrors* hpp5020_intra_05 = (TGraphErrors*)fpp502Intra->Get("Interpolated5TeVak3PFJetAbsRapidity0_5");
+  //TH1F* hpp5020_intra_05_10 = (TH1F*)fpp502Intra->Get("Interpolated5TeVak3PFJetAbsRapidity5_10");
+  //TH1F* hpp5020_intra_10_15 = (TH1F*)fpp502Intra->Get("Interpolated5TeVak3PFJetAbsRapidity10_15");
+  //TH1F* hpp5020_intra_15_20 = (TH1F*)fpp502Intra->Get("Interpolated5TeVak3PFJetAbsRapidity15_20");
+
+  //hpp5020_intra_05->Print("base");
+  //hpp5020_intra_05_10->Print("base");
+
+  //hpp5020_intra->Add(hpp5020_intra_05);
+  //hpp5020_intra->Add(hpp5020_intra_05_10);
+  //hpp5020_intra->Add(hpp5020_intra_10_15);
+  //hpp5020_intra->Add(hpp5020_intra_15_20);
+  //hpp5020_intra->Scale(1./2); //delta eta
+  //hpp5020_intra_05->Scale(1e9);
+
+
+  //all this mc is at 5.02 TeV 
   TFile *fEric = TFile::Open("AnaGENJetR3_Apr2_Z2Combined.root");
   TDirectoryFile *ak3GenJetSpectrum_n22_n12 = (TDirectoryFile*)fEric->Get("ak3GenJetSpectrum_n22_n12");
   TDirectoryFile *ak3GenJetSpectrum_n12_n07 = (TDirectoryFile*)fEric->Get("ak3GenJetSpectrum_n12_n07");
@@ -268,7 +301,6 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   TDirectoryFile *ak3GenJetSpectrum_n10_p10 = (TDirectoryFile*)fEric->Get("ak3GenJetSpectrum_n10_p10");
   
   fout.cd();
-
   
   TH1F* hpp_eric_n22_n12 = (TH1F*)ak3GenJetSpectrum_n22_n12->Get("JetSpectrum_Fine");
   TH1F* hpp_eric_n12_n07 = (TH1F*)ak3GenJetSpectrum_n12_n07->Get("JetSpectrum_Fine");
@@ -287,7 +319,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   TH1F* hpp_mc_p07_p12 = (TH1F*)fPP->Get("hpp_pythia_gen_p07p12");
   TH1F* hpp_mc_p12_p22 = (TH1F*)fPP->Get("hpp_pythia_gen_p12p22");
   TH1F* hpp_mc_n10_p10 = (TH1F*)fPP->Get("hpp_pythia_gen_n10p10");
-
+  
   Double_t deta_0 = 0.6;
   Double_t deta_1 = 0.8;
   Double_t deta_2 = 0.6;
@@ -295,7 +327,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   Double_t deta_4 = 2.0;
 
   Double_t deta = 2;
-
+  
   // now get the correct histograms which follow whats given in the NLO. and scale it by delta eta 
   TH1F* hpp_mc_0 = (TH1F*)hpp_mc_n03_p03->Clone("hpp_mc_0");
   hpp_mc_0->Scale(1./0.6);
@@ -476,7 +508,24 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   TH1F* hPP_nnpdf21_NLO = new TH1F("hPP_nnpdf21_NLO","",nbins_yaxian_large,boundaries_yaxian_large);
   TH1F* hPP_ct10n_NLO = new TH1F("hPP_ct10n_NLO","",nbins_yaxian_large,boundaries_yaxian_large);
   TH1F* hPP_hera15all_NLO = new TH1F("hPP_hera15all_NLO","",nbins_yaxian_large,boundaries_yaxian_large);
-  
+
+  TH1F* hPP_5020_nnpdf_03_03 = (TH1F*)hpt_nnpdf21_0->Clone("hPP_5020_nnpdf_03_03");
+  TH1F* hPP_5020_nnpdf_03_07 = (TH1F*)hpt_nnpdf21_1->Clone("hPP_5020_nnpdf_03_07"); 
+  TH1F* hPP_5020_nnpdf_07_10 = (TH1F*)hpt_nnpdf21_2->Clone("hPP_5020_nnpdf_07_10");
+  TH1F* hPP_5020_nnpdf_10_12 = (TH1F*)hpt_nnpdf21_3->Clone("hPP_5020_nnpdf_10_12");
+  TH1F* hPP_5020_nnpdf_12_22 = (TH1F*)hpt_nnpdf21_4->Clone("hPP_5020_nnpdf_12_22");
+
+  TH1F* hPP_5020_ct10n_03_03 = (TH1F*)hpt_ct10n_0->Clone("hPP_5020_ct10n_03_03");
+  TH1F* hPP_5020_ct10n_03_07 = (TH1F*)hpt_ct10n_1->Clone("hPP_5020_ct10n_03_07"); 
+  TH1F* hPP_5020_ct10n_07_10 = (TH1F*)hpt_ct10n_2->Clone("hPP_5020_ct10n_07_10");
+  TH1F* hPP_5020_ct10n_10_12 = (TH1F*)hpt_ct10n_3->Clone("hPP_5020_ct10n_10_12");
+  TH1F* hPP_5020_ct10n_12_22 = (TH1F*)hpt_ct10n_4->Clone("hPP_5020_ct10n_12_22");
+
+  TH1F* hPP_5020_hera_03_03 = (TH1F*)hpt_hera15all_0->Clone("hPP_5020_hera_03_03");
+  TH1F* hPP_5020_hera_03_07 = (TH1F*)hpt_hera15all_1->Clone("hPP_5020_hera_03_07"); 
+  TH1F* hPP_5020_hera_07_10 = (TH1F*)hpt_hera15all_2->Clone("hPP_5020_hera_07_10");
+  TH1F* hPP_5020_hera_10_12 = (TH1F*)hpt_hera15all_3->Clone("hPP_5020_hera_10_12");
+  TH1F* hPP_5020_hera_12_22 = (TH1F*)hpt_hera15all_4->Clone("hPP_5020_hera_12_22");
 
   hpt_nnpdf21_0->Scale(deta_0);
   hpt_nnpdf21_1->Scale(deta_1);
@@ -517,6 +566,24 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   hPP_hera15all_NLO->Scale(1./deta);
   hPP_hera15all_NLO->Print("base");
 
+  TH1F* hPP5020_nnpdf_22_22 = (TH1F*)hpt_nnpdf21_0->Clone("hPP5020_nnpdf_22_22");
+  hPP5020_nnpdf_22_22->Add(hpt_nnpdf21_1);
+  hPP5020_nnpdf_22_22->Add(hpt_nnpdf21_2);
+  hPP5020_nnpdf_22_22->Add(hpt_nnpdf21_3);
+  hPP5020_nnpdf_22_22->Add(hpt_nnpdf21_4);
+  hPP5020_nnpdf_22_22->Scale(1./4.4);
+  TH1F* hPP5020_ct10n_22_22 = (TH1F*)hpt_ct10n_0->Clone("hPP5020_ct10n_22_22");
+  hPP5020_ct10n_22_22->Add(hpt_ct10n_1);
+  hPP5020_ct10n_22_22->Add(hpt_ct10n_2);
+  hPP5020_ct10n_22_22->Add(hpt_ct10n_3);
+  hPP5020_ct10n_22_22->Add(hpt_ct10n_4);
+  hPP5020_ct10n_22_22->Scale(1./4.4);
+  TH1F* hPP5020_hera_22_22 = (TH1F*)hpt_hera15all_0->Clone("hPP5020_hera_22_22");
+  hPP5020_hera_22_22->Add(hpt_hera15all_1);
+  hPP5020_hera_22_22->Add(hpt_hera15all_2);
+  hPP5020_hera_22_22->Add(hpt_hera15all_3);
+  hPP5020_hera_22_22->Add(hpt_hera15all_4);
+  hPP5020_hera_22_22->Scale(1./4.4);
   
   TH1F* hpp_nnpdf = (TH1F*)hPP_nnpdf21_NLO->Clone("hpp_nnpdf");
   TH1F* hpp_nnpdf_0 = (TH1F*)hpt_nnpdf21_0->Clone("hpp_nnpdf_0");
@@ -581,11 +648,11 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
     
     if(ratio_nnpdf[i]!=0){
       Float_t nnpdf_val = hpp_NLO_nnpdf_scaled->GetBinContent(i);
-      cout<<"i = "<<i<<endl;
-      cout<<"original val = "<<nnpdf_val<<endl;
-      cout<<"correction factor = "<<ratio_nnpdf[i]<<endl;
+      //cout<<"i = "<<i<<endl;
+      //cout<<"original val = "<<nnpdf_val<<endl;
+      //cout<<"correction factor = "<<ratio_nnpdf[i]<<endl;
       nnpdf_val = (Float_t)(nnpdf_val)/(ratio_nnpdf[i]);
-      cout<<"corrected val = "<<nnpdf_val<<endl;
+      //cout<<"corrected val = "<<nnpdf_val<<endl;
       hpp_NLO_nnpdf_scaled->SetBinContent(i,nnpdf_val);
     }
 
@@ -602,6 +669,12 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
     }
     */
   }
+
+
+  //get the pp 5.02 and 2.76 PYTHIA spectra here. 
+  //TFile *fppPythia_2760 = TFile::Open("AnaGENJetR357_2760GeV_Apr15_Z2Combined.root");
+  //TFile *fppPythia_5020 = TFile::Open("AnaGENJetR357_5020GeV_Apr15_Z2Combined.root");
+  
 
 
   //hPPrebin->Scale(1e9);//take it to pico barns
@@ -654,8 +727,6 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
 
   fout.Write();
 
-  
-
   /*
   int binvalue=hPP_ct10n_NLO->FindBin(50);
  
@@ -694,7 +765,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   //hpp_eric_0->SetMarkerSize();
   
   hpp_eric_0->SetYTitle("#frac{d^{2} #sigma}{d p_{T} d #eta} (pb)");
-  hpp_eric_0->SetXTitle("p_{T} GeV/c");
+  hpp_eric_0->SetXTitle("p_{T} (GeV/c)");
   hpp_eric_0->SetAxisRange(22,600,"X");
   hpp_eric_0->SetTitle(" ");
   hpp_eric_0->Draw();
@@ -713,13 +784,13 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   title_0->SetTextSize(0.04);
   title_0->Draw();
 
-  putCMSPrel(0.1,0.92,0.06);
+  putCMSSim(0.1,0.92,0.06);
   drawText(Form("anti k_{T} R = 0.3, #sqrt{s} = 5.02 TeV",radius),0.47,0.83,16);
   drawText("-0.3<#eta<0.3",0.47,0.92,16);
 
   c1->cd(2);
   hRatio_nnpdf_0->SetYTitle("NLO / MC Gen");
-  hRatio_nnpdf_0->SetXTitle("p_{T} GeV/c");
+  hRatio_nnpdf_0->SetXTitle("p_{T} (GeV/c)");
   hRatio_nnpdf_0->SetTitle(" ");
   hRatio_nnpdf_0->SetAxisRange(0.9,1.5,"Y");
   hRatio_nnpdf_0->SetMarkerColor(kRed);
@@ -750,7 +821,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   //hpp_eric_1->SetMarkerSize();
   
   hpp_eric_1->SetYTitle("#frac{d^{2} #sigma}{d p_{T} d #eta} (pb)");
-  hpp_eric_1->SetXTitle("p_{T} GeV/c");
+  hpp_eric_1->SetXTitle("p_{T} (GeV/c)");
   hpp_eric_1->SetAxisRange(22,600,"X");
   hpp_eric_1->SetTitle(" ");
   hpp_eric_1->Draw();
@@ -769,13 +840,13 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   title_1->SetTextSize(0.04);
   title_1->Draw();
 
-  putCMSPrel(0.1,0.92,0.06);
+  putCMSSim(0.1,0.92,0.06);
   drawText(Form("anti k_{T} R = 0.3, #sqrt{s} = 5.02 TeV",radius),0.47,0.83,16);
   drawText("-0.7<#eta<-0.3 && 0.3<#eta<0.7",0.47,0.92,16);
 
   c2->cd(2);
   hRatio_nnpdf_1->SetYTitle("NLO / MC Gen");
-  hRatio_nnpdf_1->SetXTitle("p_{T} GeV/c");
+  hRatio_nnpdf_1->SetXTitle("p_{T} (GeV/c)");
   hRatio_nnpdf_1->SetTitle(" ");
   hRatio_nnpdf_1->SetAxisRange(0.9,1.5,"Y");
   hRatio_nnpdf_1->SetMarkerColor(kRed);
@@ -806,7 +877,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   //hpp_eric_2->SetMarkerSize();
   
   hpp_eric_2->SetYTitle("#frac{d^{2} #sigma}{d p_{T} d #eta} (pb)");
-  hpp_eric_2->SetXTitle("p_{T} GeV/c");
+  hpp_eric_2->SetXTitle("p_{T} (GeV/c)");
   hpp_eric_2->SetAxisRange(22,600,"X");
   hpp_eric_2->SetTitle(" ");
   hpp_eric_2->Draw();
@@ -825,13 +896,13 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   title_2->SetTextSize(0.04);
   title_2->Draw();
 
-  putCMSPrel(0.1,0.92,0.06);
+  putCMSSim(0.1,0.92,0.06);
   drawText(Form("anti k_{T} R = 0.3, #sqrt{s} = 5.02 TeV",radius),0.47,0.83,16);
   drawText("-1.2<#eta<-0.7 && 0.7<#eta<1.2",0.47,0.92,16);
 
   c3->cd(2);
   hRatio_nnpdf_2->SetYTitle("NLO / MC Gen");
-  hRatio_nnpdf_2->SetXTitle("p_{T} GeV/c");
+  hRatio_nnpdf_2->SetXTitle("p_{T} (GeV/c)");
   hRatio_nnpdf_2->SetTitle(" ");
   hRatio_nnpdf_2->SetAxisRange(0.9,1.5,"Y");
   hRatio_nnpdf_2->SetMarkerColor(kRed);
@@ -862,7 +933,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   //hpp_eric_3->SetMarkerSize();
   
   hpp_eric_3->SetYTitle("#frac{d^{2} #sigma}{d p_{T} d #eta} (pb)");
-  hpp_eric_3->SetXTitle("p_{T} GeV/c");
+  hpp_eric_3->SetXTitle("p_{T} (GeV/c)");
   hpp_eric_3->SetAxisRange(22,600,"X");
   hpp_eric_3->SetTitle(" ");
   hpp_eric_3->Draw();
@@ -881,13 +952,13 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   title_3->SetTextSize(0.04);
   title_3->Draw();
 
-  putCMSPrel(0.1,0.92,0.06);
+  putCMSSim(0.1,0.92,0.06);
   drawText(Form("anti k_{T} R = 0.3, #sqrt{s} = 5.02 TeV",radius),0.47,0.83,16);
   drawText("-2.2<#eta<-1.2 && 1.2<#eta<2.2",0.47,0.92,16);
 
   c4->cd(2);
   hRatio_nnpdf_3->SetYTitle("NLO / MC Gen");
-  hRatio_nnpdf_3->SetXTitle("p_{T} GeV/c");
+  hRatio_nnpdf_3->SetXTitle("p_{T} (GeV/c)");
   hRatio_nnpdf_3->SetTitle(" ");
   hRatio_nnpdf_3->SetAxisRange(0.9,1.5,"Y");
   hRatio_nnpdf_3->SetMarkerColor(kRed);
@@ -908,54 +979,96 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   c5->cd(1);
   c5->cd(1)->SetLogy();
   hpp_nnpdf->SetMarkerColor(kRed);
-  hpp_nnpdf->SetMarkerStyle(20);
+  hpp_nnpdf->SetMarkerStyle(24);
   hpp_ct10n->SetMarkerColor(kBlue);
-  hpp_ct10n->SetMarkerStyle(20);
+  hpp_ct10n->SetMarkerStyle(24);
   hpp_hera15all->SetMarkerColor(kGreen);
-  hpp_hera15all->SetMarkerStyle(20);
+  hpp_hera15all->SetMarkerStyle(24);
   hpp_eric->SetMarkerColor(kBlack);
-  hpp_eric->SetMarkerStyle(8);
+  hpp_eric->SetMarkerStyle(24);
+  hpp5020_intra_05->SetMarkerColor(9);
+  hpp5020_intra_05->SetMarkerStyle(33);
+
   //hpp_eric->SetMarkerSize();
   
-  hpp_eric->SetYTitle("#frac{d^{2} #sigma}{d p_{T} d #eta} (pb)");
-  hpp_eric->SetXTitle("p_{T} GeV/c");
+  
+
+  
+  
+  hpp_eric->SetYTitle("#frac{d^{2} #sigma}{d p_{T} d #eta} (mb)");
+  hpp_eric->SetXTitle("p_{T} (GeV/c)");
   hpp_eric->SetAxisRange(22,600,"X");
+  hpp_eric->Scale(1./1e9);
   hpp_eric->SetTitle(" ");
   hpp_eric->Draw();
+  hpp_nnpdf->Scale(1./1e9);
   hpp_nnpdf->Draw("same p");
-  hpp_ct10n->Draw("same p");
-  hpp_hera15all->Draw("same p");
+  hpp_ct10n->Scale(1./1e9);
+  //hpp_ct10n->Draw("same p");
+  hpp_hera15all->Scale(1./1e9);
+  //hpp_hera15all->Draw("same p");
   hpp_eric->Draw("same p");
+  hpp5020_intra_05->Draw("same p");
+
+  TH1F* hPP5020_intra_05 = new TH1F("hPP5020_intra_05","",nbins_yaxian_large,boundaries_yaxian_large);
+  for(int i = 0;i<nbins_pp;i++){
+    float val_y = hpp5020_intra_05->GetErrorY(i);
+    float val_x = hpp5020_intra_05->GetErrorX(i);
+    float err_y = hpp5020_intra_05->GetErrorYhigh(i);
+
+    hPP5020_intra_05->SetBinContent(i,val_y);
+    hPP5020_intra_05->SetBinError(i,err_y); 
+  }
+
+  hPP5020_intra_05->Print("base");
+
+  hPP5020_intra_05->Draw("same p");
 
   TLegend * title = myLegend(0.47, 0.55,0.67, 0.8);
   title->AddEntry(hpp_nnpdf,"NLO nnpdf21","pl");
-  title->AddEntry(hpp_ct10n,"NLO ct10n","pl");
-  title->AddEntry(hpp_hera15all,"NLO hera15all","pl");
+  //title->AddEntry(hpp_ct10n,"NLO ct10n","pl");
+  //title->AddEntry(hpp_hera15all,"NLO hera15all","pl");
   
   if(useEricSpectra)title->AddEntry(hpp_eric,"MC Gen spectra (Pythia Z2)","pl");
   if(!useEricSpectra)title->AddEntry(hpp_eric,"MC spectra","pl");
+  title->AddEntry(hpp5020_intra_05,"Interpolated Spectra at 5.02 TeV","pl");
+
   title->SetTextSize(0.04);
   title->Draw();
 
-  putCMSPrel(0.1,0.92,0.06);
+  putCMSSim(0.1,0.92,0.06);
   drawText(Form("anti k_{T} R = 0.3, #sqrt{s} = 5.02 TeV",radius),0.47,0.83,16);
   drawText("-1<#eta<1",0.47,0.92,16);
 
   c5->cd(2);
-  hRatio_nnpdf->SetYTitle("NLO / MC Gen");
-  hRatio_nnpdf->SetXTitle("p_{T} GeV/c");
-  hRatio_nnpdf->SetTitle(" ");
-  hRatio_nnpdf->SetAxisRange(0.9,1.5,"Y");
+
+  TH1F* hRatio_intra_nnpdf = (TH1F*)hpp_nnpdf->Clone("hRatio_intra_nnpdf");
+  TH1F* hRatio_intra_eric = (TH1F*)hpp_eric->Clone("hRatio_intra_eric");
+
+  hRatio_intra_nnpdf->Divide(hPP5020_intra_05);
+  hRatio_intra_eric->Divide(hPP5020_intra_05);  
+
+  hRatio_intra_nnpdf->SetYTitle("NLO / MC Gen");
+  hRatio_intra_nnpdf->SetXTitle("p_{T} (GeV/c)");
+  hRatio_intra_nnpdf->SetTitle(" ");
+  //hRatio_intra_nnpdf->SetAxisRange(0.9,1.5,"Y");
   hRatio_nnpdf->SetMarkerColor(kRed);
   hRatio_nnpdf->SetMarkerStyle(20);
   hRatio_hera15all->SetMarkerColor(kGreen);
   hRatio_hera15all->SetMarkerStyle(20);
   hRatio_ct10n->SetMarkerColor(kBlue);
   hRatio_ct10n->SetMarkerStyle(20);
-  hRatio_nnpdf->Draw("p");
+  //hRatio_nnpdf->Draw("p");
   hRatio_nnpdf->SetAxisRange(22,600,"X");
-  hRatio_hera15all->Draw("same p");
-  hRatio_ct10n->Draw("same p");
+  //hRatio_hera15all->Draw("same p");
+  //hRatio_ct10n->Draw("same p");
+  hRatio_intra_nnpdf->SetMarkerStyle(33);
+  hRatio_intra_nnpdf->SetMarkerColor(kRed);
+  hRatio_intra_eric->SetMarkerStyle(34);
+  hRatio_intra_eric->SetMarkerColor(9);
+  hRatio_intra_nnpdf->Draw("p");
+  hRatio_intra_eric->Draw("same p");
+
 
   c5->SaveAs(Form("pp_5020GeV_NLO_ak%dPF_vs_MC_gen_spectra.pdf",radius),"RECREATE");
 
@@ -965,38 +1078,60 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   formatCanvas(c6);
   c6->cd(1);
   hpp_NLO_nnpdf_scaled->SetYTitle("#frac{d^{2} #sigma}{d p_{T} d #eta} (pb)");
-  hpp_NLO_nnpdf_scaled->SetXTitle("p_{T} GeV/c");
+  hpp_NLO_nnpdf_scaled->SetXTitle("p_{T} (GeV/c)");
   hpp_NLO_nnpdf_scaled->SetAxisRange(40,600,"X");
   hpp_NLO_nnpdf_scaled->SetTitle(" ");
   hpp_NLO_nnpdf_scaled->SetMarkerStyle(20);
-  hpp_NLO_nnpdf_scaled->SetMarkerColor(kBlue);
-  //hpp_eric->Draw();
-  hpp_NLO_nnpdf_scaled->Draw();
+  hpp_NLO_nnpdf_scaled->SetMarkerColor(kBlack);
+  hpp_eric->SetMarkerColor(kBlue);
+  hpp_eric->Draw();
+  hpp_NLO_nnpdf_scaled->Draw("same");
   hpp_nnpdf->Draw("same");
   
   TLegend *title6 = myLegend(0.47,0.55,0.67,0.8);
-  //title6->AddEntry(hpp_eric,"MC Gen spectra (Pythia Z2)","pl");
   title6->AddEntry(hpp_NLO_nnpdf_scaled,"NLO nnpdf21 scaled according to pp data @ 2.76/NLO","pl");
+  title6->AddEntry(hpp_eric,"MC Gen spectra (Pythia Z2)","pl");
   title6->AddEntry(hpp_nnpdf,"NLO nnpdf21","pl");
   title6->SetTextSize(0.04);
   title6->Draw();
 
-  putCMSPrel(0.1,0.92,0.06);
+  putCMSSim(0.1,0.92,0.06);
   drawText(Form("anti k_{T} R = 0.3, #sqrt{s} = 5.02 TeV",radius),0.47,0.83,16);
-  drawText("-1<#eta<1",0.47,0.92,16);
+  //drawText("-1<#eta<1",0.47,0.92,16);
 
   c6->cd(2);
 
-  hRatio_nnpdf_scale->SetYTitle("Ratio - Scaled/Original");
+  TH1F* hRatio_nnpdf_scale_pythia = (TH1F*)hpp_NLO_nnpdf_scaled->Clone("hRatio_nnpdf_scale_pythia");
+  hRatio_nnpdf_scale_pythia->Divide(hpp_eric);
+  hRatio_nnpdf_scale->SetYTitle("Ratio");
   hRatio_nnpdf_scale->SetXTitle("Jet p_{T} (GeV/c)");
   hRatio_nnpdf_scale->SetTitle(" ");
   hRatio_nnpdf_scale->SetMarkerStyle(20);
   hRatio_nnpdf_scale->SetAxisRange(0,2,"Y");
   hRatio_nnpdf_scale->SetAxisRange(40,600,"X");
-  hRatio_nnpdf_scale->SetMarkerColor(kBlack);
+  hRatio_nnpdf_scale->SetMarkerColor(kRed);
   hRatio_nnpdf_scale->Draw();
 
-  c6->SaveAs("pp_2020GeV_NLO_ak3PF_scaled_vs_unscaled.pdf","RECREATE");
+  hRatio_nnpdf_scale_pythia->SetMarkerStyle(20);
+  hRatio_nnpdf_scale_pythia->SetMarkerColor(kBlue);
+  hRatio_nnpdf_scale_pythia->Draw("same p");
+
+  TLegend *title_scl = myLegend(0.1,0.65,0.3,0.8);
+  title_scl->AddEntry(hRatio_nnpdf_scale,"Scaled NLO/unscaled NLO","pl");
+  title_scl->AddEntry(hRatio_nnpdf_scale_pythia,"Scaled NLO/PYTHIA Z2","pl");
+  title_scl->SetTextSize(0.04);
+  title_scl->Draw();
+  c6->SaveAs("pp_5020GeV_NLO_ak3PF_scaled_vs_unscaled.pdf","RECREATE");
+  
+
+  //have to make the NLO 2.76 TeV divided by 5.02 TeV. 
+  
+  //TH1F* hPP_5020_nnpdf = (TH1F*)hpp_nnpdf->Clone("hPP_5020_nnpdf");
+  //TH1F* hPP_2760_nnpdf = (TH1F*)fpp2760->Get("hPP_nnpdf_NLO");
+  //TH1F* hPP_5020_2760_nnpdf
+
+    //TCanvas *c7 = new TCanvas("c7","",800,600);
+
   
 
 
