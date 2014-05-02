@@ -547,22 +547,27 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
     Float_t valErr_nnpdf_Low_0 = hnnpdf_Sys_Uncert_Low_0->GetBinContent(i);
     Float_t valErr_nnpdf_Upp_0 = hnnpdf_Sys_Uncert_Upp_0->GetBinContent(i);
     Float_t valErr_nnpdf_0 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_0),TMath::Abs(valErr_nnpdf_Upp_0));
+    hpt_nnpdf21_0->SetBinError(i,valErr_nnpdf_0);
 
     Float_t valErr_nnpdf_Low_1 = hnnpdf_Sys_Uncert_Low_1->GetBinContent(i);
     Float_t valErr_nnpdf_Upp_1 = hnnpdf_Sys_Uncert_Upp_1->GetBinContent(i);
     Float_t valErr_nnpdf_1 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_1),TMath::Abs(valErr_nnpdf_Upp_1));
+    hpt_nnpdf21_1->SetBinError(i,valErr_nnpdf_1);
 
     Float_t valErr_nnpdf_Low_2 = hnnpdf_Sys_Uncert_Low_2->GetBinContent(i);
     Float_t valErr_nnpdf_Upp_2 = hnnpdf_Sys_Uncert_Upp_2->GetBinContent(i);
-    Float_t valErr_nnpdf_2 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_1),TMath::Abs(valErr_nnpdf_Upp_2));
+    Float_t valErr_nnpdf_2 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_2),TMath::Abs(valErr_nnpdf_Upp_2));
+    hpt_nnpdf21_2->SetBinError(i,valErr_nnpdf_2);
 
     Float_t valErr_nnpdf_Low_3 = hnnpdf_Sys_Uncert_Low_3->GetBinContent(i);
     Float_t valErr_nnpdf_Upp_3 = hnnpdf_Sys_Uncert_Upp_3->GetBinContent(i);
-    Float_t valErr_nnpdf_3 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_1),TMath::Abs(valErr_nnpdf_Upp_3));
+    Float_t valErr_nnpdf_3 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_3),TMath::Abs(valErr_nnpdf_Upp_3));
+    hpt_nnpdf21_3->SetBinError(i,valErr_nnpdf_3);
 
     Float_t valErr_nnpdf_Low_4 = hnnpdf_Sys_Uncert_Low_4->GetBinContent(i);
     Float_t valErr_nnpdf_Upp_4 = hnnpdf_Sys_Uncert_Upp_4->GetBinContent(i);
-    Float_t valErr_nnpdf_4 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_1),TMath::Abs(valErr_nnpdf_Upp_4));
+    Float_t valErr_nnpdf_4 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_4),TMath::Abs(valErr_nnpdf_Upp_4));
+    hpt_nnpdf21_4->SetBinError(i,valErr_nnpdf_4);
 
 
     //ct10n
