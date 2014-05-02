@@ -150,6 +150,9 @@ static const double boundaries_yaxian[nbins_yaxian+1] = {22, 27, 33, 39, 47, 55,
 static const int nbins_pp = 34;
 static const double boundaries_pp[nbins_pp+1] = {18,21,24,28,32,37,43,49,56,64,74,84,97,114,133,153,174,196,220,245,272,300,330,362,395,430,468,507,548,592,638,686,737,846,1684};
 
+static const int nbins_ratio = 21;
+static const int boundaries_ratio[nbins_ratio+1] = {64,74,84,97,114,133,153,174,196,220,245,272,300,330,362,395,430,468,507,548,592,638}
+
 //static const int nbins_rec = 50;
 //statis const int boundaries_rec[]
 
@@ -436,6 +439,39 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   TH1F* hStatUncert_3 = (TH1F*)fStatErr_3->Get(Form("h100%d03",radius-1));
   TH1F* hStatUncert_4 = (TH1F*)fStatErr_4->Get(Form("h100%d03",radius-1));
 
+  TH1F* hnnpdf_Sys_Uncert_Low_0 = (TH1F*)fnnpdf21_0->Get(Form("h100%d01",radius-1));
+  TH1F* hnnpdf_Sys_Uncert_Upp_0 = (TH1F*)fnnpdf21_0->Get(Form("h100%d02",radius-1));
+  TH1F* hnnpdf_Sys_Uncert_Low_1 = (TH1F*)fnnpdf21_1->Get(Form("h100%d01",radius-1));
+  TH1F* hnnpdf_Sys_Uncert_Upp_1 = (TH1F*)fnnpdf21_1->Get(Form("h100%d02",radius-1));
+  TH1F* hnnpdf_Sys_Uncert_Low_2 = (TH1F*)fnnpdf21_2->Get(Form("h100%d01",radius-1));
+  TH1F* hnnpdf_Sys_Uncert_Upp_2 = (TH1F*)fnnpdf21_2->Get(Form("h100%d02",radius-1));
+  TH1F* hnnpdf_Sys_Uncert_Low_3 = (TH1F*)fnnpdf21_3->Get(Form("h100%d01",radius-1));
+  TH1F* hnnpdf_Sys_Uncert_Upp_3 = (TH1F*)fnnpdf21_3->Get(Form("h100%d02",radius-1));
+  TH1F* hnnpdf_Sys_Uncert_Low_4 = (TH1F*)fnnpdf21_4->Get(Form("h100%d01",radius-1));
+  TH1F* hnnpdf_Sys_Uncert_Upp_4 = (TH1F*)fnnpdf21_4->Get(Form("h100%d02",radius-1));
+
+  TH1F* hct10n_Sys_Uncert_Low_0 = (TH1F*)fct10n_0->Get(Form("h100%d01",radius-1));
+  TH1F* hct10n_Sys_Uncert_Upp_0 = (TH1F*)fct10n_0->Get(Form("h100%d02",radius-1));
+  TH1F* hct10n_Sys_Uncert_Low_1 = (TH1F*)fct10n_1->Get(Form("h100%d01",radius-1));
+  TH1F* hct10n_Sys_Uncert_Upp_1 = (TH1F*)fct10n_1->Get(Form("h100%d02",radius-1));
+  TH1F* hct10n_Sys_Uncert_Low_2 = (TH1F*)fct10n_2->Get(Form("h100%d01",radius-1));
+  TH1F* hct10n_Sys_Uncert_Upp_2 = (TH1F*)fct10n_2->Get(Form("h100%d02",radius-1));
+  TH1F* hct10n_Sys_Uncert_Low_3 = (TH1F*)fct10n_3->Get(Form("h100%d01",radius-1));
+  TH1F* hct10n_Sys_Uncert_Upp_3 = (TH1F*)fct10n_3->Get(Form("h100%d02",radius-1));
+  TH1F* hct10n_Sys_Uncert_Low_4 = (TH1F*)fct10n_4->Get(Form("h100%d01",radius-1));
+  TH1F* hct10n_Sys_Uncert_Upp_4 = (TH1F*)fct10n_4->Get(Form("h100%d02",radius-1));
+
+  TH1F* hhera_Sys_Uncert_Low_0 = (TH1F*)fhera15all_0->Get(Form("h100%d01",radius-1));
+  TH1F* hhera_Sys_Uncert_Upp_0 = (TH1F*)fhera15all_0->Get(Form("h100%d02",radius-1));
+  TH1F* hhera_Sys_Uncert_Low_1 = (TH1F*)fhera15all_1->Get(Form("h100%d01",radius-1));
+  TH1F* hhera_Sys_Uncert_Upp_1 = (TH1F*)fhera15all_1->Get(Form("h100%d02",radius-1));
+  TH1F* hhera_Sys_Uncert_Low_2 = (TH1F*)fhera15all_2->Get(Form("h100%d01",radius-1));
+  TH1F* hhera_Sys_Uncert_Upp_2 = (TH1F*)fhera15all_2->Get(Form("h100%d02",radius-1));
+  TH1F* hhera_Sys_Uncert_Low_3 = (TH1F*)fhera15all_3->Get(Form("h100%d01",radius-1));
+  TH1F* hhera_Sys_Uncert_Upp_3 = (TH1F*)fhera15all_3->Get(Form("h100%d02",radius-1));
+  TH1F* hhera_Sys_Uncert_Low_4 = (TH1F*)fhera15all_4->Get(Form("h100%d01",radius-1));
+  TH1F* hhera_Sys_Uncert_Upp_4 = (TH1F*)fhera15all_4->Get(Form("h100%d02",radius-1));
+
   /*
   if(!useEricSpectra){
     TH1F* hPP = (TH1F*)fPP->Get("hGen_cent1");
@@ -502,6 +538,36 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
     hpt_hera15all_3->SetBinError(i,valErr_3);
     hpt_hera15all_4->SetBinError(i,valErr_4);
     
+  }
+
+  // add the systematics uncertainites to the histograms here. 
+  for(int i = 0;i<hpt_hera15all_0->GetNbinsX();i++){
+    
+    //nnpdf
+    Float_t valErr_nnpdf_Low_0 = hnnpdf_Sys_Uncert_Low_0->GetBinContent(i);
+    Float_t valErr_nnpdf_Upp_0 = hnnpdf_Sys_Uncert_Upp_0->GetBinContent(i);
+    Float_t valErr_nnpdf_0 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_0),TMath::Abs(valErr_nnpdf_Upp_0));
+
+    Float_t valErr_nnpdf_Low_1 = hnnpdf_Sys_Uncert_Low_1->GetBinContent(i);
+    Float_t valErr_nnpdf_Upp_1 = hnnpdf_Sys_Uncert_Upp_1->GetBinContent(i);
+    Float_t valErr_nnpdf_1 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_1),TMath::Abs(valErr_nnpdf_Upp_1));
+
+    Float_t valErr_nnpdf_Low_2 = hnnpdf_Sys_Uncert_Low_2->GetBinContent(i);
+    Float_t valErr_nnpdf_Upp_2 = hnnpdf_Sys_Uncert_Upp_2->GetBinContent(i);
+    Float_t valErr_nnpdf_2 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_1),TMath::Abs(valErr_nnpdf_Upp_2));
+
+    Float_t valErr_nnpdf_Low_3 = hnnpdf_Sys_Uncert_Low_3->GetBinContent(i);
+    Float_t valErr_nnpdf_Upp_3 = hnnpdf_Sys_Uncert_Upp_3->GetBinContent(i);
+    Float_t valErr_nnpdf_3 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_1),TMath::Abs(valErr_nnpdf_Upp_3));
+
+    Float_t valErr_nnpdf_Low_4 = hnnpdf_Sys_Uncert_Low_4->GetBinContent(i);
+    Float_t valErr_nnpdf_Upp_4 = hnnpdf_Sys_Uncert_Upp_4->GetBinContent(i);
+    Float_t valErr_nnpdf_4 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_1),TMath::Abs(valErr_nnpdf_Upp_4));
+
+
+    //ct10n
+
+
   }
   
 
@@ -991,13 +1057,10 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
 
   //hpp_eric->SetMarkerSize();
   
-  
 
-  
-  
   hpp_eric->SetYTitle("#frac{d^{2} #sigma}{d p_{T} d #eta} (mb)");
   hpp_eric->SetXTitle("p_{T} (GeV/c)");
-  hpp_eric->SetAxisRange(22,600,"X");
+  hpp_eric->SetAxisRange(64,600,"X");
   hpp_eric->Scale(1./1e9);
   hpp_eric->SetTitle(" ");
   hpp_eric->Draw();
@@ -1011,18 +1074,77 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   hpp5020_intra_05->Draw("same p");
 
   TH1F* hPP5020_intra_05 = new TH1F("hPP5020_intra_05","",nbins_yaxian_large,boundaries_yaxian_large);
-  for(int i = 0;i<nbins_pp;i++){
-    float val_y = hpp5020_intra_05->GetErrorY(i);
-    float val_x = hpp5020_intra_05->GetErrorX(i);
-    float err_y = hpp5020_intra_05->GetErrorYhigh(i);
 
-    hPP5020_intra_05->SetBinContent(i,val_y);
-    hPP5020_intra_05->SetBinError(i,err_y); 
-  }
+  hPP5020_intra_05->SetBinContent(0,0);
+  hPP5020_intra_05->SetBinContent(1,0);
+  hPP5020_intra_05->SetBinContent(2,0);
+  hPP5020_intra_05->SetBinContent(3,0);
+  hPP5020_intra_05->SetBinContent(4,0);
+  hPP5020_intra_05->SetBinContent(5,0);
+  hPP5020_intra_05->SetBinContent(6,0);
+  hPP5020_intra_05->SetBinContent(7,1.68391e-05);
+  hPP5020_intra_05->SetBinContent(8,8.64652e-06);
+  hPP5020_intra_05->SetBinContent(9,4.39998e-06);
+  hPP5020_intra_05->SetBinContent(10,2.0142e-06);
+  hPP5020_intra_05->SetBinContent(11,8.58581e-07);
+  hPP5020_intra_05->SetBinContent(12,3.87769e-07);
+  hPP5020_intra_05->SetBinContent(13,1.84878e-07);
+  hPP5020_intra_05->SetBinContent(14,9.01096e-08);
+  hPP5020_intra_05->SetBinContent(15,4.63504e-08);
+  hPP5020_intra_05->SetBinContent(16,2.40751e-08);
+  hPP5020_intra_05->SetBinContent(17,1.26573e-08);
+  hPP5020_intra_05->SetBinContent(18,6.71597e-09);
+  hPP5020_intra_05->SetBinContent(19,3.66747e-09);
+  hPP5020_intra_05->SetBinContent(20,2.02358e-09);
+  hPP5020_intra_05->SetBinContent(21,1.11227e-09);
+  hPP5020_intra_05->SetBinContent(22,6.22491e-10);
+  hPP5020_intra_05->SetBinContent(23,3.54324e-10);
+  hPP5020_intra_05->SetBinContent(24,2.00938e-10);
+  hPP5020_intra_05->SetBinContent(25,1.10246e-10);
+  hPP5020_intra_05->SetBinContent(26,6.72409e-11);
+  hPP5020_intra_05->SetBinContent(27,3.25778e-11);
+  hPP5020_intra_05->SetBinContent(28,0);
+  hPP5020_intra_05->SetBinContent(29,0);
 
+
+  hPP5020_intra_05->SetBinError(0,0);
+  hPP5020_intra_05->SetBinError(1,0);
+  hPP5020_intra_05->SetBinError(2,0);
+  hPP5020_intra_05->SetBinError(3,0);
+  hPP5020_intra_05->SetBinError(4,0);
+  hPP5020_intra_05->SetBinError(5,0);
+  hPP5020_intra_05->SetBinError(6,0);
+  hPP5020_intra_05->SetBinError(7,2.84789e-07);
+  hPP5020_intra_05->SetBinError(8,1.70992e-07);
+  hPP5020_intra_05->SetBinError(9,6.09845e-08);
+  hPP5020_intra_05->SetBinError(10,2.7684e-08);
+  hPP5020_intra_05->SetBinError(11,1.06649e-08);
+  hPP5020_intra_05->SetBinError(12,4.84167e-09);
+  hPP5020_intra_05->SetBinError(13,2.263e-09);
+  hPP5020_intra_05->SetBinError(14,1.10743e-09);
+  hPP5020_intra_05->SetBinError(15,5.41837e-10);
+  hPP5020_intra_05->SetBinError(16,2.75215e-10);
+  hPP5020_intra_05->SetBinError(17,1.43736e-10);
+  hPP5020_intra_05->SetBinError(18,8.19809e-11);
+  hPP5020_intra_05->SetBinError(19,4.78436e-11);
+  hPP5020_intra_05->SetBinError(20,2.93343e-11);
+  hPP5020_intra_05->SetBinError(21,1.97581e-11);
+  hPP5020_intra_05->SetBinError(22,1.31922e-11);
+  hPP5020_intra_05->SetBinError(23,9.16945e-12);
+  hPP5020_intra_05->SetBinError(24,6.6049e-12);
+  hPP5020_intra_05->SetBinError(25,4.51725e-12);
+  hPP5020_intra_05->SetBinError(26,3.38348e-12);
+  hPP5020_intra_05->SetBinError(27,2.20328e-12);
+  hPP5020_intra_05->SetBinError(28,0);
+  hPP5020_intra_05->SetBinError(29,0);
+
+  
   hPP5020_intra_05->Print("base");
+  hPP5020_intra_05->SetMarkerColor(15);
+  hPP5020_intra_05->SetMarkerStyle(20);
 
   hPP5020_intra_05->Draw("same p");
+
 
   TLegend * title = myLegend(0.47, 0.55,0.67, 0.8);
   title->AddEntry(hpp_nnpdf,"NLO nnpdf21","pl");
@@ -1048,7 +1170,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   hRatio_intra_nnpdf->Divide(hPP5020_intra_05);
   hRatio_intra_eric->Divide(hPP5020_intra_05);  
 
-  hRatio_intra_nnpdf->SetYTitle("NLO / MC Gen");
+  hRatio_intra_nnpdf->SetYTitle("X/pp 5.02 Interpolated Spectra");
   hRatio_intra_nnpdf->SetXTitle("p_{T} (GeV/c)");
   hRatio_intra_nnpdf->SetTitle(" ");
   //hRatio_intra_nnpdf->SetAxisRange(0.9,1.5,"Y");
@@ -1059,7 +1181,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   hRatio_ct10n->SetMarkerColor(kBlue);
   hRatio_ct10n->SetMarkerStyle(20);
   //hRatio_nnpdf->Draw("p");
-  hRatio_nnpdf->SetAxisRange(22,600,"X");
+  hRatio_intra_nnpdf->SetAxisRange(64,600,"X");
   //hRatio_hera15all->Draw("same p");
   //hRatio_ct10n->Draw("same p");
   hRatio_intra_nnpdf->SetMarkerStyle(33);
@@ -1069,7 +1191,8 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   hRatio_intra_nnpdf->Draw("p");
   hRatio_intra_eric->Draw("same p");
 
-
+  drawText("Red - Diamond, NLO (nnpdf)/pp Interpolated",0.4,0.7,16);
+  drawText("Purple - Cross, pp PYTHIA (Z2)/pp Interpolated",0.15,0.4,16);
   c5->SaveAs(Form("pp_5020GeV_NLO_ak%dPF_vs_MC_gen_spectra.pdf",radius),"RECREATE");
 
   
