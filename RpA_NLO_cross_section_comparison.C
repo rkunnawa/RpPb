@@ -571,7 +571,57 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
 
 
     //ct10n
+    Float_t valErr_ct10n_Low_0 = hct10n_Sys_Uncert_Low_0->GetBinContent(i);
+    Float_t valErr_ct10n_Upp_0 = hct10n_Sys_Uncert_Upp_0->GetBinContent(i);
+    Float_t valErr_ct10n_0 = TMath::Max(TMath::Abs(valErr_ct10n_Low_0),TMath::Abs(valErr_ct10n_Upp_0));
+    hpt_ct10n_0->SetBinError(i,valErr_ct10n_0);
 
+    Float_t valErr_ct10n_Low_1 = hct10n_Sys_Uncert_Low_1->GetBinContent(i);
+    Float_t valErr_ct10n_Upp_1 = hct10n_Sys_Uncert_Upp_1->GetBinContent(i);
+    Float_t valErr_ct10n_1 = TMath::Max(TMath::Abs(valErr_ct10n_Low_1),TMath::Abs(valErr_ct10n_Upp_1));
+    hpt_ct10n_1->SetBinError(i,valErr_ct10n_1);
+
+    Float_t valErr_ct10n_Low_2 = hct10n_Sys_Uncert_Low_2->GetBinContent(i);
+    Float_t valErr_ct10n_Upp_2 = hct10n_Sys_Uncert_Upp_2->GetBinContent(i);
+    Float_t valErr_ct10n_2 = TMath::Max(TMath::Abs(valErr_ct10n_Low_2),TMath::Abs(valErr_ct10n_Upp_2));
+    hpt_ct10n_2->SetBinError(i,valErr_ct10n_2);
+
+    Float_t valErr_ct10n_Low_3 = hct10n_Sys_Uncert_Low_3->GetBinContent(i);
+    Float_t valErr_ct10n_Upp_3 = hct10n_Sys_Uncert_Upp_3->GetBinContent(i);
+    Float_t valErr_ct10n_3 = TMath::Max(TMath::Abs(valErr_ct10n_Low_3),TMath::Abs(valErr_ct10n_Upp_3));
+    hpt_ct10n_3->SetBinError(i,valErr_ct10n_3);
+
+    Float_t valErr_ct10n_Low_4 = hct10n_Sys_Uncert_Low_4->GetBinContent(i);
+    Float_t valErr_ct10n_Upp_4 = hct10n_Sys_Uncert_Upp_4->GetBinContent(i);
+    Float_t valErr_ct10n_4 = TMath::Max(TMath::Abs(valErr_ct10n_Low_4),TMath::Abs(valErr_ct10n_Upp_4));
+    hpt_ct10n_4->SetBinError(i,valErr_ct10n_4);
+
+
+    //hera
+    Float_t valErr_hera_Low_0 = hhera_Sys_Uncert_Low_0->GetBinContent(i);
+    Float_t valErr_hera_Upp_0 = hhera_Sys_Uncert_Upp_0->GetBinContent(i);
+    Float_t valErr_hera_0 = TMath::Max(TMath::Abs(valErr_hera_Low_0),TMath::Abs(valErr_hera_Upp_0));
+    hpt_hera15all_0->SetBinError(i,valErr_hera_0);
+
+    Float_t valErr_hera_Low_1 = hhera_Sys_Uncert_Low_1->GetBinContent(i);
+    Float_t valErr_hera_Upp_1 = hhera_Sys_Uncert_Upp_1->GetBinContent(i);
+    Float_t valErr_hera_1 = TMath::Max(TMath::Abs(valErr_hera_Low_1),TMath::Abs(valErr_hera_Upp_1));
+    hpt_hera15all_1->SetBinError(i,valErr_hera_1);
+
+    Float_t valErr_hera_Low_2 = hhera_Sys_Uncert_Low_2->GetBinContent(i);
+    Float_t valErr_hera_Upp_2 = hhera_Sys_Uncert_Upp_2->GetBinContent(i);
+    Float_t valErr_hera_2 = TMath::Max(TMath::Abs(valErr_hera_Low_2),TMath::Abs(valErr_hera_Upp_2));
+    hpt_hera15all_2->SetBinError(i,valErr_hera_2);
+
+    Float_t valErr_hera_Low_3 = hhera_Sys_Uncert_Low_3->GetBinContent(i);
+    Float_t valErr_hera_Upp_3 = hhera_Sys_Uncert_Upp_3->GetBinContent(i);
+    Float_t valErr_hera_3 = TMath::Max(TMath::Abs(valErr_hera_Low_3),TMath::Abs(valErr_hera_Upp_3));
+    hpt_hera15all_3->SetBinError(i,valErr_hera_3);
+
+    Float_t valErr_hera_Low_4 = hhera_Sys_Uncert_Low_4->GetBinContent(i);
+    Float_t valErr_hera_Upp_4 = hhera_Sys_Uncert_Upp_4->GetBinContent(i);
+    Float_t valErr_hera_4 = TMath::Max(TMath::Abs(valErr_hera_Low_4),TMath::Abs(valErr_hera_Upp_4));
+    hpt_hera15all_4->SetBinError(i,valErr_hera_4);
 
   }
   
