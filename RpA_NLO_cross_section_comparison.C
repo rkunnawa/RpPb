@@ -511,7 +511,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
 
 
   // add the statistical uncertanities to the histograms here. 
-
+  
   for (int i=0;i<=hpt_hera15all_0->GetNbinsX();i++){
 
     Float_t valErr_0 = hStatUncert_0->GetBinError(i);
@@ -539,14 +539,19 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
     hpt_hera15all_4->SetBinError(i,valErr_4);
     
   }
+  
 
   // add the systematics uncertainites to the histograms here. 
+  /*
   for(int i = 0;i<hpt_hera15all_0->GetNbinsX();i++){
     
     //nnpdf
     Float_t valErr_nnpdf_Low_0 = hnnpdf_Sys_Uncert_Low_0->GetBinContent(i);
+    cout<<"valErr_nnpdf_Low_0 = "<<valErr_nnpdf_Low_0<<endl;
     Float_t valErr_nnpdf_Upp_0 = hnnpdf_Sys_Uncert_Upp_0->GetBinContent(i);
+    cout<<"valErr_nnpdf_Upp_0 = "<<valErr_nnpdf_Upp_0<<endl;
     Float_t valErr_nnpdf_0 = TMath::Max(TMath::Abs(valErr_nnpdf_Low_0),TMath::Abs(valErr_nnpdf_Upp_0));
+    cout<<"valErr_nnpdf_0 = "<<valErr_nnpdf_0<<endl;
     hpt_nnpdf21_0->SetBinError(i,valErr_nnpdf_0);
 
     Float_t valErr_nnpdf_Low_1 = hnnpdf_Sys_Uncert_Low_1->GetBinContent(i);
@@ -624,7 +629,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
     hpt_hera15all_4->SetBinError(i,valErr_hera_4);
 
   }
-  
+  */
 
   TH1F* hPP_nnpdf21_NLO = new TH1F("hPP_nnpdf21_NLO","",nbins_yaxian_large,boundaries_yaxian_large);
   TH1F* hPP_ct10n_NLO = new TH1F("hPP_ct10n_NLO","",nbins_yaxian_large,boundaries_yaxian_large);
@@ -687,6 +692,46 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   hPP_hera15all_NLO->Scale(1./deta);
   hPP_hera15all_NLO->Print("base");
 
+  ofstream pp_5020_nnpdf21_stat_err_upperbound,pp_5020_ct10n_stat_err_upperbound,pp_5020_hera15all_stat_err_upperbound,pp_5020_nlo_stat_err_upperbound;
+  pp_5020_nnpdf21_stat_err_upperbound.open("pp_5020_nnpdf21_10_10_stat_err_upperbound.txt");
+  pp_5020_ct10n_stat_err_upperbound.open("pp_5020_ct10n_10_10_stat_err_upperbound.txt");
+  pp_5020_hera15all_stat_err_upperbound.open("pp_5020_hera15all_10_10_stat_err_upperbound.txt");
+  pp_5020_nlo_stat_err_upperbound.open("pp_5020_nlo_10_10_stat_err_upperbound.txt");
+  for(int i = 0;i<hPP_nnpdf21_NLO->GetNbinsX();i++){
+    float bincenter = hPP_nnpdf21_NLO->GetBinCenter(i);
+    float val_nnpdf = hPP_nnpdf21_NLO->GetBinError(i); 
+    float val_ct10n = hPP_ct10n_NLO->GetBinError(i); 
+    float val_hera = hPP_hera15all_NLO->GetBinError(i); 
+    float val_err_test = TMath::Max(val_nnpdf,val_ct10n);
+    float val_err = TMath::Max(val_err_test,val_hera);
+    pp_5020_nnpdf21_stat_err_upperbound<<bincenter<<" "<<val_nnpdf<<endl;
+    pp_5020_ct10n_stat_err_upperbound<<bincenter<<" "<<val_ct10n<<endl;
+    pp_5020_hera15all_stat_err_upperbound<<bincenter<<" "<<val_hera<<endl;
+    pp_5020_nlo_stat_err_upperbound<<bincenter<<" "<<val_err<<endl;
+  }
+  
+
+  /*
+  ofstream pp_5020_nnpdf21_sys_err_upperbound,pp_5020_ct10n_sys_err_upperbound,pp_5020_hera15all_sys_err_upperbound,pp_5020_nlo_sys_err_upperbound;
+  pp_5020_nnpdf21_sys_err_upperbound.open("pp_5020_nnpdf21_10_10_sys_err_upperbound.txt");
+  pp_5020_ct10n_sys_err_upperbound.open("pp_5020_ct10n_10_10_sys_err_upperbound.txt");
+  pp_5020_hera15all_sys_err_upperbound.open("pp_5020_hera15all_10_10_sys_err_upperbound.txt");
+  pp_5020_nlo_sys_err_upperbound.open("pp_5020_nlo_10_10_sys_err_upperbound.txt");
+  for(int i = 0;i<hPP_nnpdf21_NLO->GetNbinsX();i++){
+    float bincenter = hPP_nnpdf21_NLO->GetBinCenter(i);
+    float val_nnpdf = hPP_nnpdf21_NLO->GetBinError(i); 
+    float val_ct10n = hPP_ct10n_NLO->GetBinError(i); 
+    float val_hera = hPP_hera15all_NLO->GetBinError(i); 
+    float val_err_test = TMath::Max(val_nnpdf,val_ct10n);
+    float val_err = TMath::Max(val_err_test,val_hera);
+    pp_5020_nnpdf21_sys_err_upperbound<<bincenter<<" "<<val_nnpdf<<endl;
+    pp_5020_ct10n_sys_err_upperbound<<bincenter<<" "<<val_ct10n<<endl;
+    pp_5020_hera15all_sys_err_upperbound<<bincenter<<" "<<val_hera<<endl;
+    pp_5020_nlo_sys_err_upperbound<<bincenter<<" "<<val_err<<endl;
+  }
+  */
+
+
   TH1F* hPP5020_nnpdf_22_22 = (TH1F*)hpt_nnpdf21_0->Clone("hPP5020_nnpdf_22_22");
   hPP5020_nnpdf_22_22->Add(hpt_nnpdf21_1);
   hPP5020_nnpdf_22_22->Add(hpt_nnpdf21_2);
@@ -738,6 +783,7 @@ void RpA_NLO_cross_section_comparison(int radius = 3,bool useEricSpectra = true)
   hpp_hera15all_2->Scale(1./1);
   TH1F* hpp_hera15all_3 = (TH1F*)hpt_hera15all_4->Clone("hpp_hera15all_3");
   hpp_hera15all_3->Scale(1./2);
+
 
   //get the information from the bins for pp NLO 2.76 TeV/data here so that we can get scaled NLO. 
 
