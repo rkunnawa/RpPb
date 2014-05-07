@@ -398,6 +398,7 @@ void RpA_reference_check(){
   //2.76 TeV
   TDirectoryFile* ak3GenJet_2760_05 = (TDirectoryFile*)fppPythia_2760->Get("ak3GenJetSpectrum_QCD10001_00_05");
   TH1F* hPP_2760_Pythia_05_R3 = (TH1F*)ak3GenJet_2760_05->Get("JetSpectrum");
+  hPP_2760_Pythia_05_R3->Print("base");
   TDirectoryFile* ak3GenJet_2760_05_10 = (TDirectoryFile*)fppPythia_2760->Get("ak3GenJetSpectrum_QCD10001_05_10");
   TH1F* hPP_2760_Pythia_05_10_R3 = (TH1F*)ak3GenJet_2760_05_10->Get("JetSpectrum");
   TDirectoryFile* ak3GenJet_2760_10_15 = (TDirectoryFile*)fppPythia_2760->Get("ak3GenJetSpectrum_QCD10001_10_15");
@@ -621,131 +622,130 @@ void RpA_reference_check(){
   TH1F* hPP_5020_7000_Pythia_05_R5 = (TH1F*)hPP_5020_Pythia_05_R5->Clone("hPP_5020_7000_Pythia_05_R5");
   hPP_5020_7000_Pythia_05_R5->Divide(hPP_7000_Pythia_05_R5);
 
-  
-  // PYTHIA - AMBT2
+  // PYAMBT - AMBT2 
   //2.76 TeV
-  ak3GenJet_2760_05 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_00_05");
-  TH1F* hPP_2760_PYAMBT_05_R3 = (TH1F*)ak3GenJet_2760_05->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_2760_05 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_00_05");
+  TH1F* hPP_2760_PYAMBT_05_R3 = (TH1F*)ak3AMBTGenJet_2760_05->Get("JetSpectrum");
   hPP_2760_PYAMBT_05_R3->Print("base");
-  ak3GenJet_2760_05_10 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_05_10");
-  TH1F* hPP_2760_PYAMBT_05_10_R3 = (TH1F*)ak3GenJet_2760_05_10->Get("JetSpectrum");
-  ak3GenJet_2760_10_15 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_10_15");
-  TH1F* hPP_2760_PYAMBT_10_15_R3 = (TH1F*)ak3GenJet_2760_10_15->Get("JetSpectrum");
-  ak3GenJet_2760_15_20 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_15_20");
-  TH1F* hPP_2760_PYAMBT_15_20_R3 = (TH1F*)ak3GenJet_2760_15_20->Get("JetSpectrum");
-  ak3GenJet_2760_20_25 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_20_25");
-  TH1F* hPP_2760_PYAMBT_20_25_R3 = (TH1F*)ak3GenJet_2760_20_25->Get("JetSpectrum");
-  ak3GenJet_2760_25_30 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_25_30");
-  TH1F* hPP_2760_PYAMBT_25_30_R3 = (TH1F*)ak3GenJet_2760_25_30->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_2760_05_10 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_05_10");
+  TH1F* hPP_2760_PYAMBT_05_10_R3 = (TH1F*)ak3AMBTGenJet_2760_05_10->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_2760_10_15 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_10_15");
+  TH1F* hPP_2760_PYAMBT_10_15_R3 = (TH1F*)ak3AMBTGenJet_2760_10_15->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_2760_15_20 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_15_20");
+  TH1F* hPP_2760_PYAMBT_15_20_R3 = (TH1F*)ak3AMBTGenJet_2760_15_20->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_2760_20_25 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_20_25");
+  TH1F* hPP_2760_PYAMBT_20_25_R3 = (TH1F*)ak3AMBTGenJet_2760_20_25->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_2760_25_30 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak3GenJetSpectrum_QCD10001_25_30");
+  TH1F* hPP_2760_PYAMBT_25_30_R3 = (TH1F*)ak3AMBTGenJet_2760_25_30->Get("JetSpectrum");
 
-  ak4GenJet_2760_05 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_00_05");
-  TH1F* hPP_2760_PYAMBT_05_R4 = (TH1F*)ak4GenJet_2760_05->Get("JetSpectrum");
-  ak4GenJet_2760_05_10 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_05_10");
-  TH1F* hPP_2760_PYAMBT_05_10_R4 = (TH1F*)ak4GenJet_2760_05_10->Get("JetSpectrum");
-  ak4GenJet_2760_10_15 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_10_15");
-  TH1F* hPP_2760_PYAMBT_10_15_R4 = (TH1F*)ak4GenJet_2760_10_15->Get("JetSpectrum");
-  ak4GenJet_2760_15_20 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_15_20");
-  TH1F* hPP_2760_PYAMBT_15_20_R4 = (TH1F*)ak4GenJet_2760_15_20->Get("JetSpectrum");
-  ak4GenJet_2760_20_25 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_20_25");
-  TH1F* hPP_2760_PYAMBT_20_25_R4 = (TH1F*)ak4GenJet_2760_20_25->Get("JetSpectrum");
-  ak4GenJet_2760_25_30 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_25_30");
-  TH1F* hPP_2760_PYAMBT_25_30_R4 = (TH1F*)ak4GenJet_2760_25_30->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_2760_05 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_00_05");
+  TH1F* hPP_2760_PYAMBT_05_R4 = (TH1F*)ak4AMBTGenJet_2760_05->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_2760_05_10 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_05_10");
+  TH1F* hPP_2760_PYAMBT_05_10_R4 = (TH1F*)ak4AMBTGenJet_2760_05_10->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_2760_10_15 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_10_15");
+  TH1F* hPP_2760_PYAMBT_10_15_R4 = (TH1F*)ak4AMBTGenJet_2760_10_15->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_2760_15_20 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_15_20");
+  TH1F* hPP_2760_PYAMBT_15_20_R4 = (TH1F*)ak4AMBTGenJet_2760_15_20->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_2760_20_25 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_20_25");
+  TH1F* hPP_2760_PYAMBT_20_25_R4 = (TH1F*)ak4AMBTGenJet_2760_20_25->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_2760_25_30 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak4GenJetSpectrum_QCD10001_25_30");
+  TH1F* hPP_2760_PYAMBT_25_30_R4 = (TH1F*)ak4AMBTGenJet_2760_25_30->Get("JetSpectrum");
 
-  ak5GenJet_2760_05 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_00_05");
-  TH1F* hPP_2760_PYAMBT_05_R5 = (TH1F*)ak5GenJet_2760_05->Get("JetSpectrum");
-  ak5GenJet_2760_05_10 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_05_10");
-  TH1F* hPP_2760_PYAMBT_05_10_R5 = (TH1F*)ak5GenJet_2760_05_10->Get("JetSpectrum");
-  ak5GenJet_2760_10_15 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_10_15");
-  TH1F* hPP_2760_PYAMBT_10_15_R5 = (TH1F*)ak5GenJet_2760_10_15->Get("JetSpectrum");
-  ak5GenJet_2760_15_20 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_15_20");
-  TH1F* hPP_2760_PYAMBT_15_20_R5 = (TH1F*)ak5GenJet_2760_15_20->Get("JetSpectrum");
-  ak5GenJet_2760_20_25 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_20_25");
-  TH1F* hPP_2760_PYAMBT_20_25_R5 = (TH1F*)ak5GenJet_2760_20_25->Get("JetSpectrum");
-  ak5GenJet_2760_25_30 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_25_30");
-  TH1F* hPP_2760_PYAMBT_25_30_R5 = (TH1F*)ak5GenJet_2760_25_30->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_2760_05 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_00_05");
+  TH1F* hPP_2760_PYAMBT_05_R5 = (TH1F*)ak5AMBTGenJet_2760_05->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_2760_05_10 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_05_10");
+  TH1F* hPP_2760_PYAMBT_05_10_R5 = (TH1F*)ak5AMBTGenJet_2760_05_10->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_2760_10_15 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_10_15");
+  TH1F* hPP_2760_PYAMBT_10_15_R5 = (TH1F*)ak5AMBTGenJet_2760_10_15->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_2760_15_20 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_15_20");
+  TH1F* hPP_2760_PYAMBT_15_20_R5 = (TH1F*)ak5AMBTGenJet_2760_15_20->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_2760_20_25 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_20_25");
+  TH1F* hPP_2760_PYAMBT_20_25_R5 = (TH1F*)ak5AMBTGenJet_2760_20_25->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_2760_25_30 = (TDirectoryFile*)fppPYAMBT_2760->Get("ak5GenJetSpectrum_QCD10001_25_30");
+  TH1F* hPP_2760_PYAMBT_25_30_R5 = (TH1F*)ak5AMBTGenJet_2760_25_30->Get("JetSpectrum");
 
   //make PYAMBT 
 
   //5.02 TeV
-  ak3GenJet_5020_05 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_00_05");
-  TH1F* hPP_5020_PYAMBT_05_R3 = (TH1F*)ak3GenJet_5020_05->Get("JetSpectrum");
-  ak3GenJet_5020_05_10 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_05_10");
-  TH1F* hPP_5020_PYAMBT_05_10_R3 = (TH1F*)ak3GenJet_5020_05_10->Get("JetSpectrum");
-  ak3GenJet_5020_10_15 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_10_15");
-  TH1F* hPP_5020_PYAMBT_10_15_R3 = (TH1F*)ak3GenJet_5020_10_15->Get("JetSpectrum");
-  ak3GenJet_5020_15_20 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_15_20");
-  TH1F* hPP_5020_PYAMBT_15_20_R3 = (TH1F*)ak3GenJet_5020_15_20->Get("JetSpectrum");
-  ak3GenJet_5020_20_25 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_20_25");
-  TH1F* hPP_5020_PYAMBT_20_25_R3 = (TH1F*)ak3GenJet_5020_20_25->Get("JetSpectrum");
-  ak3GenJet_5020_25_30 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_25_30");
-  TH1F* hPP_5020_PYAMBT_25_30_R3 = (TH1F*)ak3GenJet_5020_25_30->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_5020_05 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_00_05");
+  TH1F* hPP_5020_PYAMBT_05_R3 = (TH1F*)ak3AMBTGenJet_5020_05->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_5020_05_10 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_05_10");
+  TH1F* hPP_5020_PYAMBT_05_10_R3 = (TH1F*)ak3AMBTGenJet_5020_05_10->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_5020_10_15 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_10_15");
+  TH1F* hPP_5020_PYAMBT_10_15_R3 = (TH1F*)ak3AMBTGenJet_5020_10_15->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_5020_15_20 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_15_20");
+  TH1F* hPP_5020_PYAMBT_15_20_R3 = (TH1F*)ak3AMBTGenJet_5020_15_20->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_5020_20_25 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_20_25");
+  TH1F* hPP_5020_PYAMBT_20_25_R3 = (TH1F*)ak3AMBTGenJet_5020_20_25->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_5020_25_30 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak3GenJetSpectrum_QCD10001_25_30");
+  TH1F* hPP_5020_PYAMBT_25_30_R3 = (TH1F*)ak3AMBTGenJet_5020_25_30->Get("JetSpectrum");
 
-  ak4GenJet_5020_05 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_00_05");
-  TH1F* hPP_5020_PYAMBT_05_R4 = (TH1F*)ak4GenJet_5020_05->Get("JetSpectrum");
-  ak4GenJet_5020_05_10 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_05_10");
-  TH1F* hPP_5020_PYAMBT_05_10_R4 = (TH1F*)ak4GenJet_5020_05_10->Get("JetSpectrum");
-  ak4GenJet_5020_10_15 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_10_15");
-  TH1F* hPP_5020_PYAMBT_10_15_R4 = (TH1F*)ak4GenJet_5020_10_15->Get("JetSpectrum");
-  ak4GenJet_5020_15_20 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_15_20");
-  TH1F* hPP_5020_PYAMBT_15_20_R4 = (TH1F*)ak4GenJet_5020_15_20->Get("JetSpectrum");
-  ak4GenJet_5020_20_25 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_20_25");
-  TH1F* hPP_5020_PYAMBT_20_25_R4 = (TH1F*)ak4GenJet_5020_20_25->Get("JetSpectrum");
-  ak4GenJet_5020_25_30 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_25_30");
-  TH1F* hPP_5020_PYAMBT_25_30_R4 = (TH1F*)ak4GenJet_5020_25_30->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_5020_05 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_00_05");
+  TH1F* hPP_5020_PYAMBT_05_R4 = (TH1F*)ak4AMBTGenJet_5020_05->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_5020_05_10 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_05_10");
+  TH1F* hPP_5020_PYAMBT_05_10_R4 = (TH1F*)ak4AMBTGenJet_5020_05_10->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_5020_10_15 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_10_15");
+  TH1F* hPP_5020_PYAMBT_10_15_R4 = (TH1F*)ak4AMBTGenJet_5020_10_15->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_5020_15_20 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_15_20");
+  TH1F* hPP_5020_PYAMBT_15_20_R4 = (TH1F*)ak4AMBTGenJet_5020_15_20->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_5020_20_25 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_20_25");
+  TH1F* hPP_5020_PYAMBT_20_25_R4 = (TH1F*)ak4AMBTGenJet_5020_20_25->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_5020_25_30 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak4GenJetSpectrum_QCD10001_25_30");
+  TH1F* hPP_5020_PYAMBT_25_30_R4 = (TH1F*)ak4AMBTGenJet_5020_25_30->Get("JetSpectrum");
 
-  ak5GenJet_5020_05 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_00_05");
-  TH1F* hPP_5020_PYAMBT_05_R5 = (TH1F*)ak5GenJet_5020_05->Get("JetSpectrum");
-  ak5GenJet_5020_05_10 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_05_10");
-  TH1F* hPP_5020_PYAMBT_05_10_R5 = (TH1F*)ak5GenJet_5020_05_10->Get("JetSpectrum");
-  ak5GenJet_5020_10_15 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_10_15");
-  TH1F* hPP_5020_PYAMBT_10_15_R5 = (TH1F*)ak5GenJet_5020_10_15->Get("JetSpectrum");
-  ak5GenJet_5020_15_20 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_15_20");
-  TH1F* hPP_5020_PYAMBT_15_20_R5 = (TH1F*)ak5GenJet_5020_15_20->Get("JetSpectrum");
-  ak5GenJet_5020_20_25 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_20_25");
-  TH1F* hPP_5020_PYAMBT_20_25_R5 = (TH1F*)ak5GenJet_5020_20_25->Get("JetSpectrum");
-  ak5GenJet_5020_25_30 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_25_30");
-  TH1F* hPP_5020_PYAMBT_25_30_R5 = (TH1F*)ak5GenJet_5020_25_30->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_5020_05 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_00_05");
+  TH1F* hPP_5020_PYAMBT_05_R5 = (TH1F*)ak5AMBTGenJet_5020_05->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_5020_05_10 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_05_10");
+  TH1F* hPP_5020_PYAMBT_05_10_R5 = (TH1F*)ak5AMBTGenJet_5020_05_10->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_5020_10_15 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_10_15");
+  TH1F* hPP_5020_PYAMBT_10_15_R5 = (TH1F*)ak5AMBTGenJet_5020_10_15->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_5020_15_20 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_15_20");
+  TH1F* hPP_5020_PYAMBT_15_20_R5 = (TH1F*)ak5AMBTGenJet_5020_15_20->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_5020_20_25 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_20_25");
+  TH1F* hPP_5020_PYAMBT_20_25_R5 = (TH1F*)ak5AMBTGenJet_5020_20_25->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_5020_25_30 = (TDirectoryFile*)fppPYAMBT_5020->Get("ak5GenJetSpectrum_QCD10001_25_30");
+  TH1F* hPP_5020_PYAMBT_25_30_R5 = (TH1F*)ak5AMBTGenJet_5020_25_30->Get("JetSpectrum");
 
 
   //7 TeV
-  ak3GenJet_7000_05 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_00_05");
-  TH1F* hPP_7000_PYAMBT_05_R3 = (TH1F*)ak3GenJet_7000_05->Get("JetSpectrum");
-  ak3GenJet_7000_05_10 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_05_10");
-  TH1F* hPP_7000_PYAMBT_05_10_R3 = (TH1F*)ak3GenJet_7000_05_10->Get("JetSpectrum");
-  ak3GenJet_7000_10_15 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_10_15");
-  TH1F* hPP_7000_PYAMBT_10_15_R3 = (TH1F*)ak3GenJet_7000_10_15->Get("JetSpectrum");
-  ak3GenJet_7000_15_20 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_15_20");
-  TH1F* hPP_7000_PYAMBT_15_20_R3 = (TH1F*)ak3GenJet_7000_15_20->Get("JetSpectrum");
-  ak3GenJet_7000_20_25 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_20_25");
-  TH1F* hPP_7000_PYAMBT_20_25_R3 = (TH1F*)ak3GenJet_7000_20_25->Get("JetSpectrum");
-  ak3GenJet_7000_25_30 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_25_30");
-  TH1F* hPP_7000_PYAMBT_25_30_R3 = (TH1F*)ak3GenJet_7000_25_30->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_7000_05 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_00_05");
+  TH1F* hPP_7000_PYAMBT_05_R3 = (TH1F*)ak3AMBTGenJet_7000_05->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_7000_05_10 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_05_10");
+  TH1F* hPP_7000_PYAMBT_05_10_R3 = (TH1F*)ak3AMBTGenJet_7000_05_10->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_7000_10_15 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_10_15");
+  TH1F* hPP_7000_PYAMBT_10_15_R3 = (TH1F*)ak3AMBTGenJet_7000_10_15->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_7000_15_20 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_15_20");
+  TH1F* hPP_7000_PYAMBT_15_20_R3 = (TH1F*)ak3AMBTGenJet_7000_15_20->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_7000_20_25 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_20_25");
+  TH1F* hPP_7000_PYAMBT_20_25_R3 = (TH1F*)ak3AMBTGenJet_7000_20_25->Get("JetSpectrum");
+  TDirectoryFile* ak3AMBTGenJet_7000_25_30 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak3GenJetSpectrum_QCD10001_25_30");
+  TH1F* hPP_7000_PYAMBT_25_30_R3 = (TH1F*)ak3AMBTGenJet_7000_25_30->Get("JetSpectrum");
 
-  ak4GenJet_7000_05 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_00_05");
-  TH1F* hPP_7000_PYAMBT_05_R4 = (TH1F*)ak4GenJet_7000_05->Get("JetSpectrum");
-  ak4GenJet_7000_05_10 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_05_10");
-  TH1F* hPP_7000_PYAMBT_05_10_R4 = (TH1F*)ak4GenJet_7000_05_10->Get("JetSpectrum");
-  ak4GenJet_7000_10_15 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_10_15");
-  TH1F* hPP_7000_PYAMBT_10_15_R4 = (TH1F*)ak4GenJet_7000_10_15->Get("JetSpectrum");
-  ak4GenJet_7000_15_20 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_15_20");
-  TH1F* hPP_7000_PYAMBT_15_20_R4 = (TH1F*)ak4GenJet_7000_15_20->Get("JetSpectrum");
-  ak4GenJet_7000_20_25 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_20_25");
-  TH1F* hPP_7000_PYAMBT_20_25_R4 = (TH1F*)ak4GenJet_7000_20_25->Get("JetSpectrum");
-  ak4GenJet_7000_25_30 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_25_30");
-  TH1F* hPP_7000_PYAMBT_25_30_R4 = (TH1F*)ak4GenJet_7000_25_30->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_7000_05 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_00_05");
+  TH1F* hPP_7000_PYAMBT_05_R4 = (TH1F*)ak4AMBTGenJet_7000_05->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_7000_05_10 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_05_10");
+  TH1F* hPP_7000_PYAMBT_05_10_R4 = (TH1F*)ak4AMBTGenJet_7000_05_10->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_7000_10_15 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_10_15");
+  TH1F* hPP_7000_PYAMBT_10_15_R4 = (TH1F*)ak4AMBTGenJet_7000_10_15->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_7000_15_20 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_15_20");
+  TH1F* hPP_7000_PYAMBT_15_20_R4 = (TH1F*)ak4AMBTGenJet_7000_15_20->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_7000_20_25 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_20_25");
+  TH1F* hPP_7000_PYAMBT_20_25_R4 = (TH1F*)ak4AMBTGenJet_7000_20_25->Get("JetSpectrum");
+  TDirectoryFile* ak4AMBTGenJet_7000_25_30 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak4GenJetSpectrum_QCD10001_25_30");
+  TH1F* hPP_7000_PYAMBT_25_30_R4 = (TH1F*)ak4AMBTGenJet_7000_25_30->Get("JetSpectrum");
 
-  ak5GenJet_7000_05 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_00_05");
-  TH1F* hPP_7000_PYAMBT_05_R5 = (TH1F*)ak5GenJet_7000_05->Get("JetSpectrum");
-  ak5GenJet_7000_05_10 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_05_10");
-  TH1F* hPP_7000_PYAMBT_05_10_R5 = (TH1F*)ak5GenJet_7000_05_10->Get("JetSpectrum");
-  ak5GenJet_7000_10_15 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_10_15");
-  TH1F* hPP_7000_PYAMBT_10_15_R5 = (TH1F*)ak5GenJet_7000_10_15->Get("JetSpectrum");
-  ak5GenJet_7000_15_20 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_15_20");
-  TH1F* hPP_7000_PYAMBT_15_20_R5 = (TH1F*)ak5GenJet_7000_15_20->Get("JetSpectrum");
-  ak5GenJet_7000_20_25 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_20_25");
-  TH1F* hPP_7000_PYAMBT_20_25_R5 = (TH1F*)ak5GenJet_7000_20_25->Get("JetSpectrum");
-  ak5GenJet_7000_25_30 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_25_30");
-  TH1F* hPP_7000_PYAMBT_25_30_R5 = (TH1F*)ak5GenJet_7000_25_30->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_7000_05 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_00_05");
+  TH1F* hPP_7000_PYAMBT_05_R5 = (TH1F*)ak5AMBTGenJet_7000_05->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_7000_05_10 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_05_10");
+  TH1F* hPP_7000_PYAMBT_05_10_R5 = (TH1F*)ak5AMBTGenJet_7000_05_10->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_7000_10_15 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_10_15");
+  TH1F* hPP_7000_PYAMBT_10_15_R5 = (TH1F*)ak5AMBTGenJet_7000_10_15->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_7000_15_20 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_15_20");
+  TH1F* hPP_7000_PYAMBT_15_20_R5 = (TH1F*)ak5AMBTGenJet_7000_15_20->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_7000_20_25 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_20_25");
+  TH1F* hPP_7000_PYAMBT_20_25_R5 = (TH1F*)ak5AMBTGenJet_7000_20_25->Get("JetSpectrum");
+  TDirectoryFile* ak5AMBTGenJet_7000_25_30 = (TDirectoryFile*)fppPYAMBT_7000->Get("ak5GenJetSpectrum_QCD10001_25_30");
+  TH1F* hPP_7000_PYAMBT_25_30_R5 = (TH1F*)ak5AMBTGenJet_7000_25_30->Get("JetSpectrum");
 
 
   //ok we got the histograms from the file. now lets get the histograms needed from these histograms. 
@@ -782,11 +782,29 @@ void RpA_reference_check(){
   TH1F* hPP_2760_PYAMBT_05_10_R_4_5 = (TH1F*)hPP_2760_PYAMBT_05_10_R4->Clone("hPP_2760_PYAMBT_05_10_R_4_5");
   hPP_2760_PYAMBT_05_10_R_4_5->Divide(hPP_2760_PYAMBT_05_10_R5);
 
+  TH1F* hPP_2760_PYAMBT_10_15_R_3_5 = (TH1F*)hPP_2760_PYAMBT_10_15_R3->Clone("hPP_2760_PYAMBT_10_15_R_3_5");
+  hPP_2760_PYAMBT_10_15_R_3_5->Divide(hPP_2760_PYAMBT_10_15_R5);
+
+  TH1F* hPP_2760_PYAMBT_10_15_R_4_5 = (TH1F*)hPP_2760_PYAMBT_10_15_R4->Clone("hPP_2760_PYAMBT_10_15_R_4_5");
+  hPP_2760_PYAMBT_05_10_R_4_5->Divide(hPP_2760_PYAMBT_10_15_R5);
+
   TH1F* hPP_2760_PYAMBT_15_20_R_3_5 = (TH1F*)hPP_2760_PYAMBT_15_20_R3->Clone("hPP_2760_PYAMBT_15_20_R_3_5");
   hPP_2760_PYAMBT_15_20_R_3_5->Divide(hPP_2760_PYAMBT_15_20_R5);
 
   TH1F* hPP_2760_PYAMBT_15_20_R_4_5 = (TH1F*)hPP_2760_PYAMBT_15_20_R4->Clone("hPP_2760_PYAMBT_15_20_R_4_5");
   hPP_2760_PYAMBT_15_20_R_4_5->Divide(hPP_2760_PYAMBT_15_20_R5);
+
+  TH1F* hPP_2760_PYAMBT_20_25_R_3_5 = (TH1F*)hPP_2760_PYAMBT_20_25_R3->Clone("hPP_2760_PYAMBT_20_25_R_3_5");
+  hPP_2760_PYAMBT_20_25_R_3_5->Divide(hPP_2760_PYAMBT_20_25_R5);
+
+  TH1F* hPP_2760_PYAMBT_20_25_R_4_5 = (TH1F*)hPP_2760_PYAMBT_20_25_R4->Clone("hPP_2760_PYAMBT_20_25_R_4_5");
+  hPP_2760_PYAMBT_20_25_R_4_5->Divide(hPP_2760_PYAMBT_20_25_R5);
+
+  TH1F* hPP_2760_PYAMBT_25_30_R_3_5 = (TH1F*)hPP_2760_PYAMBT_25_30_R3->Clone("hPP_2760_PYAMBT_25_30_R_3_5");
+  hPP_2760_PYAMBT_25_30_R_3_5->Divide(hPP_2760_PYAMBT_25_30_R5);
+
+  TH1F* hPP_2760_PYAMBT_25_30_R_4_5 = (TH1F*)hPP_2760_PYAMBT_25_30_R4->Clone("hPP_2760_PYAMBT_25_30_R_4_5");
+  hPP_2760_PYAMBT_25_30_R_4_5->Divide(hPP_2760_PYAMBT_25_30_R5);
 
   TH1F* hPP_5020_PYAMBT_05_R_3_5 = (TH1F*)hPP_5020_PYAMBT_05_R3->Clone("hPP_5020_PYAMBT_05_R_3_5");
   hPP_5020_PYAMBT_05_R_3_5->Divide(hPP_5020_PYAMBT_05_R5);
@@ -881,8 +899,6 @@ void RpA_reference_check(){
   hPP_5020_nnpdf_R_3_4->Divide(hPP_5020_nnpdf_22_22_R4);
 
 
-
-
   //plots requisted by Yetkin - (5.02TeV/7TeV)_R=0.3/(5.02TeV/7TeV)_R=0.5 for Pythia. 
   // and (R=0.3/R=0.5)_5.02TeV/(R=0.3/R=0.5)_7TeV
 
@@ -963,6 +979,8 @@ void RpA_reference_check(){
   TH1F* hPP_data_2760_R_3_4 = (TH1F*)fpp276->Get("hRatio_data_R_3_4");
   TH1F* hPP_data_2760_R_3_5 = (TH1F*)fpp276->Get("hRatio_data_R_3_5");
   TH1F* hPP_data_2760_R_4_5 = (TH1F*)fpp276->Get("hRatio_data_R_4_5");
+
+  
 
   TCanvas *c2 = new TCanvas("c2","",800,600);
   c2->SetGridy();
@@ -1173,14 +1191,14 @@ void RpA_reference_check(){
   hPP_2760_Pythia_15_20_R_3_5->SetMarkerStyle(22);
   hPP_2760_Pythia_15_20_R_3_5->SetMarkerColor(7);
   hPP_2760_Pythia_15_20_R_3_5->Draw("same p");
-  /*
+  
   hPP_7000_Pythia_05_R_3_5->SetMarkerStyle(20);
   hPP_7000_Pythia_05_R_3_5->SetMarkerColor(12);
   hPP_7000_Pythia_05_R_3_5->Draw("same p");
   hPP_7000_Pythia_15_20_R_3_5->SetMarkerStyle(22);
   hPP_7000_Pythia_15_20_R_3_5->SetMarkerColor(13);
   hPP_7000_Pythia_15_20_R_3_5->Draw("same p");
-
+  /*
   hPP_5020_PYAMBT_05_R_3_5->SetMarkerStyle(34);
   hPP_5020_PYAMBT_05_R_3_5->SetMarkerColor(3);
   hPP_5020_PYAMBT_05_R_3_5->Draw("same p")
@@ -1194,14 +1212,14 @@ void RpA_reference_check(){
   hPP_2760_PYAMBT_15_20_R_3_5->SetMarkerStyle(34);
   hPP_2760_PYAMBT_15_20_R_3_5->SetMarkerColor(9);
   hPP_2760_PYAMBT_15_20_R_3_5->Draw("same p");
-  /*
+  
   hPP_7000_PYAMBT_05_R_3_5->SetMarkerStyle(34);
   hPP_7000_PYAMBT_05_R_3_5->SetMarkerColor(12);
   hPP_7000_PYAMBT_05_R_3_5->Draw("same p");
   hPP_7000_PYAMBT_15_20_R_3_5->SetMarkerStyle(34);
   hPP_7000_PYAMBT_15_20_R_3_5->SetMarkerColor(13);
   hPP_7000_PYAMBT_15_20_R_3_5->Draw("same p");
-  */
+  
   //hPP_2760_data_05_R_3_5->SetMarkerStyle(20);
   hPP_data_2760_R_3_5->SetMarkerStyle(20);
   hPP_data_2760_R_3_5->SetMarkerColor(8);
@@ -1218,8 +1236,10 @@ void RpA_reference_check(){
   title5->AddEntry(hPP_2760_Pythia_15_20_R_3_5,"Z2 2.76, 1.5<|y|<2.0","pl");
   title5->AddEntry(hPP_2760_PYAMBT_05_R_3_5,"AMBT2 2.76, |y|<0.5","pl");
   title5->AddEntry(hPP_2760_PYAMBT_15_20_R_3_5,"AMBT2 2.76, 1.5<|y|<2.0","pl");
-  //title5->AddEntry(hPP_7000_Pythia_05_R_3_5,"Z2 7, |y|<0.5","pl");
-  //title5->AddEntry(hPP_7000_Pythia_15_20_R_3_5,"Z2 7, 1.5<|y|<2.0","pl");
+  title5->AddEntry(hPP_7000_Pythia_05_R_3_5,"Z2 7, |y|<0.5","pl");
+  title5->AddEntry(hPP_7000_Pythia_15_20_R_3_5,"Z2 7, 1.5<|y|<2.0","pl");
+  title5->AddEntry(hPP_7000_PYAMBT_05_R_3_5,"AMBT2 7, |y|<0.5","pl");
+  title5->AddEntry(hPP_7000_PYABMT_15_20_R_3_5,"AMBT2 7, 1.5<|y|<2.0","pl");
   title5->AddEntry(hPP_data_2760_R_3_5,"Data 2.76 |eta|<2","pl");
   //title5->AddEntry(hPP_2760_data_15_20_R_3_5,"Data 2.76 1.5<|y|<2.0","pl");
   title5->SetTextSize(0.04);
@@ -1389,6 +1409,8 @@ void RpA_reference_check(){
 
   c7->SaveAs("RpA_reference_NLO_systematics_calculation.pdf","RECREATE");
 
+  hPP_data_2760_R_3_5->Write();
+  hPP_data_2760_R_3_4->Write();
   
   foutput.Write();
   foutput.Close();
